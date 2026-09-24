@@ -1,159 +1,137 @@
-var path              = require( 'path' );
-var webpack           = require( 'webpack' );
-var merge             = require( 'webpack-merge' );
-var HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-var autoprefixer      = require( 'autoprefixer' );
-var ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
-var CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-var entryPath         = path.join( __dirname, 'static/js/index.js' );
-var outputPath        = path.join( __dirname, 'build' );
+'use strict';
 
-console.log( 'WEBPACK GO!');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-// determine build env
-var TARGET_ENV = process.env['TARGET_ENV'] === 'build' ? 'production' : 'development';
-var outputFilename = TARGET_ENV === 'production' ? '[name]-[hash].js' : '[name]-dev.js';
-
-// common webpack config
-var commonConfig = {
-
-  entry: {
-    'app': entryPath
-  },
-
-  output: {
-    path:       outputPath,
-    filename: `js/${outputFilename}`
-    // publicPath: '/'
-  },
-
-  resolve: {
-    extensions: ['.js', '.elm', '.css', '.png', '.jpg', '.svg', '.ico'],
-    alias: {
-        leaflet_css: __dirname + "/node_modules/leaflet/dist/leaflet.css",
-        leaflet_js: __dirname + "/node_modules/leaflet/dist/leaflet.js",
-        leaflet_ant_js: __dirname + "/node_modules/leaflet-ant-path/dist/leaflet-ant-path.js"
-    }
-  },
-  module: {
-    noParse: /\.elm$/,
-    loaders: [
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff&publicPath=../&name=fonts/[name].[ext]"
-      },
-      {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff&publicPath=../&name=fonts/[name].[ext]"
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=application/octet-stream&publicPath=../&name=fonts/[name].[ext]"
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file-loader?publicPath=../&name=fonts/[name].[ext]"
-      },
-      {
-        test: /\.svg$/,
-        loader: "url-loader?limit=50000&mimetype=image/svg+xml&publicPath=../&name=images/[name].[ext]"
-      },
-      {
-        test: /\.(png|jpg)$/,
-        loader: "url-loader?name=images/[name].[ext]"
-      },
-      {
-        test: /\.ico$/,
-        loader: "url-loader?name=[name].[ext]"
-      },
-      {
-        test: /\.(css|scss)$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader'
-        ]
-      }
-    ]
-  },
-
-  plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: 'static/img/',
-        to:   'images/'
-      },
-      {
-        from: 'static/favicon.ico',
-        to: 'favicon.ico'
-      },
-    ]),
-
-    new HtmlWebpackPlugin({
-      template: 'build/index.html',
-      inject:   'body',
-      filename: 'index.html'
-    }),
-
-    new webpack.EnvironmentPlugin(
-      ["HEBORN_API_HTTP_URL", "HEBORN_API_WEBSOCKET_URL", "HEBORN_VERSION"]
-    )
-  ],
-
+// Build-time settings (environment variables).
+const env = {
+  HEBORN_API_HTTP_URL: process.env.HEBORN_API_HTTP_URL || 'https://localhost:4000/v1',
+  HEBORN_API_WEBSOCKET_URL: process.env.HEBORN_API_WEBSOCKET_URL || 'wss://localhost:4000/websocket',
+  HEBORN_VERSION: process.env.HEBORN_VERSION || 'dev',
+  HEBORN_GAME_MODE: process.env.HEBORN_GAME_MODE || 'HE1',
+  // Reverse geocoding for in-game locations (Nominatim-compatible API).
+  HEBORN_GEOCODER_URL: process.env.HEBORN_GEOCODER_URL || 'https://nominatim.openstreetmap.org/reverse',
+  HEBORN_MAP_TILES_URL: process.env.HEBORN_MAP_TILES_URL || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 };
 
-// additional webpack settings for local env
-if ( TARGET_ENV === 'development' ) {
-  console.log( 'Serving locally...');
+function origin(url) {
+  const u = new URL(url.replace(/\{[a-z]\}/g, 'x'));
+  return `${u.protocol}//${u.host}`;
+}
 
-  module.exports = merge( commonConfig, {
+function contentSecurityPolicy(production) {
+  return [
+    "default-src 'self'",
+    // webpack's development build and Elm's --debug mode need eval.
+    production ? "script-src 'self'" : "script-src 'self' 'unsafe-eval'",
+    // Elm views, elm-css and Leaflet set inline styles.
+    "style-src 'self' 'unsafe-inline'",
+    // desktop wallpaper (src/OS/Style.elm, src/Landing/Style.elm) and map tiles
+    `img-src 'self' data: blob: https://raw.githubusercontent.com ${origin(env.HEBORN_MAP_TILES_URL)}`,
+    "font-src 'self' data:",
+    "media-src 'self' https://archive.org https://*.archive.org",
+    `connect-src 'self' ${origin(env.HEBORN_API_HTTP_URL)} ${origin(env.HEBORN_API_WEBSOCKET_URL)} ${origin(env.HEBORN_GEOCODER_URL)}`,
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join('; ');
+}
+
+module.exports = (_env, argv) => {
+  const production = argv.mode === 'production';
+
+  return {
+    mode: production ? 'production' : 'development',
+    // No eval-based source maps, so the production CSP can forbid eval.
+    devtool: production ? 'source-map' : 'cheap-module-source-map',
+
+    entry: {
+      app: path.join(__dirname, 'static/js/index.js'),
+    },
+
+    output: {
+      path: path.join(__dirname, 'build'),
+      filename: production ? 'js/[name]-[contenthash].js' : 'js/[name]-dev.js',
+      publicPath: '',
+      clean: true,
+    },
+
+    resolve: {
+      extensions: ['.js', '.elm'],
+      alias: {
+        leaflet_css: path.join(__dirname, 'node_modules/leaflet/dist/leaflet.css'),
+        leaflet_js: path.join(__dirname, 'node_modules/leaflet/dist/leaflet.js'),
+        leaflet_ant_js: path.join(__dirname, 'node_modules/leaflet-ant-path/dist/leaflet-ant-path.js'),
+      },
+    },
+
+    module: {
+      noParse: /\.elm$/,
+      rules: [
+        {
+          test: /\.elm$/,
+          exclude: [/elm-stuff/, /node_modules/],
+          use: {
+            loader: path.join(__dirname, 'tools/elm-loader.js'),
+            options: { debug: !production, warn: !production },
+          },
+        },
+        {
+          test: /\.css$/,
+          use: [
+            // extracted CSS lives in css/, so asset URLs must go one level up
+            production ? { loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } } : 'style-loader',
+            'css-loader',
+            'postcss-loader',
+          ],
+        },
+        {
+          test: /\.(woff2?|ttf|eot|otf)(\?.*)?$/,
+          type: 'asset/resource',
+          generator: { filename: 'fonts/[name]-[contenthash][ext]' },
+        },
+        {
+          test: /\.svg(\?.*)?$/,
+          type: 'asset',
+          parser: { dataUrlCondition: { maxSize: 50000 } },
+          generator: { filename: 'images/[name]-[contenthash][ext]' },
+        },
+        {
+          test: /\.(png|jpe?g|gif)$/,
+          type: 'asset/resource',
+          generator: { filename: 'images/[name]-[contenthash][ext]' },
+        },
+      ],
+    },
+
+    plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'static/img/', to: 'images/', globOptions: { ignore: ['**/README.md'] } },
+          { from: 'static/favicon.ico', to: 'favicon.ico' },
+        ],
+      }),
+      new HtmlWebpackPlugin({
+        template: 'static/index.html',
+        inject: 'body',
+        templateParameters: { csp: contentSecurityPolicy(production) },
+      }),
+      new webpack.EnvironmentPlugin(env),
+      production && new MiniCssExtractPlugin({ filename: 'css/[name]-[contenthash].css' }),
+    ].filter(Boolean),
 
     devServer: {
+      static: false,
       historyApiFallback: true,
-      contentBase: './build'
+      port: Number(process.env.PORT || 8000),
+      hot: false,
+      liveReload: true,
+      client: { overlay: { warnings: false, errors: true } },
     },
 
-    module: {
-      loaders: [
-        {
-          test:    /\.elm$/,
-          exclude: [/elm-stuff/, /node_modules/],
-          loader:  'elm-hot-loader!elm-webpack-loader?verbose=true&warn=true&debug=true'
-        }
-      ]
-    },
-
-    plugins: [
-      new ExtractTextPlugin( 'css/[name]-dev.css', { allChunks: true } )
-    ]
-
-  });
-}
-
-// additional webpack settings for prod env
-if ( TARGET_ENV === 'production' ) {
-  console.log( 'Building for prod...');
-
-  module.exports = merge( commonConfig, {
-
-    module: {
-      loaders: [
-        {
-          test:    /\.elm$/,
-          exclude: [/elm-stuff/, /node_modules/],
-          loader:  'elm-webpack-loader'
-        }
-      ]
-    },
-
-    plugins: [
-      new ExtractTextPlugin( 'css/[name]-[hash].css', { allChunks: true } ),
-
-      new webpack.optimize.UglifyJsPlugin({
-          minimize:   true,
-          compressor: { warnings: false }
-      })
-    ]
-
-  });
-}
+    performance: { hints: false },
+  };
+};

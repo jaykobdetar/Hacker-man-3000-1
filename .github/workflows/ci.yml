@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm audit --audit-level=moderate
+
+      - name: Cache Elm packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/heborn-elm-packages
+            elm-stuff/packages
+            tests/elm-stuff/packages
+          key: elm-${{ hashFiles('elm-dependencies.json', 'tests/elm-dependencies.json') }}
+
+      - run: npm run setup
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          HEBORN_VERSION: ${{ github.sha }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: heborn-build
+          path: build/
+          retention-days: 7

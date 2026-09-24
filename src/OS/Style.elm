@@ -44,7 +44,7 @@ dashboard =
         , flexContainerVert
         , position relative
         , zIndex (int 0)
-        , backgroundImage <| url "//raw.githubusercontent.com/elementary/wallpapers/master/Photo%20by%20SpaceX.jpg"
+        , backgroundImage <| url "https://raw.githubusercontent.com/elementary/wallpapers/master/Photo%20by%20SpaceX.jpg"
         , backgroundSize cover
         , backgroundPosition center
         , fontFamily sansSerif
