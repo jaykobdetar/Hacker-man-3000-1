@@ -1,9 +1,9 @@
 module Apps.ConnManager.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Apps.ConnManager.Config exposing (..)
-import Apps.ConnManager.Models exposing (Model)
 import Apps.ConnManager.Messages as ConnManager exposing (Msg(..))
+import Apps.ConnManager.Models exposing (Model)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

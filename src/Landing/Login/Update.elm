@@ -1,10 +1,10 @@
 module Landing.Login.Update exposing (..)
 
-import Utils.React as React exposing (React)
-import Landing.Requests.Login as LoginRequest exposing (loginRequest)
 import Landing.Login.Config exposing (..)
 import Landing.Login.Messages exposing (..)
 import Landing.Login.Models exposing (..)
+import Landing.Requests.Login as LoginRequest exposing (loginRequest)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

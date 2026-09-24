@@ -1,21 +1,21 @@
 module Core.Subscriptions exposing (subscriptions)
 
 import ContextMenu
-import Utils.Ports.OnLoad exposing (windowLoaded)
+import Core.Config exposing (..)
 import Core.Error as Error
 import Core.Messages exposing (..)
 import Core.Models exposing (..)
-import Core.Config exposing (..)
-import Game.Models as Game
-import Game.Meta.Models as Meta
-import Game.Subscriptions as Game
-import Game.Account.Models as Account
 import Driver.Websocket.Models as Ws
 import Driver.Websocket.Subscriptions as Ws
+import Game.Account.Models as Account
+import Game.Meta.Models as Meta
+import Game.Models as Game
+import Game.Subscriptions as Game
 import Landing.Subscriptions as Landing
 import OS.Models as OS
 import OS.Subscriptions as OS
 import Setup.Subscriptions as Setup
+import Utils.Ports.OnLoad exposing (windowLoaded)
 
 
 subscriptions : Model -> Sub Msg
@@ -36,13 +36,13 @@ subscriptions ({ state } as model) =
                     Sub.none
 
         menuSub =
-            (ContextMenu.subscriptions model.contextMenu)
+            ContextMenu.subscriptions model.contextMenu
     in
-        Sub.batch
-            [ stateSub
-            , windowLoaded LoadingEnd
-            , Sub.map MenuMsg menuSub
-            ]
+    Sub.batch
+        [ stateSub
+        , windowLoaded LoadingEnd
+        , Sub.map MenuMsg menuSub
+        ]
 
 
 
@@ -57,15 +57,15 @@ home model =
                 |> Landing.subscriptions
                 |> Sub.map LandingMsg
     in
-        case model.websocket of
-            Just model ->
-                Sub.batch
-                    [ websocket model
-                    , landSub
-                    ]
+    case model.websocket of
+        Just model ->
+            Sub.batch
+                [ websocket model
+                , landSub
+                ]
 
-            Nothing ->
-                landSub
+        Nothing ->
+            landSub
 
 
 setup : SetupModel -> Sub Msg
@@ -80,10 +80,10 @@ setup ({ game, setup } as model) =
         setupSub =
             Setup.subscriptions config setup
     in
-        Sub.batch
-            [ websocket model.websocket
-            , setupSub
-            ]
+    Sub.batch
+        [ websocket model.websocket
+        , setupSub
+        ]
 
 
 play : Model -> PlayModel -> Sub Msg
@@ -98,11 +98,11 @@ play core model =
         osSub =
             os core model.game model.os
     in
-        Sub.batch
-            [ websocketSub
-            , gameSub
-            , osSub
-            ]
+    Sub.batch
+        [ websocketSub
+        , gameSub
+        , osSub
+        ]
 
 
 os : Model -> Game.Model -> OS.Model -> Sub Msg
@@ -116,28 +116,28 @@ os { contextMenu } game os =
         ctx =
             Account.getContext <| Game.getAccount game
     in
-        case volatile_ of
-            ( Just gtw, Just srv ) ->
-                let
-                    lastTick =
-                        game
-                            |> Game.getMeta
-                            |> Meta.getLastTick
+    case volatile_ of
+        ( Just gtw, Just srv ) ->
+            let
+                lastTick =
+                    game
+                        |> Game.getMeta
+                        |> Meta.getLastTick
 
-                    config =
-                        osConfig game contextMenu ctx srv gtw
-                in
-                    OS.subscriptions config os
+                config =
+                    osConfig game contextMenu ctx srv gtw
+            in
+            OS.subscriptions config os
 
-            ( Nothing, _ ) ->
-                "Player doesn't have a Gateway [Subscriptions.os]"
-                    |> Error.astralProj
-                    |> uncurry Native.Panic.crash
+        ( Nothing, _ ) ->
+            "Player doesn't have a Gateway [Subscriptions.os]"
+                |> Error.astralProj
+                |> uncurry Native.Panic.crash
 
-            ( _, Nothing ) ->
-                "Player doesn't have an active server [Subscriptions.os]"
-                    |> Error.astralProj
-                    |> uncurry Native.Panic.crash
+        ( _, Nothing ) ->
+            "Player doesn't have an active server [Subscriptions.os]"
+                |> Error.astralProj
+                |> uncurry Native.Panic.crash
 
 
 websocket : Ws.Model Msg -> Sub Msg

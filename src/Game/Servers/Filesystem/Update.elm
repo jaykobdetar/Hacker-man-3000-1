@@ -1,14 +1,14 @@
 module Game.Servers.Filesystem.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.Servers.Filesystem.Requests.Delete exposing (deleteRequest)
-import Game.Servers.Filesystem.Requests.Move exposing (moveRequest)
-import Game.Servers.Filesystem.Requests.Rename exposing (renameRequest)
-import Game.Servers.Filesystem.Requests.Create exposing (createRequest)
 import Game.Servers.Filesystem.Config exposing (..)
 import Game.Servers.Filesystem.Messages exposing (..)
 import Game.Servers.Filesystem.Models exposing (..)
+import Game.Servers.Filesystem.Requests.Create exposing (createRequest)
+import Game.Servers.Filesystem.Requests.Delete exposing (deleteRequest)
+import Game.Servers.Filesystem.Requests.Move exposing (moveRequest)
+import Game.Servers.Filesystem.Requests.Rename exposing (renameRequest)
 import Game.Servers.Filesystem.Shared exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -81,7 +81,7 @@ handleMove config id newPath model =
                 Nothing ->
                     ( model, React.none )
     in
-        ( model_, cmd )
+    ( model_, cmd )
 
 
 handleRename :
@@ -105,7 +105,7 @@ handleRename config id name model =
                 Nothing ->
                     ( model, React.none )
     in
-        ( model_, cmd )
+    ( model_, cmd )
 
 
 handleNewTextFile :
@@ -125,15 +125,16 @@ handleNewTextFile config path name model =
         model_ =
             insertFile (joinPath fullpath) file model
     in
-        if model /= model_ then
-            ( model_
-            , config
-                |> createRequest "txt" name fullpath config.cid
-                |> Cmd.map (always <| config.batchMsg [])
-                |> React.cmd
-            )
-        else
-            ( model, React.none )
+    if model /= model_ then
+        ( model_
+        , config
+            |> createRequest "txt" name fullpath config.cid
+            |> Cmd.map (always <| config.batchMsg [])
+            |> React.cmd
+        )
+
+    else
+        ( model, React.none )
 
 
 handleNewDir :
@@ -147,15 +148,16 @@ handleNewDir config path name model =
         model_ =
             insertFolder path name model
     in
-        if model /= model_ then
-            ( model_
-            , config
-                |> createRequest "/" name path config.cid
-                |> Cmd.map (always <| config.batchMsg [])
-                |> React.cmd
-            )
-        else
-            ( model, React.none )
+    if model /= model_ then
+        ( model_
+        , config
+            |> createRequest "/" name path config.cid
+            |> Cmd.map (always <| config.batchMsg [])
+            |> React.cmd
+        )
+
+    else
+        ( model, React.none )
 
 
 onHandleAdded : Id -> File -> Model -> UpdateResponse msg

@@ -1,18 +1,18 @@
 module Game.Storyline.Update exposing (update)
 
 import Dict
-import Time exposing (Time)
-import Utils.React as React exposing (React)
-import Events.Account.Handlers.StoryEmailSent as StoryEmailSent
-import Events.Account.Handlers.StoryEmailReplyUnlocked as StoryEmailReplyUnlocked
 import Events.Account.Handlers.StoryEmailReplySent as StoryEmailReplySent
+import Events.Account.Handlers.StoryEmailReplyUnlocked as StoryEmailReplyUnlocked
+import Events.Account.Handlers.StoryEmailSent as StoryEmailSent
 import Events.Account.Handlers.StoryStepProceeded as StoryStepProceeded
-import Game.Storyline.Requests.Reply as ReplyRequest exposing (replyRequest)
 import Game.Storyline.Config exposing (..)
 import Game.Storyline.Messages exposing (..)
 import Game.Storyline.Models exposing (..)
-import Game.Storyline.Shared exposing (Reply, Quest, Step, PastEmail(..), checkpoint)
+import Game.Storyline.Requests.Reply as ReplyRequest exposing (replyRequest)
+import Game.Storyline.Shared exposing (PastEmail(..), Quest, Reply, Step, checkpoint)
 import Game.Storyline.StepActions.Shared exposing (Action)
+import Time exposing (Time)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -80,19 +80,19 @@ handleNewEmail config data model =
                         messages_ =
                             person
                                 |> getPastEmails
-                                |> (uncurry Dict.insert messageNode)
+                                |> uncurry Dict.insert messageNode
                     in
-                        { person
-                            | pastEmails = messages_
-                            , availableReplies = replies
-                        }
+                    { person
+                        | pastEmails = messages_
+                        , availableReplies = replies
+                    }
 
         model_ =
             model
                 |> setContact contactId person_
                 |> passCheckpoint (checkpointFromContact person_)
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 handleReplyUnlocked :
@@ -122,14 +122,14 @@ handleReplyUnlocked config { contactId, replies } model =
                                 |> getAvailableReplies
                                 |> (++) replies
                     in
-                        { person
-                            | availableReplies = replies
-                        }
+                    { person
+                        | availableReplies = replies
+                    }
 
         model_ =
             setContact contactId person_ model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 handleReplySent :
@@ -175,7 +175,7 @@ handleReplySent _ { timestamp, contactId, step, reply, availableReplies } model 
                 |> setContact contactId person_
                 |> passCheckpoint (checkpointFromContact person_)
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 handleStepProceeded :
@@ -209,7 +209,7 @@ handleStepProceeded config { contactId, quest, step, actions } model =
                 |> setContact contactId person_
                 |> passCheckpoint (checkpointFromContact person_)
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onReplyRequest : Config msg -> ReplyRequest.Data -> Model -> UpdateResponse msg

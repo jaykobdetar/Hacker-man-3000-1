@@ -1,9 +1,9 @@
 module Widgets.QuestHelper.View exposing (view)
 
 import Dict
-import Html exposing (..)
 import Game.Storyline.Models as Story
 import Game.Storyline.Shared as Story
+import Html exposing (..)
 
 
 view : Story.Model -> Html msg

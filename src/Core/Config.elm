@@ -1,53 +1,52 @@
-module Core.Config
-    exposing
-        ( landingConfig
-        , websocketConfig
-        , eventsConfig
-        , gameConfig
-        , setupConfig
-        , osConfig
-        )
+module Core.Config exposing
+    ( eventsConfig
+    , gameConfig
+    , landingConfig
+    , osConfig
+    , setupConfig
+    , websocketConfig
+    )
 
+import Apps.BounceManager.Messages as BounceMan
+import Apps.Browser.Messages as Browser
 import Color
 import ContextMenu exposing (ContextMenu)
-import Driver.Websocket.Config as Ws
-import Driver.Websocket.Channels exposing (Channel(..))
-import Driver.Websocket.Messages as Ws
-import Utils.Core exposing (..)
 import Core.Flags exposing (Flags)
 import Core.Messages exposing (..)
+import Driver.Websocket.Channels exposing (Channel(..))
+import Driver.Websocket.Config as Ws
+import Driver.Websocket.Messages as Ws
 import Events.Config as Events
-import Landing.Config as Landing
-import Setup.Config as Setup
-import Setup.Messages as Setup
-import Game.Config as Game
-import Game.Messages as Game
-import Game.Models as Game
-import Game.Account.Messages as Account
 import Game.Account.Bounces.Messages as Bounces
 import Game.Account.Database.Messages as Database
 import Game.Account.Finances.Messages as Finances
+import Game.Account.Messages as Account
 import Game.Account.Notifications.Messages as AccountNotifications
 import Game.BackFlix.Messages as BackFlix
+import Game.Config as Game
+import Game.Messages as Game
 import Game.Meta.Types.Context exposing (Context)
 import Game.Meta.Types.Desktop.Apps exposing (Reference, Requester)
-import Game.Servers.Messages as Servers
-import Game.Servers.Models as Servers exposing (Server)
+import Game.Models as Game
 import Game.Servers.Filesystem.Messages as Filesystem
 import Game.Servers.Hardware.Messages as Hardware
 import Game.Servers.Logs.Messages as Logs
+import Game.Servers.Messages as Servers
+import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Processes.Messages as Processes
 import Game.Servers.Shared as Servers exposing (CId)
-import Game.Storyline.StepActions.Shared as StepActions
 import Game.Storyline.Messages as Storyline
+import Game.Storyline.StepActions.Shared as StepActions
 import Game.Web.Messages as Web
+import Landing.Config as Landing
 import OS.Config as OS
 import OS.Messages as OS
-import OS.WindowManager.Shared as WindowManager
-import OS.WindowManager.Messages as WindowManager
 import OS.Toasts.Messages as Toast
-import Apps.Browser.Messages as Browser
-import Apps.BounceManager.Messages as BounceMan
+import OS.WindowManager.Messages as WindowManager
+import OS.WindowManager.Shared as WindowManager
+import Setup.Config as Setup
+import Setup.Messages as Setup
+import Utils.Core exposing (..)
 
 
 landingConfig : Bool -> Flags -> Landing.Config Msg
@@ -80,16 +79,16 @@ websocketConfig flags =
         onLeft _ _ =
             BatchMsg []
     in
-        { flags = flags
-        , toMsg = WebsocketMsg
-        , onConnected = onConnected
-        , onDisconnected = account <| Account.HandleDisconnected
-        , onJoinedAccount = onJoinedAccount
-        , onJoinedServer = onJoinedServer
-        , onJoinFailedServer = Web.HandleJoinServerFailed >> web
-        , onLeft = onLeft
-        , onEvent = HandleEvent
-        }
+    { flags = flags
+    , toMsg = WebsocketMsg
+    , onConnected = onConnected
+    , onDisconnected = account <| Account.HandleDisconnected
+    , onJoinedAccount = onJoinedAccount
+    , onJoinedServer = onJoinedServer
+    , onJoinFailedServer = Web.HandleJoinServerFailed >> web
+    , onLeft = onLeft
+    , onEvent = HandleEvent
+    }
 
 
 eventsConfig : Events.Config Msg
@@ -141,21 +140,21 @@ eventsConfig =
                 onBounceCreated rId ( id, bounce ) =
                     bounces <| Bounces.HandleCreated rId id bounce
             in
-                { onServerPasswordAcquired = onServerPasswordAcquired
-                , onStoryStepProceeded = onStoryStepProceeded
-                , onStoryEmailSent = onStoryEmailSent
-                , onStoryEmailReplyUnlocked = onStoryEmailReplyUnlocked
-                , onStoryEmailReplySent = onStoryEmailReplySent
-                , onBankAccountUpdated = onBankAccountUpdated
-                , onBankAccountClosed = onBankAccountClosed
-                , onDbAccountUpdated = onDbAccountUpdated
-                , onDbAccountRemoved = onDbAccountRemoved
-                , onTutorialFinished = onTutorialFinished
-                , onBounceCreated = onBounceCreated
-                , onBounceUpdated = uncurry Bounces.HandleUpdated >> bounces
-                , onBounceRemoved = Bounces.HandleRemoved >> bounces
-                , onVirusCollected = onVirusCollected
-                }
+            { onServerPasswordAcquired = onServerPasswordAcquired
+            , onStoryStepProceeded = onStoryStepProceeded
+            , onStoryEmailSent = onStoryEmailSent
+            , onStoryEmailReplyUnlocked = onStoryEmailReplyUnlocked
+            , onStoryEmailReplySent = onStoryEmailReplySent
+            , onBankAccountUpdated = onBankAccountUpdated
+            , onBankAccountClosed = onBankAccountClosed
+            , onDbAccountUpdated = onDbAccountUpdated
+            , onDbAccountRemoved = onDbAccountRemoved
+            , onTutorialFinished = onTutorialFinished
+            , onBounceCreated = onBounceCreated
+            , onBounceUpdated = uncurry Bounces.HandleUpdated >> bounces
+            , onBounceRemoved = Bounces.HandleRemoved >> bounces
+            , onVirusCollected = onVirusCollected
+            }
 
         forBackFlix =
             { onNewLog = BackFlix.HandleCreate >> backflix }
@@ -183,19 +182,19 @@ eventsConfig =
                 onMotherboardUpdated cid data =
                     hardware cid <| Hardware.HandleMotherboardUpdated data
             in
-                { onFileAdded = onFileAdded
-                , onFileDownloaded = onFileDownloaded
-                , onProcessCompleted = onProcessCompleted
-                , onProcessesRecalcado = onProcessesRecalcado
-                , onBruteforceFailed = onBruteforceFailed
-                , onLogCreated = onLogCreated
-                , onMotherboardUpdated = onMotherboardUpdated
-                }
+            { onFileAdded = onFileAdded
+            , onFileDownloaded = onFileDownloaded
+            , onProcessCompleted = onProcessCompleted
+            , onProcessesRecalcado = onProcessesRecalcado
+            , onBruteforceFailed = onBruteforceFailed
+            , onLogCreated = onLogCreated
+            , onMotherboardUpdated = onMotherboardUpdated
+            }
     in
-        { forAccount = forAccount
-        , forBackFlix = forBackFlix
-        , forServer = forServer
-        }
+    { forAccount = forAccount
+    , forBackFlix = forBackFlix
+    , forServer = forServer
+    }
 
 
 gameConfig : Game.Config Msg
@@ -218,21 +217,21 @@ gameConfig =
         onReloadIfBounceLoaded id =
             bounceMans <| BounceMan.HandleReloadIfLoaded id
     in
-        { toMsg = GameMsg
-        , batchMsg = BatchMsg
-        , onJoinServer = onJoinServer
-        , onError = HandleCrash
-        , onJoinFailed = browserTab Browser.HandleLoginFailed
-        , onNewGateway = Setup.HandleJoinedServer >> setup
-        , onConnected = onConnected
-        , onDisconnected = HandleShutdown
-        , onAccountToast = Toast.HandleAccount >> toast
-        , onServerToast = Toast.HandleServers >>> toast
-        , onBankAccountLogin = Browser.HandleBankLogin >> browserTab
-        , onBankAccountTransfer = Browser.HandleBankTransfer >> browserTab
-        , onReloadBounce = onReloadBounce
-        , onReloadIfBounceLoaded = onReloadIfBounceLoaded
-        }
+    { toMsg = GameMsg
+    , batchMsg = BatchMsg
+    , onJoinServer = onJoinServer
+    , onError = HandleCrash
+    , onJoinFailed = browserTab Browser.HandleLoginFailed
+    , onNewGateway = Setup.HandleJoinedServer >> setup
+    , onConnected = onConnected
+    , onDisconnected = HandleShutdown
+    , onAccountToast = Toast.HandleAccount >> toast
+    , onServerToast = Toast.HandleServers >>> toast
+    , onBankAccountLogin = Browser.HandleBankLogin >> browserTab
+    , onBankAccountTransfer = Browser.HandleBankTransfer >> browserTab
+    , onReloadBounce = onReloadBounce
+    , onReloadIfBounceLoaded = onReloadIfBounceLoaded
+    }
 
 
 setupConfig : String -> Maybe CId -> Flags -> Setup.Config Msg
@@ -265,20 +264,20 @@ osConfig game menu ctx (( sCId, _ ) as srv) (( gCId, gSrv ) as gtw) =
                     |> Storyline.HandleActionDone
                     |> storyline
     in
-        { flags = Game.getFlags game
-        , toMsg = OSMsg
-        , batchMsg = BatchMsg
-        , awaitEvent = HandleAwait
-        , gameMsg = GameMsg
-        , game = game
-        , activeContext = ctx
-        , activeServer = srv
-        , activeGateway = gtw
-        , onActionDone = onActionDone
-        , handleActionPerformed = Account.HandleActionPerformed >> account
-        , menuView = ContextMenu.view menuConfig MenuMsg identity menu
-        , menuAttr = ContextMenu.open MenuMsg
-        }
+    { flags = Game.getFlags game
+    , toMsg = OSMsg
+    , batchMsg = BatchMsg
+    , awaitEvent = HandleAwait
+    , gameMsg = GameMsg
+    , game = game
+    , activeContext = ctx
+    , activeServer = srv
+    , activeGateway = gtw
+    , onActionDone = onActionDone
+    , handleActionPerformed = Account.HandleActionPerformed >> account
+    , menuView = ContextMenu.view menuConfig MenuMsg identity menu
+    , menuAttr = ContextMenu.open MenuMsg
+    }
 
 
 menuConfig : ContextMenu.Config
@@ -287,16 +286,16 @@ menuConfig =
         defaultConfig =
             ContextMenu.defaultConfig
     in
-        { defaultConfig
-            | direction = ContextMenu.RightBottom
-            , overflowX = ContextMenu.Mirror
-            , overflowY = ContextMenu.Mirror
-            , containerColor = Color.rgb 255 255 255
-            , hoverColor = Color.rgb 238 238 238
-            , invertText = False
-            , cursor = ContextMenu.Arrow
-            , rounded = False
-        }
+    { defaultConfig
+        | direction = ContextMenu.RightBottom
+        , overflowX = ContextMenu.Mirror
+        , overflowY = ContextMenu.Mirror
+        , containerColor = Color.rgb 255 255 255
+        , hoverColor = Color.rgb 238 238 238
+        , invertText = False
+        , cursor = ContextMenu.Arrow
+        , rounded = False
+    }
 
 
 

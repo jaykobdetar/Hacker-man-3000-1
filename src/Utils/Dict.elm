@@ -17,9 +17,9 @@ filterMap fun dict =
                 Nothing ->
                     acc
     in
-        Dict.foldl reducer
-            Dict.empty
-            dict
+    Dict.foldl reducer
+        Dict.empty
+        dict
 
 
 safeUpdate :

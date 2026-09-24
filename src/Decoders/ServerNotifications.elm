@@ -1,23 +1,23 @@
 module Decoders.ServerNotifications exposing (..)
 
 import Dict
-import Json.Decode
-    exposing
-        ( Decoder
-        , succeed
-        , fail
-        , field
-        , andThen
-        , map
-        , list
-        , string
-        , float
-        , bool
-        )
-import Json.Decode.Pipeline exposing (decode, optional, required)
 import Game.Meta.Types.Notifications exposing (..)
 import Game.Servers.Notifications.Models exposing (..)
 import Game.Servers.Notifications.Shared exposing (..)
+import Json.Decode
+    exposing
+        ( Decoder
+        , andThen
+        , bool
+        , fail
+        , field
+        , float
+        , list
+        , map
+        , string
+        , succeed
+        )
+import Json.Decode.Pipeline exposing (decode, optional, required)
 
 
 {-| TODO: proposed for removal

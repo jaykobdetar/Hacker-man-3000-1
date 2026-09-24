@@ -1,19 +1,19 @@
-module Game.Servers.Processes.Requests.Bruteforce
-    exposing
-        ( Data
-        , Errors(..)
-        , bruteforceRequest
-        , errorToString
-        )
+module Game.Servers.Processes.Requests.Bruteforce exposing
+    ( Data
+    , Errors(..)
+    , bruteforceRequest
+    , errorToString
+    )
 
-import Json.Decode exposing (Value, Decoder, decodeValue, succeed, fail)
-import Json.Encode as Encode
-import Utils.Json.Decode exposing (commonError, message)
-import Requests.Requests as Requests exposing (report)
-import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
 import Game.Meta.Types.Network as Network
 import Game.Servers.Shared exposing (CId)
+import Json.Decode exposing (Decoder, Value, decodeValue, fail, succeed)
+import Json.Encode as Encode
+import Requests.Requests as Requests exposing (report)
+import Requests.Topics as Topics
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
+
 
 
 -- not a bool because we'll threat errors

@@ -2,8 +2,8 @@ module Setup.Pages.Mainframe.Config exposing (Config)
 
 import Core.Flags as Core
 import Game.Servers.Shared exposing (CId)
-import Setup.Settings as Settings exposing (Settings)
 import Setup.Pages.Mainframe.Messages exposing (..)
+import Setup.Settings as Settings exposing (Settings)
 
 
 type alias Config msg =

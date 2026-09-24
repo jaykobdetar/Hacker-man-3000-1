@@ -1,18 +1,18 @@
 module UI.Elements.LineGraph exposing (lineGraph)
 
 import Html exposing (Html)
-import Svg exposing (svg, polyline, polygon)
+import Svg exposing (polygon, polyline, svg)
 import Svg.Attributes
     exposing
-        ( width
-        , height
-        , viewBox
-        , fill
+        ( fill
         , fillOpacity
+        , height
+        , points
         , stroke
         , strokeOpacity
         , strokeWidth
-        , points
+        , viewBox
+        , width
         )
 import UI.ToString exposing (pointToSvgAttr)
 
@@ -33,50 +33,50 @@ lineGraph values color height_ fromRight (( aspect_w, aspect_h ) as aspect) =
             ( 0, aspect_h )
 
         first =
-            (pointToSvgAttr
+            pointToSvgAttr
                 (if fromRight then
                     bottomRight
+
                  else
                     bottomLeft
                 )
-            )
 
         last =
-            (pointToSvgAttr
+            pointToSvgAttr
                 (if fromRight then
                     bottomLeft
+
                  else
                     bottomRight
                 )
-            )
 
         toAspect =
             \( aspect_w, aspect_h ) ( x, y ) -> ( x * aspect_w, y * aspect_h )
 
         points_ =
-            List.map ((toAspect aspect) >> pointToSvgAttr) values
+            List.map (toAspect aspect >> pointToSvgAttr) values
     in
-        svg
-            [ width "100%"
-            , height (toString height_)
-            , viewBox viewBoxStr
+    svg
+        [ width "100%"
+        , height (toString height_)
+        , viewBox viewBoxStr
+        ]
+        [ polygon
+            [ fill color
+            , fillOpacity "0.4"
+            , stroke "none"
+            , points <| String.join " " <| first :: (points_ ++ [ last ])
             ]
-            [ polygon
-                [ fill color
-                , fillOpacity "0.4"
-                , stroke "none"
-                , points <| String.join " " <| first :: (points_ ++ [ last ])
-                ]
-                []
-            , polyline
-                [ fill "none"
-                , stroke color
-                , strokeOpacity "0.9"
-                , strokeWidth "0.02"
-                , points
-                    (String.join " "
-                        points_
-                    )
-                ]
-                []
+            []
+        , polyline
+            [ fill "none"
+            , stroke color
+            , strokeOpacity "0.9"
+            , strokeWidth "0.02"
+            , points
+                (String.join " "
+                    points_
+                )
             ]
+            []
+        ]

@@ -1,10 +1,10 @@
 module Game.Servers.Logs.Models exposing (..)
 
 import Dict exposing (Dict)
-import Time exposing (Time)
-import Regex exposing (HowMany(All), regex)
-import Utils.Maybe as Maybe
 import Game.Meta.Types.Network exposing (IP, NIP)
+import Regex exposing (HowMany(All), regex)
+import Time exposing (Time)
+import Utils.Maybe as Maybe
 
 
 type alias Model =
@@ -112,10 +112,11 @@ insert id log model =
                     (findId ( log.timestamp, 0 ) model.drawOrder)
                     id
                     model.drawOrder
+
             else
                 model.drawOrder
     in
-        { model | logs = logs, drawOrder = drawOrder }
+    { model | logs = logs, drawOrder = drawOrder }
 
 
 findId : ( Time, Int ) -> Dict Date ID -> Date
@@ -135,7 +136,7 @@ remove id model =
         drawOrder =
             searchAndDestroy 0 id model
     in
-        { model | logs = logs, drawOrder = drawOrder }
+    { model | logs = logs, drawOrder = drawOrder }
 
 
 searchAndDestroy : Int -> ID -> Model -> Dict Date ID
@@ -147,6 +148,7 @@ searchAndDestroy n id model =
                     Just candidate ->
                         if candidate == id then
                             Dict.remove ( log.timestamp, n ) model.drawOrder
+
                         else
                             searchAndDestroy (n + 1) id model
 
@@ -155,6 +157,7 @@ searchAndDestroy n id model =
 
             Nothing ->
                 searchAndDestroy (n + 1) id model
+
     else
         model.drawOrder
 
@@ -203,7 +206,7 @@ setContent newContent log =
         log_ =
             { log | content = content }
     in
-        log_
+    log_
 
 
 dataFromString : String -> Data
@@ -211,18 +214,20 @@ dataFromString raw =
     Data raw <|
         case String.split " " raw of
             [ addr, "logged", "in", "as", user ] ->
-                if (ipValid addr) then
+                if ipValid addr then
                     LocalLogin addr user
                         |> LocalLoginFormat
                         |> Just
+
                 else
                     Nothing
 
             [ "Logged", "into", addr ] ->
-                if (ipValid addr) then
+                if ipValid addr then
                     RemoteLogin addr
                         |> RemoteLoginFormat
                         |> Just
+
                 else
                     Nothing
 
@@ -232,18 +237,20 @@ dataFromString raw =
                     |> Just
 
             [ "File", file, "downloaded", "by", addr ] ->
-                if (ipValid addr) then
+                if ipValid addr then
                     Download file addr
                         |> DownloadByFormat
                         |> Just
+
                 else
                     Nothing
 
             [ "File", file, "downloaded", "from", addr ] ->
-                if (ipValid addr) then
+                if ipValid addr then
                     Download file addr
                         |> DownloadFromFormat
                         |> Just
+
                 else
                     Nothing
 

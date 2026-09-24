@@ -1,8 +1,8 @@
 module Apps.Bug.Style exposing (..)
 
+import Apps.Bug.Resources exposing (..)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
-import Apps.Bug.Resources exposing (..)
 
 
 css : Stylesheet

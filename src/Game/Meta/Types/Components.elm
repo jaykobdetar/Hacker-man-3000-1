@@ -1,8 +1,8 @@
 module Game.Meta.Types.Components exposing (..)
 
 import Dict exposing (Dict)
-import Game.Meta.Types.Components.Type exposing (..)
 import Game.Meta.Types.Components.Specs as Specs exposing (Spec)
+import Game.Meta.Types.Components.Type exposing (..)
 
 
 type alias Id =

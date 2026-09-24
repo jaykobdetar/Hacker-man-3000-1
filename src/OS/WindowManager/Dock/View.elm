@@ -1,20 +1,21 @@
 module OS.WindowManager.Dock.View exposing (view)
 
-import Dict exposing (Dict)
-import Html exposing (..)
-import Html.Attributes exposing (title, attribute)
-import Html.Events exposing (onClick)
-import Html.CssHelpers
-import Utils.Html.Attributes exposing (..)
 import Apps.Shared as Apps
+import Dict exposing (Dict)
 import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Models as Servers
 import Game.Storyline.Dock as Story
+import Html exposing (..)
+import Html.Attributes exposing (attribute, title)
+import Html.CssHelpers
+import Html.Events exposing (onClick)
 import OS.Resources as OS
-import OS.WindowManager.Models exposing (..)
-import OS.WindowManager.Shared exposing (..)
 import OS.WindowManager.Dock.Config exposing (..)
 import OS.WindowManager.Dock.Resources as R
+import OS.WindowManager.Models exposing (..)
+import OS.WindowManager.Shared exposing (..)
+import Utils.Html.Attributes exposing (..)
+
 
 
 -- we're taking liberties concerning leaking implementation
@@ -46,6 +47,7 @@ view config model isFreeplay session =
         src =
             if isFreeplay then
                 config.accountDock
+
             else
                 Story.dockApps config.story
 
@@ -59,8 +61,8 @@ view config model isFreeplay session =
             div [ class [ R.Container ] ]
                 [ div [ class [ R.Main ] ] [ icons ] ]
     in
-        div [ osClass [ OS.Dock ] ]
-            [ dock ]
+    div [ osClass [ OS.Dock ] ]
+        [ dock ]
 
 
 
@@ -95,6 +97,7 @@ viewIcons config model isFreeplay groupedWindows app list =
         content =
             if isNotEmpty then
                 [ icon, options config model app groupedWindows ]
+
             else
                 [ icon ]
 
@@ -106,7 +109,7 @@ viewIcons config model isFreeplay groupedWindows app list =
                 ]
                 content
     in
-        result :: list
+    result :: list
 
 
 viewIcon : Config msg -> DesktopApp -> Html msg
@@ -150,8 +153,8 @@ options config model app ( visible, hidden ) =
                 |> (::) (hr [] [])
                 |> (++) visible_
     in
-        div [ class [ R.AppContext ] ]
-            [ ul [] menu_ ]
+    div [ class [ R.AppContext ] ]
+        [ ul [] menu_ ]
 
 
 subMenuAction : String -> msg -> Html msg
@@ -177,11 +180,11 @@ windowList onClick model label list =
                 Nothing ->
                     windowId
     in
-        list
-            |> List.sortBy titleAndId
-            |> List.indexedMap (listItem onClick model)
-            |> (::) (hr [] [])
-            |> (::) (li [] [ text label ])
+    list
+        |> List.sortBy titleAndId
+        |> List.indexedMap (listItem onClick model)
+        |> (::) (hr [] [])
+        |> (::) (li [] [ text label ])
 
 
 listItem : (WindowId -> msg) -> Model -> Int -> ( String, Window ) -> Html msg
@@ -191,7 +194,7 @@ listItem event model index ( windowId, window ) =
         , idAttr (toString index)
         , onClick (event windowId)
         ]
-        [ (windowLabel model index window) ]
+        [ windowLabel model index window ]
 
 
 windowLabel : Model -> Int -> Window -> Html msg
@@ -228,7 +231,7 @@ group =
         getWindowAppName model window =
             window
                 |> getActiveAppId
-                |> (flip getApp model)
+                |> flip getApp model
                 |> Maybe.map (getModel >> toDesktopApp >> Apps.name)
 
         reducer config model isFreeplay windowId dict =
@@ -248,17 +251,18 @@ group =
 
                     Nothing ->
                         dict
+
             else
                 dict
     in
-        \config model isFreeplay { visible, hidden } ->
-            let
-                reducer_ =
-                    reducer config model isFreeplay
-            in
-                ( List.foldl reducer_ Dict.empty visible
-                , List.foldl reducer_ Dict.empty hidden
-                )
+    \config model isFreeplay { visible, hidden } ->
+        let
+            reducer_ =
+                reducer config model isFreeplay
+        in
+        ( List.foldl reducer_ Dict.empty visible
+        , List.foldl reducer_ Dict.empty hidden
+        )
 
 
 hasWindowOpened : DesktopApp -> WindowGroups -> Bool
@@ -268,7 +272,7 @@ hasWindowOpened app ( hidden, visible ) =
             Apps.name app
 
         notEmpty =
-            List.isEmpty >> (not)
+            List.isEmpty >> not
 
         hidden_ =
             hidden
@@ -282,4 +286,4 @@ hasWindowOpened app ( hidden, visible ) =
                 |> Maybe.map notEmpty
                 |> Maybe.withDefault False
     in
-        hidden_ || visible_
+    hidden_ || visible_

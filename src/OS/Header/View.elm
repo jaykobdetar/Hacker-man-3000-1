@@ -3,11 +3,11 @@ module OS.Header.View exposing (view)
 import Html exposing (..)
 import Html.CssHelpers
 import OS.Header.Config exposing (..)
+import OS.Header.ConnectionBarView as ConnBar
 import OS.Header.Models exposing (..)
+import OS.Header.NetworkView as NetworkTongue
 import OS.Header.Resources exposing (..)
 import OS.Header.TaskbarView as Taskbar
-import OS.Header.ConnectionBarView as ConnBar
-import OS.Header.NetworkView as NetworkTongue
 
 
 { id, class, classList } =

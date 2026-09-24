@@ -1,23 +1,22 @@
-port module Utils.Ports.Leaflet
-    exposing
-        ( Id
-        , Latitude
-        , Longitude
-        , Coordinates
-        , Zoom
-        , Msg(..)
-        , init
-        , center
-        , insertProjection
-        , removeProjection
-        , setShape
-        , removeShape
-        , subscribe
-        )
+port module Utils.Ports.Leaflet exposing
+    ( Coordinates
+    , Id
+    , Latitude
+    , Longitude
+    , Msg(..)
+    , Zoom
+    , center
+    , init
+    , insertProjection
+    , removeProjection
+    , removeShape
+    , setShape
+    , subscribe
+    )
 
 import Json.Decode as Decode exposing (Decoder)
-import Json.Encode as Encode
 import Json.Decode.Pipeline exposing (decode, required)
+import Json.Encode as Encode
 import Utils.Json.Decode exposing (commonError)
 import Utils.Ports.Leaflet.Shape as Shape exposing (Shape)
 
@@ -160,7 +159,7 @@ subscribe toMsg =
                         _ =
                             Debug.log "Leaflet communication error" msg
                     in
-                        toMsg "" Unknown
+                    toMsg "" Unknown
 
 
 

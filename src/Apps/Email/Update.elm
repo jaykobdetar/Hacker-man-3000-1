@@ -1,11 +1,11 @@
 module Apps.Email.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Apps.Params as AppParams
 import Apps.Email.Config exposing (..)
-import Apps.Email.Models exposing (..)
 import Apps.Email.Messages as Email exposing (Msg(..))
+import Apps.Email.Models exposing (..)
 import Apps.FloatingHeads.Models as FloatingHeads
+import Apps.Params as AppParams
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

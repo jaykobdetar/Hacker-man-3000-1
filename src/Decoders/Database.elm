@@ -1,32 +1,32 @@
 module Decoders.Database exposing (..)
 
 import Dict
+import Game.Account.Database.Models exposing (..)
+import Game.Account.Finances.Models exposing (AccountNumber)
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Shared exposing (ID)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , andThen
-        , map
-        , list
         , bool
-        , string
+        , fail
         , float
         , int
-        , fail
+        , list
+        , map
+        , string
         , succeed
         )
 import Json.Decode.Pipeline
     exposing
-        ( decode
-        , required
-        , custom
-        , optional
+        ( custom
+        , decode
         , hardcoded
+        , optional
+        , required
         )
-import Utils.Json.Decode exposing (optionalMaybe, commonError)
-import Game.Meta.Types.Network exposing (NIP)
-import Game.Shared exposing (ID)
-import Game.Account.Database.Models exposing (..)
-import Game.Account.Finances.Models exposing (AccountNumber)
+import Utils.Json.Decode exposing (commonError, optionalMaybe)
 
 
 database : Decoder Model

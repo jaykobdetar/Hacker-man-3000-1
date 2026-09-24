@@ -1,12 +1,12 @@
 module Game.Servers.Hardware.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
 import Game.Meta.Types.Components.Motherboard.Diff as Motherboard
-import Game.Servers.Hardware.Requests.UpdateMotherboard as UpdateMotherboard exposing (updateMotherboardRequest)
 import Game.Servers.Hardware.Config exposing (..)
-import Game.Servers.Hardware.Models exposing (..)
 import Game.Servers.Hardware.Messages exposing (..)
+import Game.Servers.Hardware.Models exposing (..)
+import Game.Servers.Hardware.Requests.UpdateMotherboard as UpdateMotherboard exposing (updateMotherboardRequest)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -47,7 +47,7 @@ handleMotherboardUpdate config motherboard model =
                 |> Cmd.map handler
                 |> React.cmd
     in
-        ( model, cmd )
+    ( model, cmd )
 
 
 handleMotherboardUpdated :
@@ -75,4 +75,4 @@ handleMotherboardUpdated config model_ model =
         cmd =
             React.msg <| config.batchMsg [ used, freed ]
     in
-        ( model_, cmd )
+    ( model_, cmd )

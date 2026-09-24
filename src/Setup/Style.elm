@@ -2,13 +2,13 @@ module Setup.Style exposing (..)
 
 import Css exposing (..)
 import Css.Colors as Colors
-import Css.Elements exposing (typeSelector, div, h1, span)
+import Css.Elements exposing (div, h1, span, typeSelector)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (nest, child)
 import Setup.Resources exposing (..)
+import UI.Colors as Colors
 import UI.Gradients as Gradients
 import UI.Icons as Icons
-import UI.Colors as Colors
+import Utils.Css exposing (child, nest)
 
 
 css : Stylesheet

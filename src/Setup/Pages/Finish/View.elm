@@ -1,10 +1,10 @@
 module Setup.Pages.Finish.View exposing (Config, view)
 
 import Html exposing (..)
-import Html.Events exposing (onClick)
 import Html.CssHelpers
-import Setup.Resources exposing (..)
+import Html.Events exposing (onClick)
 import Setup.Pages.Helpers exposing (withHeader)
+import Setup.Resources exposing (..)
 
 
 { id, class, classList } =

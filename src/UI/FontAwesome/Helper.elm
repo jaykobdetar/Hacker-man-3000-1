@@ -1,6 +1,6 @@
 module UI.FontAwesome.Helper exposing (..)
 
-import Css exposing (Style, Snippet, fontFamilies, before, property)
+import Css exposing (Snippet, Style, before, fontFamilies, property)
 
 
 type alias UnicodeTag =

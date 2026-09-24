@@ -1,9 +1,9 @@
 module Apps.Hebamp.Launch exposing (..)
 
-import Utils.React as React exposing (React)
 import Apps.Hebamp.Config exposing (..)
 import Apps.Hebamp.Models exposing (..)
 import Apps.Hebamp.Shared exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias LaunchResponse msg =
@@ -26,4 +26,4 @@ launchOpenPlaylist config playlist =
         model =
             initialModel config.reference playlist
     in
-        ( model, React.none )
+    ( model, React.none )

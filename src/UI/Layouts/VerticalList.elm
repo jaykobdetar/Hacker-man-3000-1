@@ -1,6 +1,6 @@
 module UI.Layouts.VerticalList exposing (..)
 
-import Html exposing (Html, Attribute, node)
+import Html exposing (Attribute, Html, node)
 
 
 verticalList : List (Attribute msg) -> List (Html msg) -> Html msg

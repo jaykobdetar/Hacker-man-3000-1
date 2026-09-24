@@ -1,17 +1,16 @@
-module Utils.React
-    exposing
-        ( React
-        , none
-        , msg
-        , cmd
-        , addMsg
-        , addCmd
-        , batch
-        , map
-        , update
-        , toCmd
-        , split
-        )
+module Utils.React exposing
+    ( React
+    , addCmd
+    , addMsg
+    , batch
+    , cmd
+    , map
+    , msg
+    , none
+    , split
+    , toCmd
+    , update
+    )
 
 import Task
 

@@ -1,15 +1,15 @@
 module OS.Header.AccountView exposing (view)
 
+import Game.Account.Notifications.OnClick as Notifications
+import Game.Account.Notifications.Shared as Notifications
 import Html exposing (..)
 import Html.CssHelpers
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
-import Game.Account.Notifications.Shared as Notifications
-import Game.Account.Notifications.OnClick as Notifications
 import OS.Header.Config exposing (..)
-import OS.Header.Models exposing (..)
 import OS.Header.Messages exposing (..)
-import OS.Header.Resources exposing (..)
+import OS.Header.Models exposing (..)
 import OS.Header.NotificationsView exposing (notifications)
+import OS.Header.Resources exposing (..)
 
 
 { id, class, classList } =
@@ -20,6 +20,7 @@ view : Config msg -> OpenMenu -> Html msg
 view config openMenu =
     if openMenu == AccountOpen then
         visibleAccountGear config
+
     else
         Html.map config.toMsg invisibleAccountGear
 

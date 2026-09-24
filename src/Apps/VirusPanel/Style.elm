@@ -1,12 +1,12 @@
 module Apps.VirusPanel.Style exposing (..)
 
+import Apps.VirusPanel.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Colors as Colors
 import Css.Namespace exposing (namespace)
 import UI.Colors as Colors
 import UI.Common exposing (flexContainerHorz)
 import UI.Icons as Icons
-import Apps.VirusPanel.Resources exposing (Classes(..), prefix)
 
 
 ico : Style

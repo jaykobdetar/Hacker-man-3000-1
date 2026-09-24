@@ -1,9 +1,9 @@
 module Game.Meta.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Game.Meta.Config exposing (..)
 import Game.Meta.Messages exposing (..)
 import Game.Meta.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

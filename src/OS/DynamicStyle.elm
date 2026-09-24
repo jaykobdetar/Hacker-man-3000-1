@@ -1,14 +1,14 @@
 module OS.DynamicStyle exposing (..)
 
-import Html exposing (Html, node, text)
-import Html.Attributes exposing (property, id)
-import Html.Lazy exposing (lazy)
-import Json.Encode as Json
 import Css exposing (Stylesheet)
 import Css.File
 import Game.Models as Game
 import Game.Storyline.DynamicStyle as Storyline
 import Game.Storyline.StepActions.DynamicStyle as StepActions
+import Html exposing (Html, node, text)
+import Html.Attributes exposing (id, property)
+import Html.Lazy exposing (lazy)
+import Json.Encode as Json
 import OS.Config exposing (..)
 
 
@@ -18,7 +18,7 @@ styleNode id_ stylesheet =
         [ id (id_ ++ "DynStyle")
         , stylesheet
             |> Css.File.compile
-            |> (.css)
+            |> .css
             |> Json.string
             |> property "innerHTML"
         ]
@@ -44,7 +44,8 @@ view config =
                 ( lazy story_ story
                 , lazy missions_ story
                 )
+
             else
                 ( text "", text "" )
     in
-        storyStyles
+    storyStyles

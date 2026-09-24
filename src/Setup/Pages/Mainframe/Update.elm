@@ -1,12 +1,12 @@
 module Setup.Pages.Mainframe.Update exposing (update)
 
+import Game.Servers.Shared exposing (CId)
+import Setup.Pages.Mainframe.Config exposing (..)
+import Setup.Pages.Mainframe.Messages exposing (..)
+import Setup.Pages.Mainframe.Models exposing (..)
+import Setup.Requests.Check as Check
 import Utils.Maybe as Maybe
 import Utils.React as React exposing (React)
-import Game.Servers.Shared exposing (CId)
-import Setup.Pages.Mainframe.Models exposing (..)
-import Setup.Pages.Mainframe.Messages exposing (..)
-import Setup.Pages.Mainframe.Config exposing (..)
-import Setup.Requests.Check as Check
 
 
 type alias UpdateResponse msg =
@@ -47,7 +47,7 @@ onValidate ({ toMsg, mainframe } as config) model =
                 Nothing ->
                     Cmd.none
     in
-        ( model, React.cmd cmd )
+    ( model, React.cmd cmd )
 
 
 onChecked : Config msg -> CId -> Model -> UpdateResponse msg

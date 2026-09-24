@@ -1,18 +1,18 @@
 module Decoders.BackFlix exposing (..)
 
+import Game.BackFlix.Models exposing (..)
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , map
-        , field
-        , succeed
-        , string
-        , float
-        , value
         , andThen
+        , field
+        , float
+        , map
+        , string
+        , succeed
+        , value
         )
-import Json.Decode.Pipeline exposing (decode, required, custom)
-import Game.BackFlix.Models exposing (..)
+import Json.Decode.Pipeline exposing (custom, decode, required)
 
 
 log : Decoder Log

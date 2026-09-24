@@ -1,25 +1,24 @@
-module Game.Servers.Hardware.Requests.UpdateMotherboard
-    exposing
-        ( Data
-        , Errors(..)
-        , updateMotherboardRequest
-        )
+module Game.Servers.Hardware.Requests.UpdateMotherboard exposing
+    ( Data
+    , Errors(..)
+    , updateMotherboardRequest
+    )
 
+import Decoders.Hardware
+import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Game.Servers.Shared exposing (CId)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , Value
         , decodeValue
-        , succeed
         , fail
+        , succeed
         )
-import Utils.Json.Decode exposing (commonError, message)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
-import Decoders.Hardware
-import Game.Servers.Shared exposing (CId)
-import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =

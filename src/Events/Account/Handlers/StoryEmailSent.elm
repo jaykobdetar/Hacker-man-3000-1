@@ -1,22 +1,22 @@
 module Events.Account.Handlers.StoryEmailSent exposing (Data, handler, notify)
 
-import Time exposing (Time)
+import Decoders.Storyline exposing (replyFromId)
+import Events.Shared exposing (Handler)
+import Game.Storyline.Shared exposing (ContactId, PastEmail(FromContact), Reply)
 import Json.Decode
     exposing
         ( Decoder
+        , andThen
+        , bool
         , decodeValue
         , field
-        , map
-        , andThen
-        , list
-        , string
         , float
-        , bool
+        , list
+        , map
+        , string
         )
-import Json.Decode.Pipeline exposing (decode, required, custom, optional)
-import Events.Shared exposing (Handler)
-import Decoders.Storyline exposing (replyFromId)
-import Game.Storyline.Shared exposing (Reply, PastEmail(FromContact), ContactId)
+import Json.Decode.Pipeline exposing (custom, decode, optional, required)
+import Time exposing (Time)
 
 
 type alias Data =
@@ -38,7 +38,7 @@ notify fromString toMsg { contactId, messageNode } =
         ( time, _ ) =
             messageNode
     in
-        toMsg (Just time) <| fromString contactId
+    toMsg (Just time) <| fromString contactId
 
 
 

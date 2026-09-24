@@ -1,11 +1,11 @@
 module OS.Header.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Game.Meta.Types.Context exposing (Context)
 import Game.Meta.Types.Network as Network exposing (NIP)
+import OS.Header.Config exposing (..)
 import OS.Header.Messages exposing (..)
 import OS.Header.Models exposing (..)
-import OS.Header.Config exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -63,15 +63,16 @@ onToggleMenus : OpenMenu -> Model -> UpdateResponse msg
 onToggleMenus next ({ openMenu } as model) =
     let
         openMenu_ =
-            if (openMenu /= NothingOpen && openMenu == next) then
+            if openMenu /= NothingOpen && openMenu == next then
                 NothingOpen
+
             else
                 next
 
         model_ =
             { model | openMenu = openMenu_ }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onMouseEnterDropdown : Model -> UpdateResponse msg
@@ -80,7 +81,7 @@ onMouseEnterDropdown model =
         model_ =
             { model | mouseSomewhereInside = True }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onMouseLeavesDropdown : Model -> UpdateResponse msg
@@ -89,7 +90,7 @@ onMouseLeavesDropdown model =
         model_ =
             { model | mouseSomewhereInside = False }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onDropMenu : Config msg -> Model -> UpdateResponse msg
@@ -111,10 +112,11 @@ onCheckMenus ({ mouseSomewhereInside } as model) =
         model_ =
             if not mouseSomewhereInside then
                 dropMenu model
+
             else
                 model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onServerReadAll : Config msg -> Model -> UpdateResponse msg
@@ -150,5 +152,5 @@ onSelectBounce config bounceId model =
                 _ ->
                     model
     in
-        model_
-            |> flip (,) React.none
+    model_
+        |> flip (,) React.none

@@ -1,10 +1,10 @@
 module Game.Meta.Types.Components.Motherboard.Diff exposing (Diff, diff)
 
 import Dict exposing (Dict)
-import Set exposing (Set)
 import Game.Inventory.Shared as Inventory
-import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
 import Game.Meta.Types.Components as Components
+import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Set exposing (Set)
 
 
 type alias Diff =
@@ -36,7 +36,7 @@ diff next previous =
                 |> fromInternalDiff
                 |> map Inventory.NetConnection
     in
-        join slots ncs
+    join slots ncs
 
 
 
@@ -73,6 +73,7 @@ diffReducer old id component diff =
                 diff
                     |> remove previous
                     |> insert component
+
             else
                 diff
 
@@ -91,7 +92,7 @@ toLinkedComponents =
                 Nothing ->
                     dict
     in
-        Motherboard.getSlots >> Dict.foldl reducer Dict.empty
+    Motherboard.getSlots >> Dict.foldl reducer Dict.empty
 
 
 map : (a -> b) -> ( List a, List a ) -> ( List b, List b )
@@ -115,6 +116,7 @@ remove : comparable -> InternalDiff comparable -> InternalDiff comparable
 remove item ( add, rem ) =
     if Set.member item add then
         ( add, rem )
+
     else
         ( add, Set.insert item rem )
 

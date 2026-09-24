@@ -1,9 +1,9 @@
 module OS.Map.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import OS.Map.Config exposing (..)
 import OS.Map.Messages exposing (..)
 import OS.Map.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

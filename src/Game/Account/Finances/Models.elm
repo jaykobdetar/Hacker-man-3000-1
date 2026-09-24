@@ -1,8 +1,8 @@
 module Game.Account.Finances.Models exposing (..)
 
-import Dict as Dict exposing (Dict)
-import Game.Servers.Shared exposing (Id)
+import Dict exposing (Dict)
 import Game.Meta.Types.Components as Components
+import Game.Servers.Shared exposing (Id)
 
 
 type alias Model =
@@ -96,7 +96,7 @@ insertBankAccount id account model =
         bank =
             Dict.insert id account model.bank
     in
-        { model | bank = bank }
+    { model | bank = bank }
 
 
 insertBitcoinWallet : BitcoinAddress -> BitcoinWallet -> Model -> Model
@@ -105,7 +105,7 @@ insertBitcoinWallet address account model =
         bitcoin =
             Dict.insert address account model.bitcoin
     in
-        { model | bitcoin = bitcoin }
+    { model | bitcoin = bitcoin }
 
 
 removeBankAccount : AccountId -> Model -> Model
@@ -114,7 +114,7 @@ removeBankAccount id model =
         bank =
             Dict.remove id model.bank
     in
-        { model | bank = bank }
+    { model | bank = bank }
 
 
 removeBitcoinWallet : BitcoinAddress -> Model -> Model
@@ -123,7 +123,7 @@ removeBitcoinWallet address model =
         bitcoin =
             Dict.remove address model.bitcoin
     in
-        { model | bitcoin = bitcoin }
+    { model | bitcoin = bitcoin }
 
 
 getBankBalance : Model -> Int

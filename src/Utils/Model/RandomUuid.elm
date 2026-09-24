@@ -1,4 +1,4 @@
-module Utils.Model.RandomUuid exposing (Uuid, getSeed, newUuid, setSeed, intRng)
+module Utils.Model.RandomUuid exposing (Uuid, getSeed, intRng, newUuid, setSeed)
 
 import Random.Pcg as Random
 import Uuid
@@ -29,7 +29,7 @@ newUuid ({ randomUuidSeed } as model) =
         model_ =
             { model | randomUuidSeed = randomUuidSeed_ }
     in
-        ( model_, uuid_ )
+    ( model_, uuid_ )
 
 
 setSeed : Int -> Model r -> Model r

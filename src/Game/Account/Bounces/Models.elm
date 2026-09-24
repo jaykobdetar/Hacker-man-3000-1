@@ -1,27 +1,26 @@
-module Game.Account.Bounces.Models
-    exposing
-        ( Model
-        , Bounce
-        , Path
-        , initialModel
-        , get
-        , emptyBounce
-        , insert
-        , remove
-        , getName
-        , setName
-        , getPath
-        , getNameWithBounce
-        , subscribeFor
-        , isEmpty
-        , getBounces
-        , getIds
-        )
+module Game.Account.Bounces.Models exposing
+    ( Bounce
+    , Model
+    , Path
+    , emptyBounce
+    , get
+    , getBounces
+    , getIds
+    , getName
+    , getNameWithBounce
+    , getPath
+    , initialModel
+    , insert
+    , isEmpty
+    , remove
+    , setName
+    , subscribeFor
+    )
 
 import Dict exposing (Dict)
-import Game.Meta.Types.Network as Network
 import Game.Account.Bounces.Shared exposing (..)
 import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Game.Meta.Types.Network as Network
 
 
 type alias RequestId =

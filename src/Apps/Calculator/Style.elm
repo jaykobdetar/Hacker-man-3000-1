@@ -1,12 +1,12 @@
 module Apps.Calculator.Style exposing (..)
 
-import Css exposing (..)
-import Css.Namespace exposing (namespace)
-import Css.Elements exposing (ul, li, div, span, button)
-import Utils.Css exposing (..)
-import UI.Common exposing (..)
-import UI.Colors as Colors
 import Apps.Calculator.Resources exposing (..)
+import Css exposing (..)
+import Css.Elements exposing (button, div, li, span, ul)
+import Css.Namespace exposing (namespace)
+import UI.Colors as Colors
+import UI.Common exposing (..)
+import Utils.Css exposing (..)
 
 
 type Classes

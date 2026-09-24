@@ -1,9 +1,9 @@
 module Game.Account.Database.Models exposing (..)
 
 import Dict exposing (Dict)
-import Time exposing (Time)
 import Game.Meta.Types.Network exposing (NIP)
 import Game.Shared exposing (ID)
+import Time exposing (Time)
 
 
 type alias Model =

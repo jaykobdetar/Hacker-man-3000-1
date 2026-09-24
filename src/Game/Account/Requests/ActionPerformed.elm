@@ -1,19 +1,19 @@
 module Game.Account.Requests.ActionPerformed exposing (Data, request)
 
+import Game.Account.Models exposing (ID)
+import Game.Meta.Types.ClientActions as ClientActions exposing (ClientActions(..))
 import Json.Decode as Decode
     exposing
         ( Decoder
         , decodeValue
-        , succeed
         , fail
+        , succeed
         )
 import Json.Encode as Encode exposing (Value)
-import Utils.Json.Decode exposing (message, commonError)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
-import Game.Account.Models exposing (ID)
-import Game.Meta.Types.ClientActions as ClientActions exposing (ClientActions(..))
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =

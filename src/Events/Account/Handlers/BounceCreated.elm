@@ -1,10 +1,10 @@
 module Events.Account.Handlers.BounceCreated exposing (Data, handler)
 
-import Json.Decode exposing (decodeValue)
 import Decoders.Bounces exposing (bounceWithId)
+import Events.Shared exposing (Handler)
 import Game.Account.Bounces.Models exposing (Bounce)
 import Game.Account.Bounces.Shared exposing (ID)
-import Events.Shared exposing (Handler)
+import Json.Decode exposing (decodeValue)
 
 
 type alias Data =

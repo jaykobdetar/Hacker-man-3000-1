@@ -1,8 +1,8 @@
 module Apps.VirusPanel.Messages exposing (Msg(..))
 
-import Game.Meta.Types.Network exposing (NIP)
-import Game.Account.Database.Shared exposing (..)
 import Apps.VirusPanel.Models exposing (..)
+import Game.Account.Database.Shared exposing (..)
+import Game.Meta.Types.Network exposing (NIP)
 
 
 type Msg

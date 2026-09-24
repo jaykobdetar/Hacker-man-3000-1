@@ -1,15 +1,15 @@
 module OS.Console.Style exposing (..)
 
 import Css exposing (..)
-import UI.Common exposing (flexContainerVert, flexContainerHorz, globalShadow)
-import Css.Elements exposing (typeSelector, ul, li, div, h6)
+import Css.Colors
+import Css.Elements exposing (div, h6, li, typeSelector, ul)
 import Css.Namespace exposing (namespace)
-import Utils.Css as Css exposing (..)
+import OS.Console.Resources exposing (..)
+import UI.Colors as Colors
+import UI.Common exposing (flexContainerHorz, flexContainerVert, globalShadow)
 import UI.Icons as Icons
 import UI.Style exposing (clickableBox)
-import UI.Colors as Colors
-import Css.Colors
-import OS.Console.Resources exposing (..)
+import Utils.Css as Css exposing (..)
 
 
 css : Stylesheet

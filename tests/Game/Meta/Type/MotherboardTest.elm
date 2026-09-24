@@ -1,14 +1,14 @@
 module Game.Meta.Type.MotherboardTest exposing (all, operationsTests)
 
-import Expect
 import Dict
-import Gen.Inventory as Gen
-import Gen.Hardware as Gen
-import Fuzz exposing (unit, tuple, tuple3, tuple4)
-import Test exposing (Test, describe)
-import TestUtils exposing (fuzz, batch)
+import Expect
+import Fuzz exposing (tuple, tuple3, tuple4, unit)
 import Game.Meta.Types.Components.Motherboard exposing (..)
 import Game.Meta.Types.Components.Motherboard.Diff exposing (..)
+import Gen.Hardware as Gen
+import Gen.Inventory as Gen
+import Test exposing (Test, describe)
+import TestUtils exposing (batch, fuzz)
 
 
 all : Test
@@ -52,15 +52,15 @@ emptyDiffTests =
                     diff empty filled
 
                 unlinkLength =
-                    (countComponents filled) + countNCs filled
+                    countComponents filled + countNCs filled
             in
-                batch
-                    -- nothing should be linked
-                    [ Expect.equal True (List.isEmpty linked)
+            batch
+                -- nothing should be linked
+                [ Expect.equal True (List.isEmpty linked)
 
-                    -- everything should be unlinked
-                    , Expect.equal unlinkLength (List.length unlinked)
-                    ]
+                -- everything should be unlinked
+                , Expect.equal unlinkLength (List.length unlinked)
+                ]
     , fuzz (tuple ( Gen.motherboard, Gen.emptyMotherboard ))
         "link to empty motherboard"
       <|
@@ -70,15 +70,15 @@ emptyDiffTests =
                     diff filled empty
 
                 linkLength =
-                    (countComponents filled) + (countNCs filled)
+                    countComponents filled + countNCs filled
             in
-                batch
-                    -- nothing should be unlinked
-                    [ Expect.equal True (List.isEmpty unlinked)
+            batch
+                -- nothing should be unlinked
+                [ Expect.equal True (List.isEmpty unlinked)
 
-                    -- everything should be linked
-                    , Expect.equal linkLength (List.length linked)
-                    ]
+                -- everything should be linked
+                , Expect.equal linkLength (List.length linked)
+                ]
     ]
 
 
@@ -95,13 +95,13 @@ linkedDiffTests =
                 shiftLength =
                     countComponents shifted
             in
-                batch
-                    -- no unlinks because nothing component was freed
-                    [ Expect.equal True (List.isEmpty unlinked)
+            batch
+                -- no unlinks because nothing component was freed
+                [ Expect.equal True (List.isEmpty unlinked)
 
-                    -- changed slots are new link events
-                    , Expect.equal shiftLength (List.length linked)
-                    ]
+                -- changed slots are new link events
+                , Expect.equal shiftLength (List.length linked)
+                ]
     , fuzz (tuple ( Gen.motherboard, Gen.fullMotherboard ))
         "from non-empty motherboard to full motherboard"
       <|
@@ -111,21 +111,21 @@ linkedDiffTests =
                     diff full half
 
                 fullComponents =
-                    (countComponents full) + (countNCs full)
+                    countComponents full + countNCs full
 
                 halfComponents =
-                    (countComponents half) + (countNCs half)
+                    countComponents half + countNCs half
 
                 diffComponents =
                     fullComponents - halfComponents
             in
-                batch
-                    -- nothing should be unlinked
-                    [ Expect.equal True (List.isEmpty unlinked)
+            batch
+                -- nothing should be unlinked
+                [ Expect.equal True (List.isEmpty unlinked)
 
-                    -- shows only what was linked
-                    , Expect.equal diffComponents (List.length linked)
-                    ]
+                -- shows only what was linked
+                , Expect.equal diffComponents (List.length linked)
+                ]
     , fuzz (tuple ( Gen.motherboard, Gen.fullMotherboard ))
         "from full motherboard to an non-empty motherboard"
       <|
@@ -135,21 +135,21 @@ linkedDiffTests =
                     diff half full
 
                 fullComponents =
-                    (countComponents full) + (countNCs full)
+                    countComponents full + countNCs full
 
                 halfComponents =
-                    (countComponents half) + (countNCs half)
+                    countComponents half + countNCs half
 
                 diffComponents =
                     fullComponents - halfComponents
             in
-                batch
-                    -- nothing should be linked
-                    [ Expect.equal True (List.isEmpty linked)
+            batch
+                -- nothing should be linked
+                [ Expect.equal True (List.isEmpty linked)
 
-                    -- shows only what was unlinked
-                    , Expect.equal diffComponents (List.length unlinked)
-                    ]
+                -- shows only what was unlinked
+                , Expect.equal diffComponents (List.length unlinked)
+                ]
     ]
 
 

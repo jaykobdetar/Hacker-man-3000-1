@@ -1,11 +1,10 @@
-module Game.Web.Models
-    exposing
-        ( Model
-        , LoadingPages
-        , initialModel
-        , startLoading
-        , finishLoading
-        )
+module Game.Web.Models exposing
+    ( LoadingPages
+    , Model
+    , finishLoading
+    , initialModel
+    , startLoading
+    )
 
 import Dict exposing (Dict)
 import Game.Meta.Types.Desktop.Apps exposing (Requester)
@@ -33,7 +32,7 @@ startLoading id cid requester model =
         loadingPages =
             Dict.insert id ( cid, requester ) model.loadingPages
     in
-        { model | loadingPages = loadingPages }
+    { model | loadingPages = loadingPages }
 
 
 finishLoading : Network.NIP -> Model -> ( Maybe ( CId, Requester ), Model )
@@ -45,4 +44,4 @@ finishLoading nip model =
         loadingPages =
             Dict.remove nip model.loadingPages
     in
-        ( request, { model | loadingPages = loadingPages } )
+    ( request, { model | loadingPages = loadingPages } )

@@ -1,19 +1,19 @@
 module Gen.Game exposing (..)
 
-import Fuzz exposing (Fuzzer)
-import Random.Pcg exposing (Generator, andThen, map, map2, list, int)
 import Core.Flags
+import Fuzz exposing (Fuzzer)
 import Game.Account.Models as Account
+import Game.BackFlix.Models as BackFlix
+import Game.Inventory.Models as Inventory
 import Game.Meta.Models as Meta
+import Game.Models exposing (..)
+import Game.Servers.Models as Servers
 import Game.Storyline.Models as Story
 import Game.Web.Models as Web
-import Game.BackFlix.Models as BackFlix
-import Game.Models exposing (..)
-import Game.Account.Models as Account
-import Game.Servers.Models as Servers
-import Game.Inventory.Models as Inventory
 import Gen.Servers
 import Gen.Utils exposing (..)
+import Random.Pcg exposing (Generator, andThen, int, list, map, map2)
+
 
 
 --------------------------------------------------------------------------------
@@ -88,12 +88,13 @@ genModel =
                 account =
                     if isGateway then
                         Account.insertGateway id game.account
+
                     else
                         game.account
             in
-                { game
-                    | servers = servers
-                    , account = account
-                }
+            { game
+                | servers = servers
+                , account = account
+            }
     in
-        map (List.foldl insertServer game) genServers
+    map (List.foldl insertServer game) genServers

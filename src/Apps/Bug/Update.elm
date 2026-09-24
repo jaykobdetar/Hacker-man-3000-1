@@ -1,12 +1,12 @@
 module Apps.Bug.Update exposing (update)
 
-import Native.Panic
-import Utils.React as React exposing (React)
+import Apps.Bug.Config exposing (..)
+import Apps.Bug.Messages as Hackerbug exposing (Msg(..))
+import Apps.Bug.Models exposing (Model)
 import Core.Error as Error
 import Game.Account.Notifications.Shared as AccountNotifications
-import Apps.Bug.Config exposing (..)
-import Apps.Bug.Models exposing (Model)
-import Apps.Bug.Messages as Hackerbug exposing (Msg(..))
+import Native.Panic
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

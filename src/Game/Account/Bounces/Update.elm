@@ -1,12 +1,12 @@
 module Game.Account.Bounces.Update exposing (update)
 
 import Dict
-import Utils.React as React exposing (React)
 import Game.Account.Bounces.Config exposing (..)
 import Game.Account.Bounces.Messages exposing (..)
 import Game.Account.Bounces.Models exposing (..)
 import Game.Account.Bounces.Shared exposing (..)
 import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -62,7 +62,7 @@ handleCreated config requestId id bounce model =
                 Nothing ->
                     React.none
     in
-        ( model_, react )
+    ( model_, react )
 
 
 handleUpdated :
@@ -76,7 +76,7 @@ handleUpdated { onReloadIfBounceLoaded } id bounce model =
         react =
             React.msg (onReloadIfBounceLoaded id)
     in
-        ( insert id bounce model, react )
+    ( insert id bounce model, react )
 
 
 handleDeleted : Config msg -> ID -> Model -> UpdateResponse msg

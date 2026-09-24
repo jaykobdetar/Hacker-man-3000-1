@@ -1,13 +1,13 @@
 module Apps.Hebamp.Style exposing (..)
 
+import Apps.Hebamp.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Colors exposing (black, lime)
 import Css.Namespace exposing (namespace)
-import Apps.Hebamp.Resources exposing (Classes(..), prefix)
-import UI.FontAwesome.Helper exposing (fontAwesome, faIcon)
+import UI.FontAwesome.Helper exposing (faIcon, fontAwesome)
 import UI.FontAwesome.Icons as FA
 import UI.Icons as Icons
-import UI.Icons as Icons
+
 
 
 -- Based on this: https://codepen.io/pedox/pen/ndpfD
@@ -30,7 +30,7 @@ css =
                 linearGradient2 toLeft
                     (stop2 (hex "1a1927") (pct 0))
                     (stop2 (hex "353551") (pct 53))
-                    [ (stop2 (hex "21212d") (pct 100)) ]
+                    [ stop2 (hex "21212d") (pct 100) ]
             ]
         , class Player
             [ margin (px 3)
@@ -48,10 +48,10 @@ css =
                     linearGradient2 toTop
                         (stop2 (hex "fffcdf") (pct 0))
                         (stop2 (hex "fffcdf") (pct 29))
-                        [ (stop2 (hex "736c50") (pct 32))
-                        , (stop2 (hex "736c50") (pct 66))
-                        , (stop2 (hex "d5ceb1") (pct 69))
-                        , (stop2 (hex "d5ceb1") (pct 100))
+                        [ stop2 (hex "736c50") (pct 32)
+                        , stop2 (hex "736c50") (pct 66)
+                        , stop2 (hex "d5ceb1") (pct 69)
+                        , stop2 (hex "d5ceb1") (pct 100)
                         ]
                 , property "content" "\"\""
                 , height (px 8)

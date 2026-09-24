@@ -1,39 +1,39 @@
 module Decoders.Game exposing (..)
 
+import Decoders.Account
+import Decoders.Inventory
+import Decoders.Network
+import Decoders.Servers
+import Decoders.Storyline
 import Dict exposing (Dict)
-import Set exposing (Set)
+import Game.Account.Models as Account
+import Game.Inventory.Models as Inventory
+import Game.Meta.Types.Network as Network exposing (NIP)
+import Game.Models exposing (..)
+import Game.Servers.Models as Servers
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , map
         , andThen
-        , oneOf
-        , string
+        , fail
         , field
         , list
+        , map
         , maybe
-        , fail
+        , oneOf
+        , string
         , succeed
         )
 import Json.Decode.Pipeline
     exposing
-        ( decode
-        , required
+        ( custom
+        , decode
         , hardcoded
         , optional
-        , custom
+        , required
         , resolve
         )
-import Game.Account.Models as Account
-import Game.Inventory.Models as Inventory
-import Game.Servers.Models as Servers
-import Game.Meta.Types.Network as Network exposing (NIP)
-import Game.Models exposing (..)
-import Decoders.Account
-import Decoders.Inventory
-import Decoders.Storyline
-import Decoders.Servers
-import Decoders.Network
+import Set exposing (Set)
 
 
 type alias ServersToJoin =
@@ -91,7 +91,7 @@ inventory game =
         inventory_ =
             field "inventory" <| Decoders.Inventory.inventory specs
     in
-        required "account" inventory_
+    required "account" inventory_
 
 
 account : Model -> Decoder (Account.Model -> b) -> Decoder b
@@ -100,7 +100,7 @@ account game =
         account =
             getAccount game
     in
-        optional "account" (Decoders.Account.account account) account
+    optional "account" (Decoders.Account.account account) account
 
 
 servers : Decoder ServersToJoin
@@ -134,9 +134,9 @@ playerNetwork func =
                 Nothing ->
                     fail "Couldn't find an active nip for player server"
     in
-        decode apply
-            |> required "nips" Decoders.Network.nips
-            |> resolve
+    decode apply
+        |> required "nips" Decoders.Network.nips
+        |> resolve
 
 
 joinRemote : Decoder ( String, Remote )
@@ -149,9 +149,9 @@ joinRemote =
                 |> required "password" string
                 |> hardcoded Nothing
     in
-        decode (,)
-            |> custom (map Servers.toSessionId Decoders.Servers.remoteCId)
-            |> custom decodeRemote
+    decode (,)
+        |> custom (map Servers.toSessionId Decoders.Servers.remoteCId)
+        |> custom decodeRemote
 
 
 insertServers : Model -> ServersToJoin -> ( Model, ServersToJoin )
@@ -170,7 +170,7 @@ insertServers model serversToJoin =
                 |> List.foldl reducePlayer (getServers model)
                 |> flip setServers model
     in
-        ( model_, serversToJoin )
+    ( model_, serversToJoin )
 
 
 endpoints : Decoder (Set NIP)

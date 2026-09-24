@@ -1,9 +1,9 @@
-module Driver.Websocket.Models exposing (Model, EventBase, ApiUrl)
+module Driver.Websocket.Models exposing (ApiUrl, EventBase, Model)
 
 import Dict exposing (Dict)
 import Json.Decode exposing (Value)
-import Phoenix.Socket as Socket
 import Phoenix.Channel as Channel
+import Phoenix.Socket as Socket
 
 
 type alias ApiUrl =

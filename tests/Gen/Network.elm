@@ -1,9 +1,10 @@
 module Gen.Network exposing (..)
 
 import Fuzz exposing (Fuzzer)
-import Random.Pcg exposing (Generator, map2)
-import Gen.Utils exposing (..)
 import Game.Meta.Types.Network exposing (..)
+import Gen.Utils exposing (..)
+import Random.Pcg exposing (Generator, map2)
+
 
 
 --------------------------------------------------------------------------------

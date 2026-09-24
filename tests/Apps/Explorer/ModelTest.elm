@@ -1,17 +1,17 @@
 module Apps.Explorer.ModelTest exposing (all, pathOperations)
 
+import Apps.Explorer.Models exposing (..)
+import Dict
 import Expect
-import Dict as Dict
+import Fuzz exposing (tuple)
+import Game.Servers.Filesystem.Models as Filesystem
+import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Models as Servers
 import Gen.Filesystem
 import Helper.Filesystem as Helper exposing (mkdirp)
 import Helper.Playstate as Playstate
-import Fuzz exposing (tuple)
 import Test exposing (Test, describe)
 import TestUtils exposing (fuzz, once)
-import Apps.Explorer.Models exposing (..)
-import Game.Servers.Models as Servers
-import Game.Servers.Filesystem.Models as Filesystem
-import Game.Servers.Filesystem.Shared as Filesystem
 
 
 all : Test
@@ -66,9 +66,9 @@ pathMoveAroundTests =
                         Nothing ->
                             initialModel
             in
-                explorer
-                    |> getPath
-                    |> Expect.equal folder_
+            explorer
+                |> getPath
+                |> Expect.equal folder_
     , fuzz
         (tuple ( Playstate.one, Gen.Filesystem.folder ))
         "can't move to a non-existing folder"
@@ -86,13 +86,13 @@ pathMoveAroundTests =
                         |> Maybe.andThen Servers.getMainStorage
                         |> Maybe.map Servers.getFilesystem
             in
-                case maybeServer of
-                    Just fs ->
-                        initialModel
-                            |> changePath folder_ fs
-                            |> Expect.equal initialModel
+            case maybeServer of
+                Just fs ->
+                    initialModel
+                        |> changePath folder_ fs
+                        |> Expect.equal initialModel
 
-                    Nothing ->
-                        -- FIXME: game state should provide Game.Data
-                        Expect.equal initialModel initialModel
+                Nothing ->
+                    -- FIXME: game state should provide Game.Data
+                    Expect.equal initialModel initialModel
     ]

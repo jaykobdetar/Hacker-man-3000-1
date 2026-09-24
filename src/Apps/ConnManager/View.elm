@@ -1,18 +1,18 @@
 module Apps.ConnManager.View exposing (view)
 
-import Dict
-import Html exposing (..)
-import Html.CssHelpers
-import Game.Servers.Models as Servers
-import Game.Servers.Tunnels.Models as Tunnels
-import Game.Meta.Types.Network exposing (NIP)
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.Elements.FilterHeader exposing (filterHeader)
 import Apps.ConnManager.Config exposing (..)
 import Apps.ConnManager.Messages exposing (Msg(..))
 import Apps.ConnManager.Models exposing (..)
 import Apps.ConnManager.Resources exposing (Classes(..), prefix)
+import Dict
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Servers.Models as Servers
+import Game.Servers.Tunnels.Models as Tunnels
+import Html exposing (..)
+import Html.CssHelpers
+import UI.Elements.FilterHeader exposing (filterHeader)
+import UI.Layouts.VerticalList exposing (verticalList)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
 
 
 { id, class, classList } =
@@ -45,11 +45,11 @@ view config model =
                 |> List.map (tunnelView nip)
                 |> verticalList []
     in
-        Html.map config.toMsg <|
-            verticalSticked
-                (Just [ filterHeaderLayout ])
-                [ mainEntries ]
-                Nothing
+    Html.map config.toMsg <|
+        verticalSticked
+            (Just [ filterHeaderLayout ])
+            [ mainEntries ]
+            Nothing
 
 
 connView : Tunnels.Connection -> Html Msg

@@ -1,9 +1,9 @@
 module Game.Servers.Logs.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Game.Servers.Logs.Config exposing (..)
 import Game.Servers.Logs.Messages exposing (..)
 import Game.Servers.Logs.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

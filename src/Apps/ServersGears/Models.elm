@@ -1,13 +1,13 @@
 module Apps.ServersGears.Models exposing (..)
 
 import Dict exposing (Dict)
-import Utils.Maybe as Maybe
 import Game.Inventory.Models as Inventory
 import Game.Inventory.Shared as Inventory
 import Game.Meta.Types.Components as Components
-import Game.Meta.Types.Components.Type exposing (Type(..))
 import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Game.Meta.Types.Components.Type exposing (Type(..))
 import Game.Meta.Types.Network.Connections as Connections
+import Utils.Maybe as Maybe
 
 
 type alias Model =
@@ -49,17 +49,17 @@ initialModel mobo =
         motherboard =
             mobo
     in
-        { overrides =
-            findOverrides motherboard
-        , selection =
-            Nothing
-        , motherboard =
-            motherboard
-        , highlight =
-            Nothing
-        , anyChange =
-            False
-        }
+    { overrides =
+        findOverrides motherboard
+    , selection =
+        Nothing
+    , motherboard =
+        motherboard
+    , highlight =
+        Nothing
+    , anyChange =
+        False
+    }
 
 
 getMotherboard : Model -> Maybe Motherboard
@@ -96,14 +96,14 @@ isAvailable inventory model entry =
         key =
             toString entry
     in
-        case Dict.get key model.overrides of
-            Just ( state, _ ) ->
-                state
+    case Dict.get key model.overrides of
+        Just ( state, _ ) ->
+            state
 
-            Nothing ->
-                inventory
-                    |> Inventory.isAvailable entry
-                    |> Maybe.withDefault False
+        Nothing ->
+            inventory
+                |> Inventory.isAvailable entry
+                |> Maybe.withDefault False
 
 
 setAvailability : Inventory.Entry -> Bool -> Inventory.Model -> Model -> Model
@@ -118,21 +118,23 @@ setAvailability entry available inventory model =
         insert () =
             Dict.insert key ( available, entry ) model.overrides
     in
-        case Inventory.isAvailable entry inventory of
-            Just True ->
-                if available then
-                    { model | overrides = remove (), anyChange = True }
-                else
-                    { model | overrides = insert (), anyChange = True }
+    case Inventory.isAvailable entry inventory of
+        Just True ->
+            if available then
+                { model | overrides = remove (), anyChange = True }
 
-            Just False ->
-                if available then
-                    { model | overrides = insert (), anyChange = True }
-                else
-                    { model | overrides = remove (), anyChange = True }
+            else
+                { model | overrides = insert (), anyChange = True }
 
-            Nothing ->
-                model
+        Just False ->
+            if available then
+                { model | overrides = insert (), anyChange = True }
+
+            else
+                { model | overrides = remove (), anyChange = True }
+
+        Nothing ->
+            model
 
 
 swapSlots :
@@ -162,29 +164,30 @@ swapSlots slotIdA slotIdB inventory motherboard model =
         compB =
             Maybe.andThen Motherboard.getSlotComponent b
     in
-        if typeA == typeB then
-            case Maybe.uncurry compA compB of
-                Just ( idA, idB ) ->
-                    model
-                        |> linkSlot slotIdA
-                            (Inventory.Component idB)
-                            inventory
-                            motherboard
-                        |> linkSlot slotIdB
-                            (Inventory.Component idA)
-                            inventory
-                            motherboard
-
-                Nothing ->
-                    setSelection
-                        (Just <| SelectingSlot slotIdB)
-                        typeB
-                        model
-        else
-            setSelection
-                (Just <| SelectingSlot slotIdB)
-                typeB
+    if typeA == typeB then
+        case Maybe.uncurry compA compB of
+            Just ( idA, idB ) ->
                 model
+                    |> linkSlot slotIdA
+                        (Inventory.Component idB)
+                        inventory
+                        motherboard
+                    |> linkSlot slotIdB
+                        (Inventory.Component idA)
+                        inventory
+                        motherboard
+
+            Nothing ->
+                setSelection
+                    (Just <| SelectingSlot slotIdB)
+                    typeB
+                    model
+
+    else
+        setSelection
+            (Just <| SelectingSlot slotIdB)
+            typeB
+            model
 
 
 linkSlot :
@@ -220,20 +223,22 @@ linkSlot slotId entry inventory motherboard model =
         maybeUnlink model =
             if isSlotFree then
                 model
+
             else
                 unlinkSlot slotId inventory model
     in
-        if areSameType then
+    if areSameType then
+        model
+            |> maybeUnlink
+            |> setMotherboard motherboard_
+            |> setAvailability entry False inventory
+            |> removeSelection
+
+    else
+        setSelection
+            (Just <| SelectingSlot slotId)
+            typeSlot
             model
-                |> maybeUnlink
-                |> setMotherboard motherboard_
-                |> setAvailability entry False inventory
-                |> removeSelection
-        else
-            setSelection
-                (Just <| SelectingSlot slotId)
-                typeSlot
-                model
 
 
 compareComponentLink :
@@ -248,7 +253,7 @@ compareComponentLink typeSlot slotId id inventory motherboard =
         areSameType =
             inventory.components
                 |> Dict.get id
-                |> Maybe.map (Components.getType)
+                |> Maybe.map Components.getType
                 |> (==) typeSlot
 
         isSlotFree =
@@ -261,7 +266,7 @@ compareComponentLink typeSlot slotId id inventory motherboard =
         mobo_ =
             Motherboard.linkComponent slotId id motherboard
     in
-        ( mobo_, areSameType, isSlotFree )
+    ( mobo_, areSameType, isSlotFree )
 
 
 compareNetConn :
@@ -313,18 +318,18 @@ unlinkSlot slotId inventory model =
                 Nothing ->
                     mobo
     in
-        case Maybe.uncurry maybeMotherboard maybeCompId of
-            Just ( motherboard, id ) ->
-                motherboard
-                    |> Motherboard.unlinkNC id
-                    |> Motherboard.unlinkComponent slotId
-                    |> flip setMotherboard model
-                    |> setAvailability (Inventory.Component id) True inventory
-                    |> setNCAvailability id
-                    |> removeSelection
+    case Maybe.uncurry maybeMotherboard maybeCompId of
+        Just ( motherboard, id ) ->
+            motherboard
+                |> Motherboard.unlinkNC id
+                |> Motherboard.unlinkComponent slotId
+                |> flip setMotherboard model
+                |> setAvailability (Inventory.Component id) True inventory
+                |> setNCAvailability id
+                |> removeSelection
 
-            Nothing ->
-                removeSelection model
+        Nothing ->
+            removeSelection model
 
 
 highlightSlot :
@@ -386,12 +391,12 @@ findOverrides motherboard =
             Motherboard.getNCs mobo
                 |> Dict.foldl getNCEntry acu
     in
-        case motherboard of
-            Just mobo ->
-                []
-                    |> slotsOverrides mobo
-                    |> ncsOverrides mobo
-                    |> Dict.fromList
+    case motherboard of
+        Just mobo ->
+            []
+                |> slotsOverrides mobo
+                |> ncsOverrides mobo
+                |> Dict.fromList
 
-            Nothing ->
-                Dict.empty
+        Nothing ->
+            Dict.empty

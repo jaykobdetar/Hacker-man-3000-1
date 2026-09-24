@@ -1,13 +1,13 @@
 module OS.Toasts.View exposing (view)
 
 import Dict exposing (foldl)
-import Html exposing (Html, div, text, h6, p)
-import Html.CssHelpers
-import Html.Events exposing (onClick)
 import Game.Account.Notifications.OnClick as AccountNotifications
 import Game.Account.Notifications.Shared as AccountNotifications
 import Game.Servers.Notifications.OnClick as ServersNotifications
 import Game.Servers.Notifications.Shared as ServersNotifications
+import Html exposing (Html, div, h6, p, text)
+import Html.CssHelpers
+import Html.Events exposing (onClick)
 import OS.Toasts.Config exposing (..)
 import OS.Toasts.Messages exposing (..)
 import OS.Toasts.Models exposing (..)
@@ -25,8 +25,9 @@ view config model =
             (\k v acu ->
                 if v.state == Garbage then
                     acu
+
                 else
-                    (toast config k v) :: acu
+                    toast config k v :: acu
             )
             []
         |> div [ class [ R.Toasts ] ]
@@ -40,6 +41,7 @@ toast config id { notification, state } =
                 [ class [ R.Fading ]
                 , other
                 ]
+
             else
                 [ other ]
 
@@ -63,7 +65,7 @@ toast config id { notification, state } =
                 |> onClick
                 |> addClassAttr
     in
-        div attrs <|
-            [ h6 [] [ text title ]
-            , p [] [ text message ]
-            ]
+    div attrs <|
+        [ h6 [] [ text title ]
+        , p [] [ text message ]
+        ]

@@ -1,7 +1,7 @@
 module Setup.Pages.PickLocation.Models exposing (..)
 
-import Utils.Ports.Leaflet exposing (Coordinates)
 import Setup.Settings as Settings exposing (Settings)
+import Utils.Ports.Leaflet exposing (Coordinates)
 
 
 type alias Model =

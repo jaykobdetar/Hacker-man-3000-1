@@ -1,11 +1,11 @@
 module Apps.LocationPicker.View exposing (view)
 
-import Html exposing (..)
-import Html.CssHelpers
-import Native.Untouchable
 import Apps.LocationPicker.Config exposing (..)
 import Apps.LocationPicker.Models exposing (..)
 import Apps.LocationPicker.Resources exposing (Classes(..), prefix)
+import Html exposing (..)
+import Html.CssHelpers
+import Native.Untouchable
 
 
 { id, class, classList } =

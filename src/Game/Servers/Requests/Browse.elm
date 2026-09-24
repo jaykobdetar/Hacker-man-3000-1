@@ -1,43 +1,42 @@
-module Game.Servers.Requests.Browse
-    exposing
-        ( Data
-        , Error(..)
-        , browseRequest
-        )
+module Game.Servers.Requests.Browse exposing
+    ( Data
+    , Error(..)
+    , browseRequest
+    )
 
+import Decoders.Filesystem
+import Decoders.Network
+import Game.Meta.Types.Network as Network
+import Game.Meta.Types.Network.Site as Site exposing (Site)
+import Game.Servers.Shared exposing (CId)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , Value
-        , decodeValue
         , andThen
-        , field
-        , succeed
-        , map
+        , decodeValue
         , fail
-        , nullable
-        , list
-        , maybe
-        , string
+        , field
         , float
+        , list
+        , map
+        , maybe
+        , nullable
+        , string
+        , succeed
         )
 import Json.Decode.Pipeline as Encode
     exposing
         ( decode
+        , hardcoded
         , optional
         , required
-        , hardcoded
         )
 import Json.Encode as Encode
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
+import Requests.Types exposing (Code(..), FlagsSource)
 import Utils.Json.Decode exposing (message)
-import Decoders.Network
-import Decoders.Filesystem
-import Game.Meta.Types.Network.Site as Site exposing (Site)
-import Game.Meta.Types.Network as Network
-import Game.Servers.Shared exposing (CId)
 
 
 type alias Data =

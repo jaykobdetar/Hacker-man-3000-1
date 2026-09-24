@@ -1,12 +1,12 @@
 module Game.Account.Finances.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.Meta.Types.Desktop.Apps exposing (Requester)
+import Game.Account.Finances.Config exposing (..)
+import Game.Account.Finances.Messages exposing (..)
+import Game.Account.Finances.Models exposing (..)
 import Game.Account.Finances.Requests.Login as LoginRequest exposing (loginRequest)
 import Game.Account.Finances.Requests.Transfer as TransferRequest exposing (transferRequest)
-import Game.Account.Finances.Config exposing (..)
-import Game.Account.Finances.Models exposing (..)
-import Game.Account.Finances.Messages exposing (..)
+import Game.Meta.Types.Desktop.Apps exposing (Requester)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -59,7 +59,7 @@ handleBankAccountLogin config payload requester model =
                 |> Cmd.map (LoginRequest requester >> config.toMsg)
                 |> React.cmd
     in
-        ( model, request_ )
+    ( model, request_ )
 
 
 handleBankAccountTransfer :
@@ -76,7 +76,7 @@ handleBankAccountTransfer config payload requester model =
                 |> Cmd.map (TransferRequest requester >> config.toMsg)
                 |> React.cmd
     in
-        ( model, request_ )
+    ( model, request_ )
 
 
 onLoginRequest :

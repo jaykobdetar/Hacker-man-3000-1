@@ -1,10 +1,10 @@
 module Apps.Browser.Pages.DownloadCenter.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Apps.Browser.Widgets.HackingToolkit.Model as HackingToolkit
 import Apps.Browser.Pages.DownloadCenter.Config exposing (..)
-import Apps.Browser.Pages.DownloadCenter.Models exposing (..)
 import Apps.Browser.Pages.DownloadCenter.Messages exposing (..)
+import Apps.Browser.Pages.DownloadCenter.Models exposing (..)
+import Apps.Browser.Widgets.HackingToolkit.Model as HackingToolkit
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -19,8 +19,9 @@ update :
 update config msg model =
     case msg of
         Cracked target passwrd ->
-            if (model.toolkit.target == target) then
+            if model.toolkit.target == target then
                 onUpdatePasswordField passwrd model
+
             else
                 ( model, React.none )
 

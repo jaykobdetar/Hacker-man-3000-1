@@ -1,26 +1,25 @@
-module Utils.Json.Decode
-    exposing
-        ( date
-        , exclusively
-        , optionalMaybe
-        , message
-        , report
-        , commonError
-        )
+module Utils.Json.Decode exposing
+    ( commonError
+    , date
+    , exclusively
+    , message
+    , optionalMaybe
+    , report
+    )
 
+import Core.Flags as Flags exposing (Flags)
 import Date exposing (Date)
 import Json.Decode
     exposing
         ( Decoder
-        , succeed
-        , fail
-        , map
         , andThen
+        , fail
         , field
+        , map
         , string
+        , succeed
         )
 import Json.Decode.Pipeline exposing (optional)
-import Core.Flags as Flags exposing (Flags)
 
 
 date : Decoder Date
@@ -52,7 +51,8 @@ report info flags result =
                     _ =
                         Debug.log ("⚠ " ++ info ++ ": \n" ++ msg)
                 in
-                    result
+                result
+
             else
                 result
 
@@ -87,6 +87,7 @@ decodeExclusively : a -> a -> Decoder a
 decodeExclusively wanting received =
     if wanting == received then
         succeed wanting
+
     else
         fail <|
             "A field is requiring a value '"

@@ -5,14 +5,15 @@ module Gen.Hardware exposing (..)
 -- generators
 
 import Dict exposing (Dict)
-import Random.Pcg exposing (Generator, constant, map)
 import Fuzz exposing (Fuzzer)
-import Gen.Utils exposing (..)
+import Game.Meta.Types.Components as Components exposing (Component, Components)
 import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard, Slot)
-import Game.Meta.Types.Components as Components exposing (Components, Component)
 import Game.Meta.Types.Components.Type as Components
-import Game.Meta.Types.Network.Connections as NetConnections exposing (Connections, Connection)
+import Game.Meta.Types.Network.Connections as NetConnections exposing (Connection, Connections)
 import Game.Servers.Hardware.Models exposing (..)
+import Gen.Utils exposing (..)
+import Random.Pcg exposing (Generator, constant, map)
+
 
 
 -- fuzzers

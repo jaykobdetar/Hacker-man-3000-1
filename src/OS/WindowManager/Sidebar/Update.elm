@@ -1,9 +1,9 @@
 module OS.WindowManager.Sidebar.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import OS.WindowManager.Sidebar.Config exposing (..)
 import OS.WindowManager.Sidebar.Messages exposing (..)
 import OS.WindowManager.Sidebar.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

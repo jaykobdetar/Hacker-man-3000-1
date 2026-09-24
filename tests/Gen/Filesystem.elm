@@ -1,24 +1,25 @@
 module Gen.Filesystem exposing (..)
 
 import Fuzz exposing (Fuzzer)
+import Game.Servers.Filesystem.Models exposing (..)
+import Game.Servers.Filesystem.Shared exposing (..)
+import Gen.Utils exposing (fuzzer, listRange, stringRange, unique)
+import Helper.Filesystem exposing (..)
 import Random.Pcg
     exposing
         ( Generator
+        , andThen
+        , choices
         , constant
+        , float
+        , int
+        , list
         , map
         , map2
-        , andThen
         , sample
-        , choices
-        , list
-        , int
-        , float
         )
 import Random.Pcg.Extra exposing (andMap)
-import Gen.Utils exposing (fuzzer, unique, stringRange, listRange)
-import Game.Servers.Filesystem.Models exposing (..)
-import Game.Servers.Filesystem.Shared exposing (..)
-import Helper.Filesystem exposing (..)
+
 
 
 --------------------------------------------------------------------------------
@@ -164,14 +165,14 @@ genFile =
         keepMap f e =
             map ((,) e) <| f e
     in
-        constant File
-            |> andMap genName
-            |> map flip
-            |> andMap (constant [ "" ])
-            |> map flip
-            |> andMap genSize
-            |> map uncurry
-            |> andMap (andThen (keepMap genType) genExtension)
+    constant File
+        |> andMap genName
+        |> map flip
+        |> andMap (constant [ "" ])
+        |> map flip
+        |> andMap genSize
+        |> map uncurry
+        |> andMap (andThen (keepMap genType) genExtension)
 
 
 genFolder : Generator ( Path, Name )

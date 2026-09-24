@@ -1,13 +1,14 @@
 module Decoders.Bootstrap exposing (..)
 
-import Json.Decode as Decode exposing (Decoder, list, map)
-import Json.Decode.Pipeline exposing (decode, required, optional)
-import Game.Storyline.Models as Story
-import Game.Servers.Models as Servers
-import Game.Servers.Shared as Servers
-import Game.Models as Game
 import Decoders.Servers
 import Decoders.Storyline
+import Game.Models as Game
+import Game.Servers.Models as Servers
+import Game.Servers.Shared as Servers
+import Game.Storyline.Models as Story
+import Json.Decode as Decode exposing (Decoder, list, map)
+import Json.Decode.Pipeline exposing (decode, optional, required)
+
 
 
 -- this is the outdated bootstrap
@@ -57,13 +58,13 @@ toModel game got =
             game
                 |> Game.getFlags
     in
-        Game.Model
-            account
-            servers_
-            meta
-            got.story
-            web
-            flags
+    Game.Model
+        account
+        servers_
+        meta
+        got.story
+        web
+        flags
 
 
 joinIndexes : ServerIndex -> GenericServers

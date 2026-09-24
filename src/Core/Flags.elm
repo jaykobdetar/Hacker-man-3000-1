@@ -1,4 +1,4 @@
-module Core.Flags exposing (Flags, Mode(..), initFlags, getVersion, getMode, isDev, isHE2)
+module Core.Flags exposing (Flags, Mode(..), getMode, getVersion, initFlags, isDev, isHE2)
 
 
 type Mode

@@ -1,26 +1,26 @@
 module Game.Account.IntegrationTest exposing (all, passwordAcquired, replyUnlocked)
 
+import Core.Messages as Core
 import Dict exposing (Dict)
+import Driver.Websocket.Channels exposing (Channel(..))
 import Expect
 import Fuzz exposing (tuple, tuple3)
-import Test exposing (Test, describe)
-import Utils.React as React exposing (React)
-import Core.Messages as Core
-import Json.Decode as Decode
-import TestUtils exposing (fuzz, gameDispatcher, fromJust, toValue, applyEvent)
-import Requests.Types exposing (Code(OkCode))
-import Gen.Processes as GenProcesses
-import Gen.Game as GenGame
-import Driver.Websocket.Channels exposing (Channel(..))
-import Game.Messages as Game
-import Game.Models as Game
+import Game.Account.Database.Models exposing (..)
 import Game.Account.Messages as Account
 import Game.Account.Models as Account
-import Game.Storyline.Models as Story
-import Game.Storyline.Shared as Story
+import Game.Messages as Game
+import Game.Models as Game
 import Game.Servers.Messages as Servers
 import Game.Servers.Models as Servers
-import Game.Account.Database.Models exposing (..)
+import Game.Storyline.Models as Story
+import Game.Storyline.Shared as Story
+import Gen.Game as GenGame
+import Gen.Processes as GenProcesses
+import Json.Decode as Decode
+import Requests.Types exposing (Code(OkCode))
+import Test exposing (Test, describe)
+import TestUtils exposing (applyEvent, fromJust, fuzz, gameDispatcher, toValue)
+import Utils.React as React exposing (React)
 
 
 all : Test
@@ -73,14 +73,14 @@ passwordAcquired =
                         }
                         """
             in
-                game
-                    |> applyEvent name json channel
-                    |> Game.getAccount
-                    |> Account.getDatabase
-                    |> getHackedServers
-                    |> Dict.get ( "id", "phoebe" )
-                    |> Maybe.map getPassword
-                    |> Expect.equal (Just "asdfasdf")
+            game
+                |> applyEvent name json channel
+                |> Game.getAccount
+                |> Account.getDatabase
+                |> getHackedServers
+                |> Dict.get ( "id", "phoebe" )
+                |> Maybe.map getPassword
+                |> Expect.equal (Just "asdfasdf")
 
 
 replyUnlocked : Test
@@ -110,11 +110,11 @@ replyUnlocked =
                         }
                         """
             in
-                game
-                    |> applyEvent name json channel
-                    |> Game.getStory
-                    |> Story.getContact "kress"
-                    |> Maybe.map
-                        Story.getAvailableReplies
-                    |> Expect.equal
-                        (Just [ Story.Welcome ])
+            game
+                |> applyEvent name json channel
+                |> Game.getStory
+                |> Story.getContact "kress"
+                |> Maybe.map
+                    Story.getAvailableReplies
+                |> Expect.equal
+                    (Just [ Story.Welcome ])

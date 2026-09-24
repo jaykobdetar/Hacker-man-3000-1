@@ -1,9 +1,9 @@
 module OS.Toasts.Models exposing (..)
 
 import Dict exposing (Dict)
-import Game.Servers.Shared exposing (CId)
 import Game.Account.Notifications.Shared as AccountNotifications
 import Game.Servers.Notifications.Shared as ServersNotifications
+import Game.Servers.Shared exposing (CId)
 
 
 type alias Model =
@@ -40,8 +40,9 @@ insert new src =
         |> List.head
         |> Maybe.withDefault 0
         |> flip (+) 1
-        |> \k ->
-            ( k, Dict.insert k new src )
+        |> (\k ->
+                ( k, Dict.insert k new src )
+           )
 
 
 get : Int -> Model -> Maybe Toast

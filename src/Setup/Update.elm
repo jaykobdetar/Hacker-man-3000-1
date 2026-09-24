@@ -1,22 +1,22 @@
 module Setup.Update exposing (update)
 
-import Json.Decode as Decode exposing (Value)
-import Utils.React as React exposing (React)
-import Utils.Ports.Leaflet as Leaflet
-import Utils.Ports.Geolocation as Geolocation
-import Decoders.Client
 import Core.Error as Error
+import Decoders.Client
 import Game.Servers.Shared as Servers
-import Setup.Pages.PickLocation.Update as PickLocation
-import Setup.Pages.PickLocation.Messages as PickLocation
-import Setup.Pages.Mainframe.Update as Mainframe
-import Setup.Pages.Mainframe.Messages as Mainframe
-import Setup.Requests.Setup as SetupRequest exposing (setupRequest)
-import Setup.Requests.SetServer as SetServerRequest exposing (setServerRequest)
-import Setup.Settings as Settings exposing (Settings)
+import Json.Decode as Decode exposing (Value)
 import Setup.Config exposing (..)
-import Setup.Models exposing (..)
 import Setup.Messages exposing (..)
+import Setup.Models exposing (..)
+import Setup.Pages.Mainframe.Messages as Mainframe
+import Setup.Pages.Mainframe.Update as Mainframe
+import Setup.Pages.PickLocation.Messages as PickLocation
+import Setup.Pages.PickLocation.Update as PickLocation
+import Setup.Requests.SetServer as SetServerRequest exposing (setServerRequest)
+import Setup.Requests.Setup as SetupRequest exposing (setupRequest)
+import Setup.Settings as Settings exposing (Settings)
+import Utils.Ports.Geolocation as Geolocation
+import Utils.Ports.Leaflet as Leaflet
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -41,12 +41,14 @@ update config msg model =
         HandleJoinedAccount value ->
             if isLoading model then
                 handleJoinedAccount config value model
+
             else
                 ( model, React.none )
 
         HandleJoinedServer cid ->
             if isLoading model then
                 handleJoinedServer config cid model
+
             else
                 ( model, React.none )
 
@@ -75,12 +77,13 @@ onNextPage config settings model0 =
                 _ ->
                     Cmd.none
     in
-        if doneSetup model then
-            model
-                |> setRequest config
-                |> Tuple.mapSecond (React.addCmd cmd)
-        else
-            ( model, React.cmd cmd )
+    if doneSetup model then
+        model
+            |> setRequest config
+            |> Tuple.mapSecond (React.addCmd cmd)
+
+    else
+        ( model, React.cmd cmd )
 
 
 onPreviousPage : Config msg -> Model -> UpdateResponse msg
@@ -99,7 +102,7 @@ onPreviousPage { toMsg } model =
                 _ ->
                     React.none
     in
-        ( model_, react )
+    ( model_, react )
 
 
 
@@ -117,7 +120,7 @@ onMainframeMsg config msg model =
                 model_ =
                     setPage (MainframeModel page_) model
             in
-                ( model_, react )
+            ( model_, react )
 
         _ ->
             ( model, React.none )
@@ -134,7 +137,7 @@ onPickLocationMsg config msg model =
                 model_ =
                     setPage (PickLocationModel page_) model
             in
-                ( model_, react )
+            ( model_, react )
 
         _ ->
             ( model, React.none )
@@ -154,28 +157,30 @@ onGenericSet ({ accountId } as config) list model =
         model_ =
             setTopicsDone Settings.ServerTopic True model
     in
-        if List.isEmpty list && noTopicsRemaining model_ then
-            ( model_
-            , config
-                |> setupRequest (List.map Tuple.first model.done) accountId
-                |> Cmd.map (SetupRequest >> config.toMsg)
-                |> React.cmd
-            )
-        else
-            let
-                noErrors =
-                    flip List.member list >> not
+    if List.isEmpty list && noTopicsRemaining model_ then
+        ( model_
+        , config
+            |> setupRequest (List.map Tuple.first model.done) accountId
+            |> Cmd.map (SetupRequest >> config.toMsg)
+            |> React.cmd
+        )
 
-                keepBadPages ( model, settings ) =
-                    if List.all noErrors settings then
-                        Nothing
-                    else
-                        Just <| pageModelToString model
-            in
-                model_
-                    |> setBadPages (List.filterMap keepBadPages model.done)
-                    |> undoPages
-                    |> flip (,) React.none
+    else
+        let
+            noErrors =
+                flip List.member list >> not
+
+            keepBadPages ( model, settings ) =
+                if List.all noErrors settings then
+                    Nothing
+
+                else
+                    Just <| pageModelToString model
+        in
+        model_
+            |> setBadPages (List.filterMap keepBadPages model.done)
+            |> undoPages
+            |> flip (,) React.none
 
 
 onSetup : Config msg -> SetupRequest.Data -> Model -> UpdateResponse msg
@@ -209,7 +214,7 @@ handleJoinedAccount config value model =
                         |> config.onError
                         |> React.msg
             in
-                ( model, react )
+            ( model, react )
 
 
 handleJoinedServer : Config msg -> Servers.CId -> Model -> UpdateResponse msg
@@ -218,13 +223,15 @@ handleJoinedServer config cid model =
         react =
             if hasPages model then
                 React.none
+
             else
                 React.msg config.onPlay
     in
-        if config.mainframe == (Just cid) then
-            ( doneLoading model, react )
-        else
-            ( model, React.none )
+    if config.mainframe == Just cid then
+        ( doneLoading model, react )
+
+    else
+        ( model, React.none )
 
 
 
@@ -282,4 +289,4 @@ setRequest config model =
                 |> Cmd.batch
                 |> React.cmd
     in
-        ( model_, react )
+    ( model_, react )

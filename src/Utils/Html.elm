@@ -1,6 +1,6 @@
 module Utils.Html exposing (..)
 
-import Html exposing (Html, Attribute, node)
+import Html exposing (Attribute, Html, node)
 
 
 spacer : Html msg

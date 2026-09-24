@@ -1,7 +1,7 @@
 module Game.Servers.Notifications.OnClick exposing (..)
 
-import Game.Servers.Notifications.Shared exposing (..)
 import Game.Servers.Notifications.Config exposing (..)
+import Game.Servers.Notifications.Shared exposing (..)
 
 
 grabOnClick : ActionConfig msg -> Content -> msg

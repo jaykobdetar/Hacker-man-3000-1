@@ -1,9 +1,9 @@
 module Events.BackFlix.Handlers.NewLog exposing (..)
 
-import Json.Decode exposing (decodeValue)
+import Decoders.BackFlix
 import Events.Shared exposing (Handler)
 import Game.BackFlix.Models exposing (Log)
-import Decoders.BackFlix
+import Json.Decode exposing (decodeValue)
 
 
 type alias Data =

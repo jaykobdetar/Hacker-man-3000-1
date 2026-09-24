@@ -1,16 +1,16 @@
 module Events.Account.Handlers.ServerPasswordAcquired exposing (Data, handler)
 
+import Events.Shared exposing (Handler)
+import Game.Meta.Types.Network exposing (NIP)
 import Json.Decode
     exposing
         ( Decoder
+        , andThen
         , decodeValue
         , map
-        , andThen
         , string
         )
-import Json.Decode.Pipeline exposing (decode, required, custom)
-import Events.Shared exposing (Handler)
-import Game.Meta.Types.Network exposing (NIP)
+import Json.Decode.Pipeline exposing (custom, decode, required)
 
 
 type alias Data =

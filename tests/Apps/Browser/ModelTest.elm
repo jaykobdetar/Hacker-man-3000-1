@@ -1,11 +1,11 @@
-module Apps.Browser.ModelTest exposing (all, historyOperations, browseOperations)
+module Apps.Browser.ModelTest exposing (all, browseOperations, historyOperations)
 
-import Expect
-import Test exposing (Test, describe, test)
-import Fuzz exposing (int, tuple, tuple3, tuple4)
-import TestUtils exposing (fuzz, once, ensureDifferentSeed)
-import Gen.Browser as Gen
 import Apps.Browser.Models exposing (..)
+import Expect
+import Fuzz exposing (int, tuple, tuple3, tuple4)
+import Gen.Browser as Gen
+import Test exposing (Test, describe, test)
+import TestUtils exposing (ensureDifferentSeed, fuzz, once)
 
 
 all : Test
@@ -51,11 +51,11 @@ walkBackwardHistoryTests =
                         |> List.head
                         |> Maybe.map Tuple.second
             in
-                model
-                    |> gotoPreviousPage
-                    |> getPage
-                    |> Just
-                    |> Expect.equal expectations
+            model
+                |> gotoPreviousPage
+                |> getPage
+                |> Just
+                |> Expect.equal expectations
     , fuzz Gen.emptyModel "can't go to non-existing previous page" <|
         \model ->
             model
@@ -92,11 +92,11 @@ walkForwardHistoryTests =
                         |> List.head
                         |> Maybe.map Tuple.second
             in
-                model
-                    |> gotoNextPage
-                    |> getPage
-                    |> Just
-                    |> Expect.equal expectations
+            model
+                |> gotoNextPage
+                |> getPage
+                |> Just
+                |> Expect.equal expectations
     , fuzz Gen.emptyModel "can't go to non-existing next page" <|
         \model ->
             model

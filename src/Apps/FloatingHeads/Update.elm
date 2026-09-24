@@ -1,10 +1,10 @@
 module Apps.FloatingHeads.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.Storyline.Shared exposing (ContactId, Reply)
 import Apps.FloatingHeads.Config exposing (..)
-import Apps.FloatingHeads.Models exposing (..)
 import Apps.FloatingHeads.Messages as FloatingHeads exposing (Msg(..))
+import Apps.FloatingHeads.Models exposing (..)
+import Game.Storyline.Shared exposing (ContactId, Reply)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -58,7 +58,7 @@ onToggleMode config model =
                 Expanded ->
                     Compact
     in
-        React.update { model | mode = mode_ }
+    React.update { model | mode = mode_ }
 
 
 onClose : Config msg -> Model -> UpdateResponse msg

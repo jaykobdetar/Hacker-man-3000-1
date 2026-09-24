@@ -3,6 +3,7 @@ module UI.FontAwesome.Icons exposing (..)
 import UI.FontAwesome.Helper exposing (UnicodeTag)
 
 
+
 -- Auto generated from https://github.com/FortAwesome/Font-Awesome/blob/master/src/icons.yml
 -- used regex: /  - name:\s*[\w|\-\s\(\)\.\'\/]*\n\s*id:\s*([\w|\-]*)\s*unicode:\s*([a-f|0-9]*)(?>\n[\r\t\f ]*(?>\w*:|-)\s*.*)*/g
 -- followed by replacing /-(.)/ with /U$1

@@ -1,9 +1,9 @@
 module OS.WindowManager.Sidebar.View exposing (view)
 
+import Game.Storyline.Models as Story
 import Html exposing (..)
 import Html.CssHelpers
 import Html.Events exposing (onClick)
-import Game.Storyline.Models as Story
 import OS.WindowManager.Sidebar.Config exposing (..)
 import OS.WindowManager.Sidebar.Messages exposing (..)
 import OS.WindowManager.Sidebar.Models exposing (..)
@@ -31,6 +31,7 @@ toggler { toMsg } isVisible =
     <|
         if isVisible then
             [ text ">>" ]
+
         else
             [ text "<<" ]
 
@@ -51,6 +52,7 @@ superClasses : Model -> List R.Classes
 superClasses { isVisible } =
     if isVisible then
         [ R.Super, R.Visible ]
+
     else
         [ R.Super ]
 
@@ -61,13 +63,14 @@ questHelper config story =
         |> QuestHelper.view
         |> List.singleton
         |> div [ class [ R.WidgetBody ] ]
-        |> \body ->
-            div [ class [ R.Widget ] ]
-                [ div
-                    [ class [ R.WidgetHeader ] ]
-                    [ text "Some title" ]
-                , body
-                ]
+        |> (\body ->
+                div [ class [ R.Widget ] ]
+                    [ div
+                        [ class [ R.WidgetHeader ] ]
+                        [ text "Some title" ]
+                    , body
+                    ]
+           )
 
 
 { id, class, classList } =

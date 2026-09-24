@@ -1,6 +1,6 @@
 module UI.Elements.Toogable exposing (toogableEntry)
 
-import Html exposing (Html, Attribute, node, div)
+import Html exposing (Attribute, Html, div, node)
 import Html.Attributes exposing (attribute)
 import Html.Events exposing (onClick)
 
@@ -11,10 +11,11 @@ expandedClass enabled =
         value =
             if enabled then
                 "1"
+
             else
                 "0"
     in
-        attribute "expanded" value
+    attribute "expanded" value
 
 
 toogleBtn : msg -> Bool -> Html msg
@@ -34,6 +35,7 @@ toogableEntry toogableVisible attrs callback actualState data =
         [ node "content" [] data
         , if toogableVisible then
             toogleBtn callback actualState
+
           else
             div [] []
         ]

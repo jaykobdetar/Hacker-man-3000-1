@@ -1,9 +1,9 @@
 module Apps.LogViewer.Config exposing (..)
 
-import ContextMenu
-import Html exposing (Attribute)
-import Game.Servers.Logs.Models as Logs
 import Apps.LogViewer.Messages exposing (..)
+import ContextMenu
+import Game.Servers.Logs.Models as Logs
+import Html exposing (Attribute)
 
 
 type alias Config msg =

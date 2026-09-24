@@ -1,7 +1,7 @@
 module Setup.Pages.PickLocation.Config exposing (Config)
 
-import Setup.Settings as Settings exposing (Settings)
 import Setup.Pages.PickLocation.Messages exposing (..)
+import Setup.Settings as Settings exposing (Settings)
 
 
 type alias Config msg =

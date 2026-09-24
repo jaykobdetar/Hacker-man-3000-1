@@ -1,14 +1,14 @@
 module Game.Account.Database.Update exposing (update)
 
-import Dict as Dict
-import Utils.React as React exposing (React)
+import Dict
 import Events.Account.Handlers.ServerPasswordAcquired as ServerPasswordAcquired
 import Events.Account.Handlers.VirusCollected as VirusCollected
 import Game.Account.Database.Config exposing (..)
-import Game.Account.Database.Models exposing (..)
 import Game.Account.Database.Messages exposing (..)
+import Game.Account.Database.Models exposing (..)
 import Game.Meta.Types.Network as Network exposing (NIP)
 import Game.Shared exposing (ID)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -51,7 +51,7 @@ handlePasswordAcquired data model =
                 |> flip (insertServer data.nip) servers
                 |> flip setHackedServers model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onHandleDatabaseAccountRemoved :
@@ -63,7 +63,7 @@ onHandleDatabaseAccountRemoved id model =
         model_ =
             { model | bankAccounts = removeBankAccount id model.bankAccounts }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onHandleDatabaseAccountUpdated :
@@ -78,7 +78,7 @@ onHandleDatabaseAccountUpdated id account model =
                 | bankAccounts = insertBankAccount id account model.bankAccounts
             }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onHandleCollectedVirus :
@@ -95,14 +95,14 @@ onHandleCollectedVirus config data model =
             ( atmId, accNumber )
 
         hackedServers =
-            (getHackedServers model)
+            getHackedServers model
 
         servers =
             resetRunningVirusTime config serverNIP virusId hackedServers
 
         --TODO: Dispatch a Notification to Player showing earning money
     in
-        React.update { model | servers = servers }
+    React.update { model | servers = servers }
 
 
 resetRunningVirusTime :
@@ -118,18 +118,19 @@ resetRunningVirusTime config nip fileId hackedServers =
                 viruses =
                     getVirusInstalled server
             in
-                if Dict.member fileId viruses then
-                    viruses
-                        |> Dict.get fileId
-                        |> Maybe.map
-                            (resetVirusTime config
-                                >> flip (Dict.insert fileId) viruses
-                                >> (\iv -> { server | virusInstalled = iv })
-                                >> flip (Dict.insert nip) hackedServers
-                            )
-                        |> Maybe.withDefault hackedServers
-                else
-                    hackedServers
+            if Dict.member fileId viruses then
+                viruses
+                    |> Dict.get fileId
+                    |> Maybe.map
+                        (resetVirusTime config
+                            >> flip (Dict.insert fileId) viruses
+                            >> (\iv -> { server | virusInstalled = iv })
+                            >> flip (Dict.insert nip) hackedServers
+                        )
+                    |> Maybe.withDefault hackedServers
+
+            else
+                hackedServers
 
         Nothing ->
             hackedServers

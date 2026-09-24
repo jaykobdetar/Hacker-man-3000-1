@@ -1,17 +1,17 @@
 module Decoders.Dock exposing (..)
 
+import Game.Account.Dock.Models exposing (..)
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , andThen
-        , succeed
         , fail
         , list
         , string
+        , succeed
         )
-import Utils.Json.Decode exposing (optionalMaybe, commonError)
-import Game.Account.Dock.Models exposing (..)
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
+import Utils.Json.Decode exposing (commonError, optionalMaybe)
 
 
 dock : Decoder Model

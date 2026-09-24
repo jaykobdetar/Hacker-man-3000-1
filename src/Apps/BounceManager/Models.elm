@@ -1,10 +1,10 @@
 module Apps.BounceManager.Models exposing (..)
 
-import Random.Pcg as Random
 import Game.Account.Bounces.Models as Bounces
 import Game.Account.Bounces.Shared as Bounces
-import Game.Meta.Types.Network exposing (NIP)
 import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Game.Meta.Types.Network exposing (NIP)
+import Random.Pcg as Random
 
 
 type MainTab
@@ -134,14 +134,14 @@ reset selected model =
         path_ =
             getCurrentBouncePath selected
     in
-        { model
-            | selected = selected
-            , selection = Nothing
-            , bounceNameBuffer = Nothing
-            , path = path_
-            , anyChange = False
-            , renaming = False
-        }
+    { model
+        | selected = selected
+        , selection = Nothing
+        , bounceNameBuffer = Nothing
+        , path = path_
+        , anyChange = False
+        , renaming = False
+    }
 
 
 emptyBounceBuildTab : MainTab

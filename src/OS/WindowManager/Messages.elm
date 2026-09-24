@@ -1,30 +1,30 @@
 module OS.WindowManager.Messages exposing (..)
 
+import Apps.BackFlix.Messages as BackFlix
+import Apps.BounceManager.Messages as BounceManager
+import Apps.Browser.Messages as Browser
+import Apps.Bug.Messages as Bug
+import Apps.Calculator.Messages as Calculator
+import Apps.ConnManager.Messages as ConnManager
+import Apps.DBAdmin.Messages as DBAdmin
+import Apps.Email.Messages as Email
+import Apps.Explorer.Messages as Explorer
+import Apps.Finance.Messages as Finance
+import Apps.FloatingHeads.Messages as FloatingHeads
+import Apps.Hebamp.Messages as Hebamp
+import Apps.LocationPicker.Messages as LocationPicker
+import Apps.LogViewer.Messages as LogViewer
+import Apps.Params as AppParams exposing (AppParams)
+import Apps.ServersGears.Messages as ServersGears
+import Apps.TaskManager.Messages as TaskManager
+import Apps.VirusPanel.Messages as VirusPanel
 import Draggable
-import Window
 import Game.Meta.Types.Context exposing (..)
 import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Shared exposing (CId)
-import Apps.Params as AppParams exposing (AppParams)
-import Apps.LogViewer.Messages as LogViewer
-import Apps.TaskManager.Messages as TaskManager
-import Apps.Browser.Messages as Browser
-import Apps.Explorer.Messages as Explorer
-import Apps.DBAdmin.Messages as DBAdmin
-import Apps.ConnManager.Messages as ConnManager
-import Apps.BounceManager.Messages as BounceManager
-import Apps.Finance.Messages as Finance
-import Apps.Hebamp.Messages as Hebamp
-import Apps.ServersGears.Messages as ServersGears
-import Apps.LocationPicker.Messages as LocationPicker
-import Apps.Email.Messages as Email
-import Apps.Bug.Messages as Bug
-import Apps.Calculator.Messages as Calculator
-import Apps.BackFlix.Messages as BackFlix
-import Apps.FloatingHeads.Messages as FloatingHeads
-import Apps.VirusPanel.Messages as VirusPanel
 import OS.WindowManager.Shared exposing (..)
 import OS.WindowManager.Sidebar.Messages as Sidebar
+import Window
 
 
 type Msg

@@ -1,11 +1,11 @@
 module Apps.DBAdmin.Style exposing (..)
 
+import Apps.DBAdmin.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (selectableText)
 import UI.Common exposing (flexContainerHorz)
 import UI.Icons as Icons
-import Apps.DBAdmin.Resources exposing (Classes(..), prefix)
+import Utils.Css exposing (selectableText)
 
 
 ico : Style

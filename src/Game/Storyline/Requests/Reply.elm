@@ -1,21 +1,21 @@
 module Game.Storyline.Requests.Reply exposing (Data, Error, replyRequest)
 
+import Game.Storyline.Shared exposing (ContactId, Reply(..))
 import Json.Decode as Decode
     exposing
         ( Decoder
         , Value
         , decodeValue
-        , map
-        , succeed
         , fail
+        , map
         , string
+        , succeed
         )
 import Json.Encode as Encode
-import Utils.Json.Decode exposing (message, commonError)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
-import Game.Storyline.Shared exposing (ContactId, Reply(..))
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =

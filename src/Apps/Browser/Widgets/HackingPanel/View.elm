@@ -1,15 +1,14 @@
-module Apps.Browser.Widgets.HackingPanel.View
-    exposing
-        ( Config
-        , hackingPanel
-        )
+module Apps.Browser.Widgets.HackingPanel.View exposing
+    ( Config
+    , hackingPanel
+    )
 
-import Html exposing (..)
-import Html.Events exposing (onClick)
 import Apps.Shared as Apps
 import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Meta.Types.Network exposing (NIP)
 import Game.Servers.Shared as Servers
+import Html exposing (..)
+import Html.Events exposing (onClick)
 
 
 type alias Config msg =
@@ -70,19 +69,21 @@ hackingPanel config nip =
         options1 =
             if config.allowAnyMap then
                 anyMap config nip :: options0
+
             else
                 options0
 
         options2 =
             if config.allowSelectEndpoint then
                 selectEndpoint config nip :: options1
+
             else
                 options1
 
         options3 =
             List.foldl (openApp config >> (::)) options2 config.apps
     in
-        div [] [ ul [] options3 ]
+    div [] [ ul [] options3 ]
 
 
 openApp : Config msg -> DesktopApp -> Html msg

@@ -1,18 +1,18 @@
 module Apps.BackFlix.View exposing (view)
 
-import Dict exposing (Dict)
-import Html exposing (..)
-import Html.CssHelpers
-import UI.ToString exposing (timestampToFullData)
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.Elements.FilterHeader exposing (filterHeader)
-import UI.Elements.HorizontalTabs exposing (hzTabs)
-import Game.BackFlix.Models as BackFlix
 import Apps.BackFlix.Config exposing (..)
 import Apps.BackFlix.Messages exposing (Msg(..))
 import Apps.BackFlix.Models exposing (..)
 import Apps.BackFlix.Resources exposing (Classes(..), prefix)
+import Dict exposing (Dict)
+import Game.BackFlix.Models as BackFlix
+import Html exposing (..)
+import Html.CssHelpers
+import UI.Elements.FilterHeader exposing (filterHeader)
+import UI.Elements.HorizontalTabs exposing (hzTabs)
+import UI.Layouts.VerticalList exposing (verticalList)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
+import UI.ToString exposing (timestampToFullData)
 
 
 { id, class, classList } =
@@ -44,11 +44,11 @@ view config model =
                 TabSimple ->
                     viewTabSimple backFlix
     in
-        Html.map config.toMsg <|
-            verticalSticked
-                (Just [ filterHeaderLayout ])
-                [ viewData ]
-                Nothing
+    Html.map config.toMsg <|
+        verticalSticked
+            (Just [ filterHeaderLayout ])
+            [ viewData ]
+            Nothing
 
 
 compareTabs : MainTab -> MainTab -> Bool
@@ -88,7 +88,7 @@ viewTabSimple backflix =
                 _ ->
                     True
     in
-        renderEntries (Dict.filter filter backflix) False
+    renderEntries (Dict.filter filter backflix) False
 
 
 
@@ -110,7 +110,8 @@ renderEntry useString id log =
 
         type_ =
             if useString then
-                text (log.typeString)
+                text log.typeString
+
             else
                 text (typeToString log)
 
@@ -120,16 +121,16 @@ renderEntry useString id log =
         timestamp =
             text (time <| not useString)
     in
-        div [ class [ LogBox ] ]
-            [ div [ class [ LogHeader ] ]
-                [ div (setTypeLog log)
-                    [ type_ ]
-                , div []
-                    [ timestamp ]
-                ]
-            , div [ class [ DataDiv ] ]
-                [ data ]
+    div [ class [ LogBox ] ]
+        [ div [ class [ LogHeader ] ]
+            [ div (setTypeLog log)
+                [ type_ ]
+            , div []
+                [ timestamp ]
             ]
+        , div [ class [ DataDiv ] ]
+            [ data ]
+        ]
 
 
 setTypeLog : BackFlix.Log -> List (Html.Attribute Msg)

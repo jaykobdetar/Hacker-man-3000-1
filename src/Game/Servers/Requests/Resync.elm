@@ -1,13 +1,13 @@
 module Game.Servers.Requests.Resync exposing (Data, resyncRequest)
 
-import Time exposing (Time)
-import Json.Decode as Decode exposing (Value, decodeValue)
-import Requests.Requests as Requests exposing (report)
-import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..), emptyPayload)
 import Decoders.Servers
 import Game.Servers.Models exposing (..)
 import Game.Servers.Shared exposing (..)
+import Json.Decode as Decode exposing (Value, decodeValue)
+import Requests.Requests as Requests exposing (report)
+import Requests.Topics as Topics
+import Requests.Types exposing (Code(..), FlagsSource, emptyPayload)
+import Time exposing (Time)
 
 
 type alias Data =

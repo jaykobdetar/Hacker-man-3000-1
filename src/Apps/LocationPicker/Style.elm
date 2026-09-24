@@ -1,9 +1,9 @@
 module Apps.LocationPicker.Style exposing (..)
 
+import Apps.LocationPicker.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
 import UI.Common exposing (flexContainerHorz)
-import Apps.LocationPicker.Resources exposing (Classes(..), prefix)
 
 
 css : Stylesheet

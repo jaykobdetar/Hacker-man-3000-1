@@ -1,11 +1,12 @@
 module Game.Servers.Logs.ModelTest exposing (all, logOperationsTests)
 
 import Expect
+import Fuzz exposing (tuple, tuple3)
+import Game.Servers.Logs.Models exposing (..)
 import Gen.Logs as Gen
 import Test exposing (Test, describe)
-import Fuzz exposing (tuple, tuple3)
-import TestUtils exposing (fuzz, once, ensureDifferentSeed)
-import Game.Servers.Logs.Models exposing (..)
+import TestUtils exposing (ensureDifferentSeed, fuzz, once)
+
 
 
 -- TODO: refactor
@@ -84,11 +85,11 @@ updateLogGenericTests =
                             log.status
                             (Just data.raw)
             in
-                insert id log model
-                    |> insert id (setContent (Just data.raw) log)
-                    |> get id
-                    |> Maybe.map getContent
-                    |> Expect.equal (Just content)
+            insert id log model
+                |> insert id (setContent (Just data.raw) log)
+                |> get id
+                |> Maybe.map getContent
+                |> Expect.equal (Just content)
     ]
 
 

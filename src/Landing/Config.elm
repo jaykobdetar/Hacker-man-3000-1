@@ -2,8 +2,8 @@ module Landing.Config exposing (..)
 
 import Core.Flags as Core
 import Landing.Login.Config as Login
-import Landing.SignUp.Config as SignUp
 import Landing.Messages exposing (..)
+import Landing.SignUp.Config as SignUp
 
 
 type alias Config msg =

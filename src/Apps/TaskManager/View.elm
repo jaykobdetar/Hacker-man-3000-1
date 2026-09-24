@@ -1,17 +1,17 @@
 module Apps.TaskManager.View exposing (view)
 
-import ContextMenu
-import Time exposing (Time)
-import Html exposing (..)
-import Html.CssHelpers
-import UI.Elements.ProgressBar exposing (progressBar)
-import UI.Elements.LineGraph exposing (lineGraph)
-import UI.ToString exposing (bibytesToString, bitsPerSecondToString, frequencyToString, secondsToTimeNotation)
-import Game.Servers.Processes.Models as Processes
-import Game.Servers.Processes.Shared as Processes
 import Apps.TaskManager.Config exposing (..)
 import Apps.TaskManager.Models exposing (..)
 import Apps.TaskManager.Resources exposing (Classes(..), prefix)
+import ContextMenu
+import Game.Servers.Processes.Models as Processes
+import Game.Servers.Processes.Shared as Processes
+import Html exposing (..)
+import Html.CssHelpers
+import Time exposing (Time)
+import UI.Elements.LineGraph exposing (lineGraph)
+import UI.Elements.ProgressBar exposing (progressBar)
+import UI.ToString exposing (bibytesToString, bitsPerSecondToString, frequencyToString, secondsToTimeNotation)
 
 
 view : Config msg -> Model -> Html msg
@@ -36,12 +36,12 @@ viewTaskRowUsage usage =
         un =
             Processes.getUnitUsage >> toFloat
     in
-        div []
-            [ div [] [ text (frequencyToString <| un usage.cpu) ]
-            , div [] [ text (bibytesToString <| un usage.mem) ]
-            , div [] [ text (bitsPerSecondToString <| un usage.down) ]
-            , div [] [ text (bitsPerSecondToString <| un usage.up) ]
-            ]
+    div []
+        [ div [] [ text (frequencyToString <| un usage.cpu) ]
+        , div [] [ text (bibytesToString <| un usage.mem) ]
+        , div [] [ text (bitsPerSecondToString <| un usage.down) ]
+        , div [] [ text (bitsPerSecondToString <| un usage.up) ]
+        ]
 
 
 etaBar : Time -> Float -> Html msg
@@ -50,13 +50,14 @@ etaBar secondsLeft progress =
         formattedTime =
             secondsToTimeNotation secondsLeft
     in
-        progressBar progress formattedTime 16
+    progressBar progress formattedTime 16
 
 
 syncProgress : Time -> Time -> Float -> Float -> Float
 syncProgress now lastSync remaining lastProgress =
     if (remaining <= 0) || (lastProgress >= 1) then
         1
+
     else
         (now - lastSync)
             / remaining
@@ -95,9 +96,9 @@ viewState now lastRecalc proc =
                         timeLeftOnSync
                         lastProgress
             in
-                progress
-                    |> Maybe.map2 etaBar timeLeft
-                    |> Maybe.withDefault (text "")
+            progress
+                |> Maybe.map2 etaBar timeLeft
+                |> Maybe.withDefault (text "")
 
         Processes.Paused ->
             text "Paused"
@@ -132,7 +133,7 @@ processMenu config ( id, process ) =
                 Processes.Partial _ ->
                     menuForPartial
     in
-        menu config id
+    menu config id
 
 
 menuForRunning : Config msg -> Processes.ID -> Attribute msg
@@ -179,25 +180,25 @@ viewTaskRow config (( _, process ) as entry) =
         usageView =
             process
                 |> Processes.getUsage
-                |> Maybe.map (viewTaskRowUsage)
+                |> Maybe.map viewTaskRowUsage
                 |> Maybe.withDefault (text "")
     in
-        div
-            [ class [ EntryDivision ]
-            , processMenu config entry
+    div
+        [ class [ EntryDivision ]
+        , processMenu config entry
+        ]
+        [ div []
+            [ text <| Processes.getName process
+            , br [] []
+            , text "Target: "
+            , text <| Tuple.second <| Processes.getTarget process
+            , br [] []
             ]
-            [ div []
-                [ text <| Processes.getName process
-                , br [] []
-                , text "Target: "
-                , text <| Tuple.second <| Processes.getTarget process
-                , br [] []
-                ]
-            , div []
-                [ viewState config.lastTick lastRecalc process ]
-            , div []
-                [ usageView ]
-            ]
+        , div []
+            [ viewState config.lastTick lastRecalc process ]
+        , div []
+            [ usageView ]
+        ]
 
 
 viewTasksTable : Config msg -> Html msg
@@ -214,32 +215,33 @@ viewTasksTable config =
             config.processes
                 |> Processes.toList
     in
-        tasks
-            |> List.map (viewTaskRow config)
-            |> (::) first
-            |> div [ class [ TaskTable ] ]
+    tasks
+        |> List.map (viewTaskRow config)
+        |> (::) first
+        |> div [ class [ TaskTable ] ]
 
 
 viewGraphUsage : String -> String -> List Float -> Html msg
 viewGraphUsage title color history =
     let
         sz =
-            toFloat ((List.length history) - 1)
+            toFloat (List.length history - 1)
 
         nanToZero num =
             if isNaN num then
                 0
+
             else
                 num
 
         points =
-            (flip List.indexedMap history) <|
+            flip List.indexedMap history <|
                 \i x ->
-                    ( nanToZero (1 - toFloat (i) / sz)
-                    , (1 - x)
+                    ( nanToZero (1 - toFloat i / sz)
+                    , 1 - x
                     )
     in
-        lineGraph points color 50 True ( 3, 1 )
+    lineGraph points color 50 True ( 3, 1 )
 
 
 viewTotalResources : Model -> Html msg

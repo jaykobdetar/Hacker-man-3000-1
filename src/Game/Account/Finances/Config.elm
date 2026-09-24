@@ -1,11 +1,11 @@
 module Game.Account.Finances.Config exposing (Config)
 
 import Core.Flags as Core
-import Game.Meta.Types.Desktop.Apps exposing (Requester)
-import Game.Account.Models as Account
+import Game.Account.Finances.Messages exposing (..)
 import Game.Account.Finances.Requests.Login as LoginRequest
 import Game.Account.Finances.Requests.Transfer as TransferRequest
-import Game.Account.Finances.Messages exposing (..)
+import Game.Account.Models as Account
+import Game.Meta.Types.Desktop.Apps exposing (Requester)
 
 
 type alias Config msg =

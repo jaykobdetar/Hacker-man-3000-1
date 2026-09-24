@@ -1,6 +1,6 @@
 module UI.Elements.FilterHeader exposing (filterHeader)
 
-import Html exposing (Html, Attribute, text, node, input)
+import Html exposing (Attribute, Html, input, node, text)
 import Html.Attributes exposing (attribute, placeholder, value)
 import Html.Events exposing (onClick, onInput)
 
@@ -19,10 +19,11 @@ enabledClass enabled =
         value =
             if enabled then
                 "1"
+
             else
                 "0"
     in
-        attribute "enabled" value
+    attribute "enabled" value
 
 
 flagFilter : Flag msg -> Html msg
@@ -43,7 +44,7 @@ flagsFilter flags =
                 |> List.map flagFilter
                 |> List.intersperse (text " ")
     in
-        node "flagsFilterPanel" [] entries
+    node "flagsFilterPanel" [] entries
 
 
 orderOptions : List (Option msg) -> Html msg

@@ -1,15 +1,15 @@
 module OS.Header.NetworkView exposing (view)
 
+import Game.Meta.Types.Network as Network
 import Html exposing (..)
 import Html.CssHelpers
 import Html.Events exposing (onClick)
+import OS.Header.Config exposing (..)
+import OS.Header.Messages exposing (..)
+import OS.Header.Models exposing (..)
+import OS.Header.Resources exposing (..)
 import Utils.Html.Attributes exposing (boolAttr)
 import Utils.List as List
-import Game.Meta.Types.Network as Network
-import OS.Header.Config exposing (..)
-import OS.Header.Models exposing (..)
-import OS.Header.Messages exposing (..)
-import OS.Header.Resources exposing (..)
 
 
 { id, class, classList } =
@@ -34,22 +34,22 @@ view { toMsg, activeNIP, nips } isOpen =
                             |> li [ onClickNetwork nip ]
                     )
     in
-        case availableNetworks of
-            [] ->
-                text ""
+    case availableNetworks of
+        [] ->
+            text ""
 
-            _ ->
-                div [ class [ Network ] ]
-                    [ div
-                        [ class [ ActiveNetwork ]
-                        , onClick <| toMsg <| ToggleMenus NetworkOpen
-                        ]
-                        [ div [] [ text (Network.getId activeNIP) ]
-                        , div [] [ text "⌄" ]
-                        ]
-                    , ul
-                        [ class [ AvailableNetworks ]
-                        , boolAttr expandedMenuAttrTag isOpen
-                        ]
-                        availableNetworks
+        _ ->
+            div [ class [ Network ] ]
+                [ div
+                    [ class [ ActiveNetwork ]
+                    , onClick <| toMsg <| ToggleMenus NetworkOpen
                     ]
+                    [ div [] [ text (Network.getId activeNIP) ]
+                    , div [] [ text "⌄" ]
+                    ]
+                , ul
+                    [ class [ AvailableNetworks ]
+                    , boolAttr expandedMenuAttrTag isOpen
+                    ]
+                    availableNetworks
+                ]

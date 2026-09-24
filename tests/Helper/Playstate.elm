@@ -1,16 +1,16 @@
 module Helper.Playstate exposing (..)
 
-import Gen.Filesystem
-import Gen.Game
-import Gen.Servers
 import Fuzz exposing (Fuzzer)
 import Game.Models as Game
 import Game.Servers.Filesystem.Models exposing (..)
 import Game.Servers.Filesystem.Shared exposing (..)
+import Game.Servers.Models as Servers exposing (..)
+import Gen.Filesystem
+import Gen.Game
+import Gen.Servers
+import Gen.Utils exposing (..)
 import Random.Pcg as Random exposing (Generator)
 import Random.Pcg.Extra as RandomExtra exposing (andMap)
-import Game.Servers.Models as Servers exposing (..)
-import Gen.Utils exposing (..)
 
 
 type alias ValidState =
@@ -96,17 +96,17 @@ genOne =
                         file2
                         folder2
             in
-                { game = game_
-                , server = server_
-                , valid = valid
-                , invalid = invalid
-                }
+            { game = game_
+            , server = server_
+            , valid = valid
+            , invalid = invalid
+            }
     in
-        Gen.Game.genModel
-            |> Random.map generateStateRecord
-            |> andMap Gen.Servers.genServerCId
-            |> andMap Gen.Servers.genServer
-            |> andMap Gen.Filesystem.genFileEntry
-            |> andMap Gen.Filesystem.genFileEntry
-            |> andMap Gen.Filesystem.genFolder
-            |> andMap Gen.Filesystem.genFolder
+    Gen.Game.genModel
+        |> Random.map generateStateRecord
+        |> andMap Gen.Servers.genServerCId
+        |> andMap Gen.Servers.genServer
+        |> andMap Gen.Filesystem.genFileEntry
+        |> andMap Gen.Filesystem.genFileEntry
+        |> andMap Gen.Filesystem.genFolder
+        |> andMap Gen.Filesystem.genFolder

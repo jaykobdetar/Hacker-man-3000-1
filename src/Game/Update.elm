@@ -1,39 +1,39 @@
 module Game.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Dict exposing (Dict)
-import Set
-import Json.Encode as Encode
-import Json.Decode as Decode exposing (Value)
 import Core.Error as Error
 import Decoders.Game
+import Dict exposing (Dict)
 import Game.Account.Messages as Account
 import Game.Account.Models as Account
 import Game.Account.Update as Account
-import Game.Meta.Messages as Meta
-import Game.Meta.Update as Meta
-import Game.Meta.Models as Meta
-import Game.Servers.Messages as Servers
-import Game.Servers.Update as Servers
-import Game.Servers.Shared as Servers
-import Game.Servers.Models as Servers
-import Game.Storyline.Messages as Story
-import Game.Storyline.Update as Story
-import Game.Inventory.Messages as Inventory
-import Game.Inventory.Update as Inventory
-import Game.Web.Messages as Web
-import Game.Web.Update as Web
 import Game.BackFlix.Messages as BackFlix
 import Game.BackFlix.Update as BackFlix
+import Game.Config exposing (..)
+import Game.Inventory.Messages as Inventory
+import Game.Inventory.Update as Inventory
+import Game.Messages exposing (..)
+import Game.Meta.Messages as Meta
+import Game.Meta.Models as Meta
 import Game.Meta.Types.Network as Network
+import Game.Meta.Update as Meta
+import Game.Models exposing (..)
 import Game.Requests.Resync as ResyncRequest
     exposing
-        ( resyncRequest
-        , resyncReceive
+        ( resyncReceive
+        , resyncRequest
         )
-import Game.Config exposing (..)
-import Game.Messages exposing (..)
-import Game.Models exposing (..)
+import Game.Servers.Messages as Servers
+import Game.Servers.Models as Servers
+import Game.Servers.Shared as Servers
+import Game.Servers.Update as Servers
+import Game.Storyline.Messages as Story
+import Game.Storyline.Update as Story
+import Game.Web.Messages as Web
+import Game.Web.Update as Web
+import Json.Decode as Decode exposing (Value)
+import Json.Encode as Encode
+import Set
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -92,7 +92,7 @@ onResync config model =
                 |> Cmd.map (ResyncRequest >> config.toMsg)
                 |> React.cmd
     in
-        ( model, react )
+    ( model, react )
 
 
 
@@ -114,7 +114,7 @@ onAccount config msg model =
         model_ =
             { model | account = account }
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onMeta : Config msg -> Meta.Msg -> Model -> UpdateResponse msg
@@ -129,7 +129,7 @@ onMeta config msg model =
         model_ =
             setMeta meta model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onStory : Config msg -> Story.Msg -> Model -> UpdateResponse msg
@@ -149,7 +149,7 @@ onStory config msg model =
         model_ =
             setStory story model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onInventory : Config msg -> Inventory.Msg -> Model -> UpdateResponse msg
@@ -164,7 +164,7 @@ onInventory config msg model =
         model_ =
             setInventory inventory model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onWeb : Config msg -> Web.Msg -> Model -> UpdateResponse msg
@@ -182,7 +182,7 @@ onWeb config msg model =
         model_ =
             setWeb web model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 
@@ -213,7 +213,7 @@ onServers config msg model =
         model_ =
             setServers servers model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onBackFlix : Config msg -> BackFlix.Msg -> Model -> UpdateResponse msg
@@ -228,7 +228,7 @@ onBackFlix config msg model =
         model_ =
             setBackFlix backflix_ model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onResyncRequest :
@@ -272,7 +272,7 @@ handleJoinedAccount config value model =
                 msg =
                     Debug.log "▶ " ("Bootstrap Error:\n" ++ reason)
             in
-                ( model, React.msg <| config.onError (Error.porra msg) )
+            ( model, React.msg <| config.onError (Error.porra msg) )
 
 
 bootstrapJoin :
@@ -296,7 +296,7 @@ bootstrapJoin config remoteServers playerServer =
                 |> List.filterMap (joinRemote config playerServer)
                 |> config.batchMsg
     in
-        config.batchMsg [ msg1, msg2 ]
+    config.batchMsg [ msg1, msg2 ]
 
 
 joinPlayer : Config msg -> Decoders.Game.Player -> msg
@@ -305,7 +305,7 @@ joinPlayer config server =
         cid =
             Servers.GatewayCId server.serverId
     in
-        config.onJoinServer cid Nothing
+    config.onJoinServer cid Nothing
 
 
 joinRemote :
@@ -317,26 +317,26 @@ joinRemote config fromServer toServer =
     let
         maybeFromIp =
             fromServer.nips
-                |> List.filter (Network.getId >> ((==) toServer.networkId))
+                |> List.filter (Network.getId >> (==) toServer.networkId)
                 |> List.head
                 |> Maybe.map Network.getIp
     in
-        case maybeFromIp of
-            Just fromIp ->
-                let
-                    cid =
-                        Servers.EndpointCId <|
-                            Network.toNip toServer.networkId toServer.ip
+    case maybeFromIp of
+        Just fromIp ->
+            let
+                cid =
+                    Servers.EndpointCId <|
+                        Network.toNip toServer.networkId toServer.ip
 
-                    payload =
-                        -- TODO: include bounce_id after settling
-                        -- it's field name
-                        Encode.object
-                            [ ( "gateway_ip", Encode.string fromIp )
-                            , ( "password", Encode.string toServer.password )
-                            ]
-                in
-                    Just <| config.onJoinServer cid (Just payload)
+                payload =
+                    -- TODO: include bounce_id after settling
+                    -- it's field name
+                    Encode.object
+                        [ ( "gateway_ip", Encode.string fromIp )
+                        , ( "password", Encode.string toServer.password )
+                        ]
+            in
+            Just <| config.onJoinServer cid (Just payload)
 
-            Nothing ->
-                Nothing
+        Nothing ->
+            Nothing

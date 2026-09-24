@@ -1,8 +1,8 @@
 module Apps.Hebamp.Config exposing (..)
 
-import Html exposing (Attribute)
-import Game.Meta.Types.Desktop.Apps exposing (Reference)
 import Apps.Hebamp.Messages exposing (..)
+import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Html exposing (Attribute)
 
 
 type alias Config msg =

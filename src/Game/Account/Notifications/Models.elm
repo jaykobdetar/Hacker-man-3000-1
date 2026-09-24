@@ -1,7 +1,7 @@
 module Game.Account.Notifications.Models exposing (..)
 
-import Game.Meta.Types.Notifications exposing (..)
 import Game.Account.Notifications.Shared exposing (..)
+import Game.Meta.Types.Notifications exposing (..)
 
 
 type alias Model =

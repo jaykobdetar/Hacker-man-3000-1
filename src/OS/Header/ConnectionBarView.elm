@@ -1,26 +1,26 @@
 module OS.Header.ConnectionBarView exposing (view)
 
+import Apps.BounceManager.Shared as BounceManager
+import Apps.Browser.Shared as Browser
+import Apps.Params as AppParams exposing (AppParams)
 import Dict
-import Html exposing (..)
-import Html.Attributes exposing (disabled)
-import Html.CssHelpers
-import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
-import Utils.Html.Events exposing (onClickMe, onClickWithStopProp)
-import Utils.Html.Attributes exposing (boolAttr)
 import Game.Account.Bounces.Models as Bounces
 import Game.Account.Bounces.Shared as Bounces
 import Game.Meta.Types.Context exposing (Context(..))
 import Game.Meta.Types.Network as Network
 import Game.Servers.Shared as Servers
+import Html exposing (..)
+import Html.Attributes exposing (disabled)
+import Html.CssHelpers
+import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 import OS.Header.Config exposing (..)
-import OS.Header.Models exposing (..)
 import OS.Header.Messages exposing (..)
+import OS.Header.Models exposing (..)
 import OS.Header.Resources exposing (..)
-import UI.Layouts.VerticalList exposing (..)
 import UI.Elements.CustomSelect exposing (customSelect)
-import Apps.Params as AppParams exposing (AppParams)
-import Apps.BounceManager.Shared as BounceManager
-import Apps.Browser.Shared as Browser
+import UI.Layouts.VerticalList exposing (..)
+import Utils.Html.Attributes exposing (boolAttr)
+import Utils.Html.Events exposing (onClickMe, onClickWithStopProp)
 
 
 { id, class, classList } =
@@ -62,15 +62,15 @@ view ({ toMsg } as config) ({ openMenu } as model) =
             config.activeContext
                 |> (==) Gateway
     in
-        div
-            [ class [ Connection ] ]
-            [ contextToggler onGateway (toMsg <| ContextTo Gateway) activeEndpointCId
-            , gatewaySelector config openMenu activeGatewayCId config.gateways
-            , bounceSelector config activeBounce activeEndpointCId model
-            , bounceMenu config activeBounce activeEndpointCId model
-            , endpointSelector config openMenu activeEndpointCId endpoints
-            , contextToggler (not onGateway) (toMsg <| ContextTo Endpoint) activeEndpointCId
-            ]
+    div
+        [ class [ Connection ] ]
+        [ contextToggler onGateway (toMsg <| ContextTo Gateway) activeEndpointCId
+        , gatewaySelector config openMenu activeGatewayCId config.gateways
+        , bounceSelector config activeBounce activeEndpointCId model
+        , bounceMenu config activeBounce activeEndpointCId model
+        , endpointSelector config openMenu activeEndpointCId endpoints
+        , contextToggler (not onGateway) (toMsg <| ContextTo Endpoint) activeEndpointCId
+        ]
 
 
 
@@ -83,20 +83,21 @@ contextToggler active handler activeEndpointCId =
         classes =
             if active then
                 [ Context, Selected ]
+
             else
                 [ Context ]
     in
-        case activeEndpointCId of
-            Just cid ->
-                span
-                    [ onClick handler
-                    , class classes
-                    , boolAttr headerContextActiveAttrTag active
-                    ]
-                    []
+    case activeEndpointCId of
+        Just cid ->
+            span
+                [ onClick handler
+                , class classes
+                , boolAttr headerContextActiveAttrTag active
+                ]
+                []
 
-            Nothing ->
-                text ""
+        Nothing ->
+            text ""
 
 
 selector :
@@ -120,17 +121,17 @@ selector { toMsg } classes wrapper kind render open active list =
                     Just (text "None")
 
         handler =
-            (toMsg <| ToggleMenus kind)
+            toMsg <| ToggleMenus kind
     in
-        customSelect
-            [ class classes ]
-            ( toMsg MouseEnterDropdown, toMsg MouseLeavesDropdown )
-            wrapper
-            handler
-            render_
-            (open == kind)
-            active
-            list
+    customSelect
+        [ class classes ]
+        ( toMsg MouseEnterDropdown, toMsg MouseLeavesDropdown )
+        wrapper
+        handler
+        render_
+        (open == kind)
+        active
+        list
 
 
 
@@ -155,17 +156,17 @@ gatewaySelector ({ toMsg } as config) open cid list =
                 ]
 
         openMsg =
-            (toMsg <| ToggleMenus GatewayOpen)
+            toMsg <| ToggleMenus GatewayOpen
     in
-        customSelect
-            [ class [ SGateway ] ]
-            ( toMsg MouseEnterDropdown, toMsg MouseLeavesDropdown )
-            msg
-            openMsg
-            render_
-            (open == GatewayOpen)
-            cid
-            list
+    customSelect
+        [ class [ SGateway ] ]
+        ( toMsg MouseEnterDropdown, toMsg MouseLeavesDropdown )
+        msg
+        openMsg
+        render_
+        (open == GatewayOpen)
+        cid
+        list
 
 
 
@@ -189,7 +190,7 @@ endpointSelector ({ toMsg } as config) =
                 , toMsg DropMenu
                 ]
     in
-        selector config [ SEndpoint ] msg EndpointOpen render
+    selector config [ SEndpoint ] msg EndpointOpen render
 
 
 
@@ -222,8 +223,8 @@ bounceSelector config activeBounce activeEndpointCId model =
                 |> onMouseLeave
             ]
     in
-        div attrs
-            [ text name ]
+    div attrs
+        [ text name ]
 
 
 bounceMenu :
@@ -256,10 +257,10 @@ bounceMenu config activeBounce activeEndpointCId model =
                 |> onMouseLeave
             ]
     in
-        div attrs
-            [ bouncePicker config readonlyMode
-            , bounceView config readonlyMode activeBounce model
-            ]
+    div attrs
+        [ bouncePicker config readonlyMode
+        , bounceView config readonlyMode activeBounce model
+        ]
 
 
 bouncePicker : Config msg -> Bool -> Html msg
@@ -274,17 +275,18 @@ bouncePicker ({ toMsg, batchMsg, onSetBounce } as config) readonly =
         hidden list =
             if readonly then
                 Hidden :: list
+
             else
                 list
     in
-        div [ class (hidden [ BounceMenuLeft ]) ]
-            [ bounceList config
-            , div []
-                [ button
-                    noBounceAttr
-                    [ text "No Bounce" ]
-                ]
+    div [ class (hidden [ BounceMenuLeft ]) ]
+        [ bounceList config
+        , div []
+            [ button
+                noBounceAttr
+                [ text "No Bounce" ]
             ]
+        ]
 
 
 bounceList : Config msg -> Html msg
@@ -305,7 +307,7 @@ bounceListEntry ({ toMsg, bounces } as config) bounceId bounce acc =
     let
         name =
             Bounces.getName bounceId bounces
-                |> Maybe.map (text)
+                |> Maybe.map text
                 |> Maybe.withDefault (text "")
 
         msg =
@@ -313,10 +315,10 @@ bounceListEntry ({ toMsg, bounces } as config) bounceId bounce acc =
                 |> config.batchMsg
                 |> onClickMe
     in
-        div
-            [ class [ BounceListEntry ], msg ]
-            [ name ]
-            |> flip (::) acc
+    div
+        [ class [ BounceListEntry ], msg ]
+        [ name ]
+        |> flip (::) acc
 
 
 bounceView : Config msg -> Bool -> Maybe String -> Model -> Html msg
@@ -333,13 +335,14 @@ bounceView config readonly activeBounce model =
         readOnly list =
             if readonly then
                 ReadOnly :: list
+
             else
                 list
     in
-        div [ class <| readOnly [ BounceMenuRight ] ]
-            [ bounceMembers config readonly selectedBounce
-            , bounceOptions config readonly activeBounce model
-            ]
+    div [ class <| readOnly [ BounceMenuRight ] ]
+        [ bounceMembers config readonly selectedBounce
+        , bounceOptions config readonly activeBounce model
+        ]
 
 
 bounceMembers : Config msg -> Bool -> Maybe String -> Html msg
@@ -353,16 +356,18 @@ bounceMembers ({ bounces } as config) readonly selectedBounce =
         readOnly list =
             if readonly then
                 ReadOnly :: list
+
             else
                 list
     in
-        if List.isEmpty path then
-            div [ class <| readOnly [ BounceMembers, Empty ] ] [ text "No Bounce" ]
-        else
-            path
-                |> List.foldr (bounceMember config) ( [], List.length path )
-                |> Tuple.first
-                |> div [ class <| readOnly [ BounceMembers ] ]
+    if List.isEmpty path then
+        div [ class <| readOnly [ BounceMembers, Empty ] ] [ text "No Bounce" ]
+
+    else
+        path
+            |> List.foldr (bounceMember config) ( [], List.length path )
+            |> Tuple.first
+            |> div [ class <| readOnly [ BounceMembers ] ]
 
 
 bounceMember :
@@ -377,17 +382,17 @@ bounceMember config nip ( acc, counter ) =
                 |> Network.render
                 |> Browser.OpenAtUrl
                 |> AppParams.Browser
-                |> flip (config.onOpenApp) config.activeGatewayCId
+                |> flip config.onOpenApp config.activeGatewayCId
                 |> onClick
     in
-        div [ class [ BounceMember ] ]
-            [ button [ msg ] [ text <| toString (counter) ]
-            , text "═>"
-            , br [] []
-            , text <| Network.toString nip
-            ]
-            |> flip (::) acc
-            |> flip (,) (counter - 1)
+    div [ class [ BounceMember ] ]
+        [ button [ msg ] [ text <| toString counter ]
+        , text "═>"
+        , br [] []
+        , text <| Network.toString nip
+        ]
+        |> flip (::) acc
+        |> flip (,) (counter - 1)
 
 
 bounceOptions : Config msg -> Bool -> Maybe String -> Model -> Html msg
@@ -396,7 +401,7 @@ bounceOptions config readonly activeBounce model =
         inUse =
             case model.openMenu of
                 BounceOpen maybeBounce ->
-                    (maybeBounce == activeBounce)
+                    maybeBounce == activeBounce
 
                 _ ->
                     False
@@ -405,7 +410,7 @@ bounceOptions config readonly activeBounce model =
             bounceId
                 |> BounceManager.WithBounce
                 |> AppParams.BounceManager
-                |> flip (config.onOpenApp) config.activeGatewayCId
+                |> flip config.onOpenApp config.activeGatewayCId
                 |> onClick
                 |> List.singleton
 
@@ -422,6 +427,7 @@ bounceOptions config readonly activeBounce model =
                         Just id ->
                             if inUse then
                                 []
+
                             else
                                 [ button (editMsg id) [ text "Edit" ]
                                 , button (selectMsg id) [ text "Select" ]
@@ -436,8 +442,9 @@ bounceOptions config readonly activeBounce model =
         hidden list =
             if readonly then
                 Hidden :: list
+
             else
                 list
     in
-        div [ class (hidden [ BounceOptions ]) ]
-            btns
+    div [ class (hidden [ BounceOptions ]) ]
+        btns

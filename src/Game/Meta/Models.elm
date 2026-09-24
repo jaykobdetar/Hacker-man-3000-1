@@ -1,9 +1,8 @@
-module Game.Meta.Models
-    exposing
-        ( Model
-        , initialModel
-        , getLastTick
-        )
+module Game.Meta.Models exposing
+    ( Model
+    , getLastTick
+    , initialModel
+    )
 
 import Time exposing (Time)
 

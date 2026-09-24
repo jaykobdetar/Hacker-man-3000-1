@@ -1,20 +1,20 @@
 module Apps.VirusPanel.Update exposing (update)
 
-import Dict as Dict
-import Utils.React as React exposing (React)
-import Game.Meta.Types.Network exposing (NIP)
+import Apps.VirusPanel.Config exposing (..)
+import Apps.VirusPanel.Messages as VirusPanel exposing (Msg(..))
+import Apps.VirusPanel.Models exposing (..)
+import Dict
 import Game.Account.Bounces.Shared as Bounces
 import Game.Account.Database.Models as Database
-import Game.Account.Database.Shared exposing (..)
 import Game.Account.Database.Requests.CollectWithBank as CollectWithBank
     exposing
         ( collectWithBankRequest
         )
+import Game.Account.Database.Shared exposing (..)
 import Game.Account.Finances.Models as Finances
+import Game.Meta.Types.Network exposing (NIP)
 import Game.Servers.Shared as Servers exposing (CId(..))
-import Apps.VirusPanel.Config exposing (..)
-import Apps.VirusPanel.Models exposing (..)
-import Apps.VirusPanel.Messages as VirusPanel exposing (Msg(..))
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -84,7 +84,7 @@ onSetModal config modal model =
                 _ ->
                     { model | modal = modal }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onGoTab : MainTab -> Model -> UpdateResponse msg
@@ -93,7 +93,7 @@ onGoTab tab model =
         model_ =
             { model | selected = tab }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onSelect : Maybe CollectBehavior -> Model -> UpdateResponse msg
@@ -107,6 +107,7 @@ onCheck config nip model =
         List.filter ((==) nip >> not) (getSelectedToCollect model)
             |> setSelectedToCollect model
             |> flip (,) React.none
+
     else
         (::) nip (getSelectedToCollect model)
             |> setSelectedToCollect model
@@ -130,14 +131,15 @@ onCheckAll ({ database } as config) model =
                 |> Dict.keys
 
         model_ =
-            if (List.length model.toCollectSelected) < (List.length runningVirus) then
+            if List.length model.toCollectSelected < List.length runningVirus then
                 { model
                     | toCollectSelected = runningVirus
                 }
+
             else
                 { model | toCollectSelected = [] }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onChangeActiveVirus :
@@ -153,7 +155,7 @@ onChangeActiveVirus config nip model =
         model_ =
             { model | selectedActiveVirus = Nothing }
     in
-        ( dropModal model, react )
+    ( dropModal model, react )
 
 
 onSetActiveVirus : Config msg -> Maybe String -> Model -> UpdateResponse msg
@@ -199,7 +201,7 @@ onCollect config model =
                 Nothing ->
                     React.none
     in
-        ( dropModal model, react )
+    ( dropModal model, react )
 
 
 doCollectWithBankRequest :
@@ -216,6 +218,7 @@ doCollectWithBankRequest config bounceId bankAccountId virusList =
         folder k v ( acu, found ) =
             if not found && v.isActive then
                 ( k :: acu, True )
+
             else
                 ( acu, found )
 
@@ -233,19 +236,19 @@ doCollectWithBankRequest config bounceId bankAccountId virusList =
         virusesId =
             List.foldr virusReducer [] virusList
     in
-        case gateway of
-            GatewayCId id ->
-                config
-                    |> collectWithBankRequest id
-                        virusesId
-                        bounceId
-                        bankAccountId
-                        config.accountId
-                    |> Cmd.map (HandleCollected >> config.toMsg)
-                    |> React.cmd
+    case gateway of
+        GatewayCId id ->
+            config
+                |> collectWithBankRequest id
+                    virusesId
+                    bounceId
+                    bankAccountId
+                    config.accountId
+                |> Cmd.map (HandleCollected >> config.toMsg)
+                |> React.cmd
 
-            EndpointCId _ ->
-                React.none
+        EndpointCId _ ->
+            React.none
 
 
 doCollectWithBTCRequest :
@@ -296,4 +299,4 @@ onHandleCollected config response model =
                 Ok () ->
                     ( Just <| ForCollectSuccessful, Nothing )
     in
-        React.update { model | modal = modal, collectSelected = collectSelected }
+    React.update { model | modal = modal, collectSelected = collectSelected }

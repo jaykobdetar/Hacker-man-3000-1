@@ -1,11 +1,11 @@
 module Apps.LogViewer.Update exposing (update)
 
-import Dict
-import Utils.React as React exposing (React)
-import Game.Servers.Logs.Models as Logs
 import Apps.LogViewer.Config exposing (..)
-import Apps.LogViewer.Models exposing (..)
 import Apps.LogViewer.Messages as LogViewer exposing (Msg(..))
+import Apps.LogViewer.Models exposing (..)
+import Dict
+import Game.Servers.Logs.Models as Logs
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -62,10 +62,10 @@ updateTextFilter config filter model =
                 |> Logs.filter filterer
                 |> Dict.keys
     in
-        { model
-            | filterText = filter
-            , filterCache = filterCache
-        }
+    { model
+        | filterText = filter
+        , filterCache = filterCache
+    }
 
 
 onApplyEditing { onUpdate } id model =
@@ -74,7 +74,7 @@ onApplyEditing { onUpdate } id model =
             leaveEditing id model
 
         react =
-            case (getEdit id model) of
+            case getEdit id model of
                 Just edited ->
                     edited
                         |> onUpdate id
@@ -83,7 +83,7 @@ onApplyEditing { onUpdate } id model =
                 Nothing ->
                     React.none
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onEnterEditing : Config msg -> Logs.ID -> Model -> UpdateResponse msg
@@ -102,4 +102,4 @@ onEnterEditing { logs } id model =
                 _ ->
                     model
     in
-        ( model_, React.none )
+    ( model_, React.none )

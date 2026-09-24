@@ -31,15 +31,17 @@ title model =
 
         posfix =
             if String.length filter > 12 then
-                Just <| ": \"" ++ (String.left 10 filter) ++ "[...]\""
+                Just <| ": \"" ++ String.left 10 filter ++ "[...]\""
+
             else if String.length filter > 0 then
                 Just <| ": \"" ++ filter ++ "\""
+
             else
                 Nothing
     in
-        posfix
-            |> Maybe.map ((++) name)
-            |> Maybe.withDefault name
+    posfix
+        |> Maybe.map ((++) name)
+        |> Maybe.withDefault name
 
 
 icon : String
@@ -69,6 +71,7 @@ toggleExpanded id model =
         | expanded =
             if isEntryExpanded id model then
                 List.filter ((/=) id) model.expanded
+
             else
                 id :: model.expanded
     }
@@ -78,6 +81,7 @@ catchDataWhenFiltering : List Logs.ID -> Logs.ID -> Maybe Logs.ID
 catchDataWhenFiltering filterCache log =
     if List.member log filterCache then
         Just log
+
     else
         Nothing
 
@@ -90,10 +94,11 @@ applyFilter model logs =
                 catchDataWhenFiltering model.filterCache id
                     |> Maybe.map (always True)
                     |> Maybe.withDefault False
+
             else
                 True
     in
-        { logs | logs = Logs.filter filterer logs }
+    { logs | logs = Logs.filter filterer logs }
 
 
 updateEditing : Logs.ID -> String -> Model -> Model
@@ -102,7 +107,7 @@ updateEditing id value model =
         editing_ =
             Dict.insert id value model.editing
     in
-        { model | editing = editing_ }
+    { model | editing = editing_ }
 
 
 toggleExpand : Logs.ID -> Model -> Model
@@ -111,6 +116,7 @@ toggleExpand id model =
         | expanded =
             if List.member id model.expanded then
                 List.filter ((/=) id) model.expanded
+
             else
                 id :: model.expanded
     }
@@ -122,7 +128,7 @@ leaveEditing id model =
         editing_ =
             Dict.filter (\k _ -> k /= id) model.editing
     in
-        { model | editing = editing_ }
+    { model | editing = editing_ }
 
 
 getEdit : Logs.ID -> Model -> Maybe Logs.ID

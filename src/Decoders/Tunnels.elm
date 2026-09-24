@@ -1,18 +1,18 @@
 module Decoders.Tunnels exposing (..)
 
 import Dict exposing (Dict)
+import Game.Servers.Tunnels.Models exposing (..)
 import Json.Decode
     exposing
         ( Decoder
         , Value
         , decodeValue
-        , maybe
-        , string
         , list
         , map
+        , maybe
+        , string
         )
-import Json.Decode.Pipeline exposing (decode, optional, required, custom)
-import Game.Servers.Tunnels.Models exposing (..)
+import Json.Decode.Pipeline exposing (custom, decode, optional, required)
 
 
 type alias Index =

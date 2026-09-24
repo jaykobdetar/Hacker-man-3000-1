@@ -1,19 +1,19 @@
 module Decoders.Logs exposing (..)
 
 import Dict exposing (Dict)
+import Game.Servers.Logs.Models exposing (..)
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , map
-        , oneOf
-        , succeed
-        , string
+        , andThen
         , float
         , list
-        , andThen
+        , map
+        , oneOf
+        , string
+        , succeed
         )
-import Json.Decode.Pipeline exposing (decode, required, optional, custom, hardcoded)
-import Game.Servers.Logs.Models exposing (..)
+import Json.Decode.Pipeline exposing (custom, decode, hardcoded, optional, required)
 
 
 type alias Index =
@@ -36,9 +36,9 @@ model =
         reducer id log acu =
             Dict.insert (findId ( log.timestamp, 0 ) acu) id acu
     in
-        decode Model
-            |> custom logs
-            |> custom drawOrder
+    decode Model
+        |> custom logs
+        |> custom drawOrder
 
 
 index : Decoder Index
@@ -82,10 +82,11 @@ dataFromSever raw =
     Data raw <|
         case String.split " " raw of
             [ "localhost", "logged", "into", target ] ->
-                if (ipValid target) then
+                if ipValid target then
                     RemoteLogin target
                         |> RemoteLoginFormat
                         |> Just
+
                 else
                     Nothing
 

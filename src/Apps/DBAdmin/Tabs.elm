@@ -1,8 +1,8 @@
 module Apps.DBAdmin.Tabs exposing (..)
 
 import Apps.DBAdmin.Models exposing (..)
-import Game.Account.Database.Models as Database
 import Apps.DBAdmin.Tabs.Servers.Helpers as Servers exposing (..)
+import Game.Account.Database.Models as Database
 
 
 toggleExpand : String -> MainTab -> Model -> Model

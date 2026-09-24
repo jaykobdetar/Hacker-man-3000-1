@@ -1,22 +1,22 @@
 module Apps.Explorer.View exposing (..)
 
-import Dict
-import Html exposing (..)
-import Html.Attributes exposing (value, attribute)
-import Html.Events exposing (onClick, onInput)
-import Html.CssHelpers
-import ContextMenu
-import Utils.Maybe as Maybe
-import Game.Servers.Models as Servers exposing (Server)
-import Game.Servers.Shared as Servers exposing (CId)
-import Game.Servers.Filesystem.Shared as Filesystem
 import Apps.Explorer.Config exposing (..)
 import Apps.Explorer.Messages exposing (Msg(..))
 import Apps.Explorer.Models exposing (..)
-import Apps.Explorer.Resources exposing (Classes(..), prefix, idAttrKey)
+import Apps.Explorer.Resources exposing (Classes(..), idAttrKey, prefix)
+import ContextMenu
+import Dict
+import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Models as Servers exposing (Server)
+import Game.Servers.Shared as Servers exposing (CId)
+import Html exposing (..)
+import Html.Attributes exposing (attribute, value)
+import Html.CssHelpers
+import Html.Events exposing (onClick, onInput)
 import UI.Elements.Modal exposing (modalPickStorage)
 import UI.Elements.ProgressBar exposing (progressBar)
 import UI.ToString exposing (bytesToString, secondsToTimeNotation)
+import Utils.Maybe as Maybe
 
 
 { id, class, classList } =
@@ -44,16 +44,15 @@ modals config modal =
                     (Tuple.second config.activeGateway).storages
 
                 action =
-                    (Maybe.map
+                    Maybe.map
                         (flip (config.onDownloadFile target) file
                             >> List.singleton
                         )
                         >> Maybe.withDefault []
                         >> (::) (config.toMsg <| EnterModal Nothing)
                         >> config.batchMsg
-                    )
             in
-                modalPickStorage storages action
+            modalPickStorage storages action
 
 
 idAttr : String -> Attribute msg
@@ -65,6 +64,7 @@ entryIcon : Filesystem.Entry -> Classes
 entryIcon entry =
     if Filesystem.isFolderEntry entry then
         CasedDirIcon
+
     else
         case Maybe.map Filesystem.toFile <| Filesystem.toFileEntry entry of
             Just file ->
@@ -207,35 +207,35 @@ treeEntry ({ toMsg } as config) server file model =
         storage =
             getStorage server model
     in
-        case file of
-            Filesystem.FileEntry id file ->
-                div
-                    [ class [ NavEntry, EntryArchive ]
-                    , menuTreeArchive config storage ( id, file )
-                    ]
-                    [ icon, label ]
+    case file of
+        Filesystem.FileEntry id file ->
+            div
+                [ class [ NavEntry, EntryArchive ]
+                , menuTreeArchive config storage ( id, file )
+                ]
+                [ icon, label ]
 
-            Filesystem.FolderEntry path name ->
-                case getFilesystem server model of
-                    Just fs ->
-                        let
-                            fullpath =
-                                Filesystem.appendPath name path
-                        in
-                            div
-                                [ class [ NavEntry, EntryDir, EntryExpanded ]
-                                , menuTreeDir config fullpath
-                                , onClick <| toMsg <| GoPath fullpath
-                                ]
-                                [ div
-                                    [ class [ EntryView ] ]
-                                    [ icon, label ]
-                                , div [ class [ EntryChilds ] ] <|
-                                    treeEntryPath config server fullpath model
-                                ]
+        Filesystem.FolderEntry path name ->
+            case getFilesystem server model of
+                Just fs ->
+                    let
+                        fullpath =
+                            Filesystem.appendPath name path
+                    in
+                    div
+                        [ class [ NavEntry, EntryDir, EntryExpanded ]
+                        , menuTreeDir config fullpath
+                        , onClick <| toMsg <| GoPath fullpath
+                        ]
+                        [ div
+                            [ class [ EntryView ] ]
+                            [ icon, label ]
+                        , div [ class [ EntryChilds ] ] <|
+                            treeEntryPath config server fullpath model
+                        ]
 
-                    Nothing ->
-                        text ""
+                Nothing ->
+                    text ""
 
 
 treeEntryPath : Config msg -> Server -> Filesystem.Path -> Model -> List (Html msg)
@@ -261,12 +261,12 @@ detailedEntry config server entry model =
                 storage =
                     getStorage server model
             in
-                case Filesystem.getType file of
-                    Filesystem.Text ->
-                        detailedTextFile config storage entry ( id, file )
+            case Filesystem.getType file of
+                Filesystem.Text ->
+                    detailedTextFile config storage entry ( id, file )
 
-                    _ ->
-                        detailedGenericArchive config storage entry ( id, file )
+                _ ->
+                    detailedGenericArchive config storage entry ( id, file )
 
 
 detailedFolder : Config msg -> Filesystem.Path -> Filesystem.Name -> Server -> Model -> Html msg
@@ -280,15 +280,15 @@ detailedFolder config path name server model =
                 path_ =
                     Filesystem.appendPath name path
             in
-                div
-                    [ class [ CntListEntry, EntryDir ]
-                    , menuMainDir config path_
-                    , onClick <| config.toMsg <| GoPath path_
-                    , idAttr <| Filesystem.joinPath path_
-                    ]
-                    [ span [ class [ DirIcon ] ] []
-                    , span [] [ text name ]
-                    ]
+            div
+                [ class [ CntListEntry, EntryDir ]
+                , menuMainDir config path_
+                , onClick <| config.toMsg <| GoPath path_
+                , idAttr <| Filesystem.joinPath path_
+                ]
+                [ span [ class [ DirIcon ] ] []
+                , span [] [ text name ]
+                ]
 
         Nothing ->
             text ""
@@ -345,15 +345,16 @@ detailedGenericArchive config storage entry (( id, file ) as fileEntry) =
                     ]
                 ]
     in
-        if Filesystem.hasModules file then
-            div [ class [ CntListContainer ] ]
-                [ baseEntry
-                , div [ class [ CntListChilds ] ] <|
-                    moduleList config id <|
-                        Filesystem.getType file
-                ]
-        else
-            baseEntry
+    if Filesystem.hasModules file then
+        div [ class [ CntListContainer ] ]
+            [ baseEntry
+            , div [ class [ CntListChilds ] ] <|
+                moduleList config id <|
+                    Filesystem.getType file
+            ]
+
+    else
+        baseEntry
 
 
 detailedEntryList :
@@ -399,8 +400,9 @@ menuMainArchive ({ menuAttr } as config) storage (( id, _ ) as fileEntry) =
             Just <| Tuple.first config.activeServer
 
         contextUnique =
-            if (config.endpointCId == activeCId) then
+            if config.endpointCId == activeCId then
                 [ ( ContextMenu.item "Download", downloadAction config fileEntry ) ]
+
             else
                 [ ( ContextMenu.item "Upload", uploadAction config fileEntry storage ) ]
 
@@ -410,7 +412,7 @@ menuMainArchive ({ menuAttr } as config) storage (( id, _ ) as fileEntry) =
             , ( ContextMenu.item "Delete", config.onDeleteFile storage id )
             ]
     in
-        menuAttr [ common, contextUnique ]
+    menuAttr [ common, contextUnique ]
 
 
 menuExecutable :
@@ -439,15 +441,15 @@ usage min max =
                 |> floor
                 |> toString
     in
-        div [ class [ NavData ] ]
-            [ text "Data usage"
-            , br [] []
-            , text (usageStr ++ "%")
-            , br [] []
-            , progressBar usage "" 12
-            , br [] []
-            , text <| minStr ++ " / " ++ maxStr
-            ]
+    div [ class [ NavData ] ]
+        [ text "Data usage"
+        , br [] []
+        , text (usageStr ++ "%")
+        , br [] []
+        , progressBar usage "" 12
+        , br [] []
+        , text <| minStr ++ " / " ++ maxStr
+        ]
 
 
 explorerColumn : Config msg -> ( CId, Server ) -> Model -> Html msg
@@ -471,8 +473,9 @@ storageTreeEntry :
 storageTreeEntry { toMsg } mainStorage storageId { name } acu =
     let
         activeAttributeValue =
-            if (mainStorage == storageId) then
+            if mainStorage == storageId then
                 "master"
+
             else
                 "slave"
 
@@ -485,13 +488,12 @@ storageTreeEntry { toMsg } mainStorage storageId { name } acu =
         label =
             span [] [ text name ]
     in
-        (div
-            [ class [ NavEntry, EntryArchive ]
-            , onClick <| toMsg <| GoStorage storageId
-            ]
-            [ icon, label ]
-        )
-            :: acu
+    div
+        [ class [ NavEntry, EntryArchive ]
+        , onClick <| toMsg <| GoStorage storageId
+        ]
+        [ icon, label ]
+        :: acu
 
 
 breadcrumbItem : Config msg -> Filesystem.Path -> String -> Html msg
@@ -509,8 +511,9 @@ breadcrumbFold :
     -> ( List (Html msg), Filesystem.Path )
     -> ( List (Html msg), Filesystem.Path )
 breadcrumbFold config item ( htmlElems, pathAcu ) =
-    if (String.length item) < 1 then
+    if String.length item < 1 then
         ( htmlElems, pathAcu )
+
     else
         let
             fullPath =
@@ -519,9 +522,9 @@ breadcrumbFold config item ( htmlElems, pathAcu ) =
             newElems =
                 item
                     |> breadcrumbItem config fullPath
-                    |> (flip (::)) htmlElems
+                    |> flip (::) htmlElems
         in
-            ( newElems, fullPath )
+        ( newElems, fullPath )
 
 
 breadcrumb : Config msg -> Filesystem.Path -> Html msg
@@ -634,12 +637,12 @@ uploadAction ({ onUploadFile, batchMsg } as config) fileEntry storage =
         fs =
             config.getFilesystem storage
     in
-        case Maybe.uncurry config.endpointCId config.endpointMainStorage of
-            Just ( target, storageId ) ->
-                onUploadFile target storageId fileEntry
+    case Maybe.uncurry config.endpointCId config.endpointMainStorage of
+        Just ( target, storageId ) ->
+            onUploadFile target storageId fileEntry
 
-            Nothing ->
-                batchMsg []
+        Nothing ->
+            batchMsg []
 
 
 downloadAction :
@@ -651,4 +654,4 @@ downloadAction { activeServer, toMsg } fileEntry =
         target =
             Servers.getActiveNIP (Tuple.second activeServer)
     in
-        toMsg <| EnterModal <| Just <| ForDownload target fileEntry
+    toMsg <| EnterModal <| Just <| ForDownload target fileEntry

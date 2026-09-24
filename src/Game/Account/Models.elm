@@ -1,13 +1,13 @@
 module Game.Account.Models exposing (..)
 
 import Core.Error as Error exposing (Error)
-import Game.Servers.Shared as Servers
+import Game.Account.Bounces.Models as Bounces
 import Game.Account.Database.Models as Database exposing (..)
 import Game.Account.Dock.Models as Dock
-import Game.Account.Bounces.Models as Bounces
 import Game.Account.Finances.Models as Finances
 import Game.Account.Notifications.Models as Notifications
 import Game.Meta.Types.Context exposing (..)
+import Game.Servers.Shared as Servers
 
 
 type alias ID =
@@ -151,16 +151,18 @@ insertGateway id ({ gateways } as model) =
         activeGateway =
             if model.activeGateway == Nothing then
                 Just id
+
             else
                 model.activeGateway
 
         gateways =
             if not <| List.member id model.gateways then
                 id :: model.gateways
+
             else
                 model.gateways
     in
-        { model | activeGateway = activeGateway, gateways = gateways }
+    { model | activeGateway = activeGateway, gateways = gateways }
 
 
 getDock : Model -> Dock.Model

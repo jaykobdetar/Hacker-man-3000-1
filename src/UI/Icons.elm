@@ -1,8 +1,8 @@
 module UI.Icons exposing (..)
 
 import Css exposing (Style)
-import UI.FontAwesome.Icons as FA
 import UI.FontAwesome.Helper exposing (faIcon, fontAwesome)
+import UI.FontAwesome.Icons as FA
 
 
 type alias Icon =

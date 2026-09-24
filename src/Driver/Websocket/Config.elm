@@ -1,10 +1,10 @@
 module Driver.Websocket.Config exposing (..)
 
-import Json.Decode exposing (Value)
 import Core.Flags as Core
-import Game.Servers.Shared exposing (CId)
 import Driver.Websocket.Channels exposing (..)
 import Driver.Websocket.Messages exposing (..)
+import Game.Servers.Shared exposing (CId)
+import Json.Decode exposing (Value)
 
 
 type alias Config msg =

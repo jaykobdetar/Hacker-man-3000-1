@@ -1,18 +1,18 @@
 module Apps.Browser.Pages.Webserver.View exposing (view)
 
-import Html exposing (..)
-import Html.CssHelpers
-import Game.Account.Database.Models as Database
-import Game.Meta.Types.Network exposing (NIP)
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
-import Game.Servers.Shared as Servers
-import Apps.Browser.Resources exposing (Classes(..), prefix)
 import Apps.Browser.Pages.Webserver.Config exposing (Config)
 import Apps.Browser.Pages.Webserver.Messages exposing (Msg(..))
 import Apps.Browser.Pages.Webserver.Models exposing (Model)
-import Apps.Browser.Widgets.HackingToolkit.View as HackingToolkit exposing (hackingToolkit)
+import Apps.Browser.Resources exposing (Classes(..), prefix)
 import Apps.Browser.Widgets.HackingPanel.View as HackingPanel exposing (hackingPanel)
+import Apps.Browser.Widgets.HackingToolkit.View as HackingToolkit exposing (hackingToolkit)
 import Apps.Browser.Widgets.PublicFiles.View as PublicFiles exposing (publicFiles)
+import Game.Account.Database.Models as Database
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Servers.Shared as Servers
+import Html exposing (..)
+import Html.CssHelpers
 
 
 { id, class, classList } =
@@ -72,12 +72,13 @@ view config model =
 
         fallbackPassword =
             Database.getHackedServer target config.hackedServers
-                |> Maybe.map (Database.getPassword)
+                |> Maybe.map Database.getPassword
     in
-        if (model.showingPanel && endpointMember) then
-            hackingPanel (hackingPanelConfig config) target
-        else
-            viewPre config (not endpointMember) fallbackPassword model
+    if model.showingPanel && endpointMember then
+        hackingPanel (hackingPanelConfig config) target
+
+    else
+        viewPre config (not endpointMember) fallbackPassword model
 
 
 viewPre : Config msg -> Bool -> Maybe String -> Model -> Html msg
@@ -85,6 +86,7 @@ viewPre config showPassword fallbackPsw model =
     div [ class [ AutoHeight ] ]
         [ (if model.custom == "" then
             "No Webserver running"
+
            else
             model.custom
           )

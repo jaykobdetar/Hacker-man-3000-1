@@ -1,15 +1,14 @@
-module Setup.Settings
-    exposing
-        ( Settings(..)
-        , SettingTopic(..)
-        , groupSettings
-        , encodeSettings
-        , decodeErrors
-        )
+module Setup.Settings exposing
+    ( SettingTopic(..)
+    , Settings(..)
+    , decodeErrors
+    , encodeSettings
+    , groupSettings
+    )
 
-import Dict as Dict
-import Json.Encode as Encode exposing (Value)
+import Dict
 import Json.Decode as Decode exposing (Decoder)
+import Json.Encode as Encode exposing (Value)
 import Utils.Ports.Leaflet exposing (Coordinates)
 
 
@@ -40,7 +39,7 @@ groupSettings settings =
                 dict_ =
                     Dict.insert (toString target) settings dict
             in
-                dict_
+            dict_
 
         filterer k v =
             case targetFromString k of
@@ -50,10 +49,10 @@ groupSettings settings =
                 Nothing ->
                     Nothing
     in
-        settings
-            |> List.foldl reducer Dict.empty
-            |> Dict.toList
-            |> List.filterMap (uncurry filterer)
+    settings
+        |> List.foldl reducer Dict.empty
+        |> Dict.toList
+        |> List.filterMap (uncurry filterer)
 
 
 encodeSettings : Settings -> ( String, Value )
@@ -70,7 +69,7 @@ encodeSettings setting =
                 Name name ->
                     encodeHostname name
     in
-        ( key, value )
+    ( key, value )
 
 
 decodeErrors : List Settings -> Decoder (List Settings)
@@ -85,7 +84,7 @@ decodeErrors =
                 |> Decode.field "fields"
                 |> Decode.map (filter checking)
     in
-        decoder
+    decoder
 
 
 

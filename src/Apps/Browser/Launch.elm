@@ -1,13 +1,13 @@
 module Apps.Browser.Launch exposing (..)
 
-import Utils.React as React exposing (React)
+import Apps.Browser.Config exposing (..)
+import Apps.Browser.Messages exposing (..)
+import Apps.Browser.Models exposing (..)
+import Apps.Browser.Shared exposing (..)
+import Game.Meta.Types.Network as Network
 import Game.Servers.Models as Servers
 import Game.Servers.Requests.Browse as BrowseRequest exposing (browseRequest)
-import Game.Meta.Types.Network as Network
-import Apps.Browser.Config exposing (..)
-import Apps.Browser.Models exposing (..)
-import Apps.Browser.Messages exposing (..)
-import Apps.Browser.Shared exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias LaunchResponse msg =
@@ -54,4 +54,4 @@ launchOpenAtUrl config url =
                     )
                 |> React.cmd
     in
-        ( model_, react )
+    ( model_, react )

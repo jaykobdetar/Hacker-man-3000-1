@@ -1,15 +1,15 @@
 module Game.Web.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Core.Error as Error
+import Game.Meta.Types.Desktop.Apps exposing (Requester)
+import Game.Meta.Types.Network as Network
+import Game.Servers.Models as Servers
+import Game.Servers.Shared as Servers exposing (CId)
 import Game.Web.Config exposing (..)
 import Game.Web.Messages exposing (..)
 import Game.Web.Models exposing (..)
 import Json.Encode as Encode
-import Game.Servers.Shared as Servers exposing (CId)
-import Game.Servers.Models as Servers
-import Game.Meta.Types.Network as Network
-import Game.Meta.Types.Desktop.Apps exposing (Requester)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -63,11 +63,11 @@ onLogin config cid nip remoteIp password requester model =
             startLoading remoteNip cid requester model
 
         react =
-            (Just payload)
+            Just payload
                 |> config.onLogin remoteCid
                 |> React.msg
     in
-        ( model_, react )
+    ( model_, react )
 
 
 {-| Sets endpoint
@@ -79,7 +79,7 @@ onJoinedServer config cid model =
             config.servers
 
         nip =
-            case (Servers.get cid servers) of
+            case Servers.get cid servers of
                 Just server ->
                     Servers.getActiveNIP server
 
@@ -102,7 +102,7 @@ onJoinedServer config cid model =
                 Nothing ->
                     React.none
     in
-        ( model_, react )
+    ( model_, react )
 
 
 {-| Reports failure back to the loading page.
@@ -134,4 +134,4 @@ handleJoinFailed config cid model =
                 Nothing ->
                     React.none
     in
-        ( model_, react )
+    ( model_, react )

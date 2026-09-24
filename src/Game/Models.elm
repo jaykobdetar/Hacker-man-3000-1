@@ -1,46 +1,45 @@
-module Game.Models
-    exposing
-        ( Model
-        , initialModel
-        , getAccount
-        , setAccount
-        , getInventory
-        , setInventory
-        , getServers
-        , setServers
-        , getMeta
-        , setMeta
-        , getStory
-        , setStory
-        , getWeb
-        , setWeb
-        , getBackFlix
-        , setBackFlix
-        , getFlags
-        , unsafeGetGateway
-        , getGateway
-        , setGateway
-        , getEndpoint
-        , setEndpoint
-        , getActiveServer
-        , setActiveServer
-        , getBounces
-        )
+module Game.Models exposing
+    ( Model
+    , getAccount
+    , getActiveServer
+    , getBackFlix
+    , getBounces
+    , getEndpoint
+    , getFlags
+    , getGateway
+    , getInventory
+    , getMeta
+    , getServers
+    , getStory
+    , getWeb
+    , initialModel
+    , setAccount
+    , setActiveServer
+    , setBackFlix
+    , setEndpoint
+    , setGateway
+    , setInventory
+    , setMeta
+    , setServers
+    , setStory
+    , setWeb
+    , unsafeGetGateway
+    )
 
-import Dict
-import Native.Panic
 import Core.Error as Error
-import Game.Account.Models as Account
+import Core.Flags exposing (Flags)
+import Dict
 import Game.Account.Bounces.Models as Bounces
-import Game.Servers.Models as Servers
+import Game.Account.Models as Account
+import Game.BackFlix.Models as BackFlix
 import Game.Inventory.Models as Inventory
-import Game.Servers.Shared as Servers
-import Game.Meta.Types.Context exposing (..)
 import Game.Meta.Models as Meta
+import Game.Meta.Types.Context exposing (..)
+import Game.Servers.Models as Servers
+import Game.Servers.Shared as Servers
 import Game.Storyline.Models as Story
 import Game.Web.Models as Web
-import Game.BackFlix.Models as BackFlix
-import Core.Flags exposing (Flags)
+import Native.Panic
 
 
 type alias Model =
@@ -166,15 +165,15 @@ getGateway model =
         servers =
             getServers model
     in
-        model
-            |> getAccount
-            |> Account.getGateway
-            |> Maybe.andThen
-                (\serverCId ->
-                    servers
-                        |> Servers.get serverCId
-                        |> Maybe.map ((,) serverCId)
-                )
+    model
+        |> getAccount
+        |> Account.getGateway
+        |> Maybe.andThen
+            (\serverCId ->
+                servers
+                    |> Servers.get serverCId
+                    |> Maybe.map ((,) serverCId)
+            )
 
 
 unsafeGetGateway : Model -> ( Servers.CId, Servers.Server )
@@ -215,12 +214,12 @@ getEndpoint model =
         maybeEndpoint =
             Maybe.andThen (flip Servers.get servers) maybeEndpointCId
     in
-        case ( maybeEndpointCId, maybeEndpoint ) of
-            ( Just cid, Just endpoint ) ->
-                Just ( cid, endpoint )
+    case ( maybeEndpointCId, maybeEndpoint ) of
+        ( Just cid, Just endpoint ) ->
+            Just ( cid, endpoint )
 
-            _ ->
-                Nothing
+        _ ->
+            Nothing
 
 
 setEndpoint : Servers.Server -> Model -> Model
@@ -285,4 +284,4 @@ setServer cid server model =
         model_ =
             setServers servers_ model
     in
-        model_
+    model_

@@ -1,10 +1,10 @@
 module OS.Models exposing (..)
 
 import Core.Flags as Flags exposing (Flags)
-import OS.Map.Models as Map
-import OS.WindowManager.Models as WindowManager
 import OS.Header.Models as Header
+import OS.Map.Models as Map
 import OS.Toasts.Models as Toasts
+import OS.WindowManager.Models as WindowManager
 
 
 type alias Model =
@@ -28,6 +28,7 @@ startCmd : Flags -> Cmd msg
 startCmd flags =
     if Flags.isHE2 flags then
         Map.startCmd
+
     else
         Cmd.none
 

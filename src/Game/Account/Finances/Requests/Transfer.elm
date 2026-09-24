@@ -1,17 +1,16 @@
-module Game.Account.Finances.Requests.Transfer
-    exposing
-        ( Payload
-        , Data
-        , transferRequest
-        )
+module Game.Account.Finances.Requests.Transfer exposing
+    ( Data
+    , Payload
+    , transferRequest
+    )
 
+import Game.Account.Finances.Models as Finances exposing (AccountNumber)
+import Game.Account.Models as Account
+import Game.Meta.Types.Network as Network
 import Json.Encode as Encode exposing (Value)
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
-import Game.Account.Models as Account
-import Game.Meta.Types.Network as Network
-import Game.Account.Finances.Models as Finances exposing (AccountNumber)
+import Requests.Types exposing (Code(..), FlagsSource)
 
 
 type alias Payload =

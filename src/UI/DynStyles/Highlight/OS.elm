@@ -1,15 +1,15 @@
 module UI.DynStyles.Highlight.OS exposing (..)
 
+import Apps.Shared as Apps
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
-import Utils.Css as Css exposing (withAttribute, nest)
-import Utils.Html.Attributes exposing (activeContextValue, appAttrTag)
-import Apps.Shared as Apps
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Meta.Types.Context exposing (Context)
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import OS.Header.Resources as Header
 import OS.WindowManager.Dock.Resources as Dock
 import OS.WindowManager.Resources as WM
+import Utils.Css as Css exposing (nest, withAttribute)
+import Utils.Html.Attributes exposing (activeContextValue, appAttrTag)
 
 
 highlightDockIcon : DesktopApp -> Stylesheet

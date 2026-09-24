@@ -26,16 +26,18 @@ title model =
                 |> Maybe.withDefault ""
 
         posfix =
-            if (String.length musicTitle) > 12 then
-                Just (": \"" ++ (String.left 10 musicTitle) ++ "[...]\"")
-            else if (String.length musicTitle) > 0 then
+            if String.length musicTitle > 12 then
+                Just (": \"" ++ String.left 10 musicTitle ++ "[...]\"")
+
+            else if String.length musicTitle > 0 then
                 Just (": \"" ++ musicTitle ++ "\"")
+
             else
                 Nothing
     in
-        posfix
-            |> Maybe.map ((++) name)
-            |> Maybe.withDefault name
+    posfix
+        |> Maybe.map ((++) name)
+        |> Maybe.withDefault name
 
 
 icon : String
@@ -49,12 +51,12 @@ initialModel id playlist =
         ( now, next ) =
             splitPlayList playlist
     in
-        { playerId = "audio-" ++ id
-        , now = now
-        , prev = []
-        , next = next
-        , currentTime = 0
-        }
+    { playerId = "audio-" ++ id
+    , now = now
+    , prev = []
+    , next = next
+    , currentTime = 0
+    }
 
 
 setPlaylist : List AudioData -> Model -> Model
@@ -63,12 +65,12 @@ setPlaylist playlist model =
         ( now, next ) =
             splitPlayList playlist
     in
-        { model
-            | now = now
-            , prev = []
-            , next = next
-            , currentTime = 0
-        }
+    { model
+        | now = now
+        , prev = []
+        , next = next
+        , currentTime = 0
+    }
 
 
 splitPlayList : List AudioData -> ( Maybe AudioData, List AudioData )

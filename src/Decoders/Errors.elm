@@ -3,10 +3,11 @@ module Decoders.Errors exposing (..)
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , succeed
         , field
         , string
+        , succeed
         )
+
 
 
 -- WIP

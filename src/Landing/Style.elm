@@ -2,11 +2,11 @@ module Landing.Style exposing (..)
 
 import Css exposing (..)
 import Css.Colors as Colors
-import Css.Elements exposing (input, button, label)
+import Css.Elements exposing (button, input, label)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (Easing(Linear), transition)
-import UI.Colors as Colors
 import Landing.Resources exposing (..)
+import UI.Colors as Colors
+import Utils.Css exposing (Easing(Linear), transition)
 
 
 css : Stylesheet

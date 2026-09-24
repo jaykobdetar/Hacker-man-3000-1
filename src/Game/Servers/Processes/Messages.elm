@@ -1,15 +1,15 @@
 module Game.Servers.Processes.Messages exposing (Msg(..))
 
-import Events.Server.Handlers.ProcessCompleted as ProcessCompleted
 import Events.Server.Handlers.ProcessBruteforceFailed as BruteforceFailed
+import Events.Server.Handlers.ProcessCompleted as ProcessCompleted
 import Events.Server.Handlers.ProcessesRecalcado as ProcessesRecalcado
 import Game.Meta.Types.Network as Network
 import Game.Servers.Filesystem.Shared as Filesystem
-import Game.Servers.Shared exposing (CId)
+import Game.Servers.Processes.Models exposing (..)
 import Game.Servers.Processes.Requests.Download as Download
 import Game.Servers.Processes.Requests.Upload as Upload
-import Game.Servers.Processes.Models exposing (..)
 import Game.Servers.Processes.Shared exposing (..)
+import Game.Servers.Shared exposing (CId)
 
 
 type Msg

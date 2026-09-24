@@ -1,8 +1,8 @@
 module Setup.Pages.PickLocation.Messages exposing (..)
 
 import Json.Encode exposing (Value)
-import Utils.Ports.Leaflet as Leaflet
 import Utils.Ports.Geolocation as Geolocation
+import Utils.Ports.Leaflet as Leaflet
 
 
 type Msg

@@ -1,20 +1,19 @@
-module Game.Account.Finances.Requests.Login
-    exposing
-        ( Payload
-        , Data
-        , loginRequest
-        )
+module Game.Account.Finances.Requests.Login exposing
+    ( Data
+    , Payload
+    , loginRequest
+    )
 
-import Json.Encode as Encode
-import Json.Decode exposing (Value, decodeValue)
 import Decoders.Bank exposing (accountData)
-import Requests.Requests as Requests exposing (report)
-import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
+import Game.Account.Finances.Models as Finances exposing (AccountNumber)
+import Game.Account.Finances.Shared exposing (BankAccountData)
 import Game.Account.Models as Account
 import Game.Meta.Types.Network as Network
-import Game.Account.Finances.Shared exposing (BankAccountData)
-import Game.Account.Finances.Models as Finances exposing (AccountNumber)
+import Json.Decode exposing (Value, decodeValue)
+import Json.Encode as Encode
+import Requests.Requests as Requests exposing (report)
+import Requests.Topics as Topics
+import Requests.Types exposing (Code(..), FlagsSource)
 
 
 type alias Payload =

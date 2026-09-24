@@ -1,11 +1,11 @@
 module Setup.Config exposing (..)
 
-import Core.Flags as Core
 import Core.Error as Core
+import Core.Flags as Core
 import Game.Servers.Shared exposing (CId)
 import Setup.Messages exposing (..)
-import Setup.Pages.PickLocation.Config as PickLocation
 import Setup.Pages.Mainframe.Config as Mainframe
+import Setup.Pages.PickLocation.Config as PickLocation
 
 
 type alias Config msg =

@@ -1,9 +1,5 @@
 module OS.WindowManager.Models exposing (..)
 
-import Dict exposing (Dict)
-import Draggable
-import Random.Pcg as Random
-import Uuid
 import Apps.BackFlix.Models as BackFlix
 import Apps.BounceManager.Models as BounceManager
 import Apps.Browser.Models as Browser
@@ -23,11 +19,15 @@ import Apps.LogViewer.Models as LogViewer
 import Apps.ServersGears.Models as ServersGears
 import Apps.TaskManager.Models as TaskManager
 import Apps.VirusPanel.Models as VirusPanel
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
+import Dict exposing (Dict)
+import Draggable
 import Game.Meta.Types.Context exposing (Context(..))
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Shared as Servers exposing (CId)
 import OS.WindowManager.Shared exposing (..)
 import OS.WindowManager.Sidebar.Models as Sidebar
+import Random.Pcg as Random
+import Uuid
 
 
 type alias Model =
@@ -204,7 +204,7 @@ insert cid windowId size instance model =
                 |> getSession cid
                 |> focusWindow (Just windowId)
     in
-        insertSession cid session model_
+    insertSession cid session model_
 
 
 getNewAppId : Model -> ( AppId, Model )
@@ -261,10 +261,11 @@ minimize cid windowId model =
                 |> minimizeWindow windowId
                 |> flip (insertSession cid) model
     in
-        if List.member windowId model.pinned.visible then
-            filterVisiblePinned windowId model_
-        else
-            model_
+    if List.member windowId model.pinned.visible then
+        filterVisiblePinned windowId model_
+
+    else
+        model_
 
 
 focus : CId -> Maybe WindowId -> Model -> Model
@@ -276,15 +277,16 @@ focus cid maybeWindowId model =
                 |> focusWindow maybeWindowId
                 |> flip (insertSession cid) model
     in
-        case maybeWindowId of
-            Just windowId ->
-                if List.member windowId model.pinned.hidden then
-                    insertVisiblePinned windowId model_
-                else
-                    model_
+    case maybeWindowId of
+        Just windowId ->
+            if List.member windowId model.pinned.hidden then
+                insertVisiblePinned windowId model_
 
-            Nothing ->
+            else
                 model_
+
+        Nothing ->
+            model_
 
 
 close : WindowId -> Model -> Model
@@ -313,20 +315,20 @@ close =
                     Dict.map (always <| removeFromSession windowId)
                         model.sessions
             in
-                { model | sessions = sessions }
+            { model | sessions = sessions }
     in
-        \windowId model ->
-            case getWindow windowId model of
-                Just window ->
-                    model
-                        |> killApps window
-                        |> cleanSessions windowId
-                        |> removeWindow windowId
-                        |> filterHiddenPinned windowId
-                        |> filterVisiblePinned windowId
+    \windowId model ->
+        case getWindow windowId model of
+            Just window ->
+                model
+                    |> killApps window
+                    |> cleanSessions windowId
+                    |> removeWindow windowId
+                    |> filterHiddenPinned windowId
+                    |> filterVisiblePinned windowId
 
-                Nothing ->
-                    model
+            Nothing ->
+                model
 
 
 linkAppWindow : AppId -> WindowId -> Model -> Model
@@ -335,7 +337,7 @@ linkAppWindow appId windowId model =
         windowOfApps =
             Dict.insert appId windowId model.windowOfApps
     in
-        { model | windowOfApps = windowOfApps }
+    { model | windowOfApps = windowOfApps }
 
 
 getWindowOfApp : AppId -> Model -> Maybe WindowId
@@ -349,7 +351,7 @@ linkWindowSession windowId cid model =
         sessionOfWindows =
             Dict.insert windowId cid model.sessionOfWindows
     in
-        { model | sessionOfWindows = sessionOfWindows }
+    { model | sessionOfWindows = sessionOfWindows }
 
 
 getSessionOfWindow : WindowId -> Model -> Maybe CId
@@ -368,10 +370,11 @@ togglePin windowId ({ pinned } as model) =
         member =
             List.member windowId
     in
-        if member pinned.visible || member pinned.hidden then
-            unpin windowId model
-        else
-            pin windowId model
+    if member pinned.visible || member pinned.hidden then
+        unpin windowId model
+
+    else
+        pin windowId model
 
 
 pin : WindowId -> Model -> Model
@@ -389,7 +392,7 @@ pin windowId ({ pinned } as model) =
         pinned_ =
             { pinned | visible = visible }
     in
-        { model | sessions = sessions, pinned = pinned_ }
+    { model | sessions = sessions, pinned = pinned_ }
 
 
 unpin : WindowId -> Model -> Model
@@ -408,7 +411,7 @@ unpin windowId model =
                 model_ =
                     { model | sessions = sessions }
             in
-                filterVisiblePinned windowId model_
+            filterVisiblePinned windowId model_
 
         Nothing ->
             close windowId model
@@ -426,7 +429,7 @@ insertVisiblePinned windowId ({ pinned } as model) =
         pinned_ =
             { pinned | visible = visible }
     in
-        { model | pinned = pinned_ }
+    { model | pinned = pinned_ }
 
 
 filterHiddenPinned : WindowId -> Model -> Model
@@ -438,7 +441,7 @@ filterHiddenPinned windowId ({ pinned } as model) =
         pinned_ =
             { pinned | hidden = hidden }
     in
-        { model | pinned = pinned_ }
+    { model | pinned = pinned_ }
 
 
 filterVisiblePinned : WindowId -> Model -> Model
@@ -450,7 +453,7 @@ filterVisiblePinned windowId ({ pinned } as model) =
         pinned_ =
             { pinned | visible = visible }
     in
-        { model | pinned = pinned_ }
+    { model | pinned = pinned_ }
 
 
 minimizeAll : DesktopApp -> CId -> Model -> Model
@@ -463,7 +466,7 @@ minimizeAll desktopApp cid model =
             List.filter (filterByWindowApp desktopApp model)
                 session.visible
     in
-        List.foldl (minimize cid) model toMinimize
+    List.foldl (minimize cid) model toMinimize
 
 
 closeAll : DesktopApp -> CId -> Model -> Model
@@ -484,9 +487,9 @@ closeAll desktopApp cid model =
         foldlClose =
             List.foldl close
     in
-        toCloseVisible
-            |> foldlClose model
-            |> flip foldlClose toCloseHidden
+    toCloseVisible
+        |> foldlClose model
+        |> flip foldlClose toCloseHidden
 
 
 listAppsOfType : DesktopApp -> Model -> List AppId
@@ -510,14 +513,14 @@ findExistingAppId =
                 |> Maybe.map (getAppCId >> (==) cid)
                 |> Maybe.withDefault False
     in
-        \desktopApp cid model ->
-            model
-                |> getSessionWindows cid
-                |> List.filter (filterByWindowApp desktopApp model)
-                |> List.filterMap (flip getWindow model)
-                |> List.concatMap listAppIds
-                |> List.filter (filterAppByCId cid model)
-                |> List.head
+    \desktopApp cid model ->
+        model
+            |> getSessionWindows cid
+            |> List.filter (filterByWindowApp desktopApp model)
+            |> List.filterMap (flip getWindow model)
+            |> List.concatMap listAppIds
+            |> List.filter (filterAppByCId cid model)
+            |> List.head
 
 
 openOrRestoreApp : DesktopApp -> CId -> Model -> ( Model, Bool )
@@ -542,13 +545,14 @@ openOrRestoreApp desktopApp cid model =
                 |> List.isEmpty
                 |> not
     in
-        if noVisible && anyHidden then
-            hidden
-                |> List.foldl restore session
-                |> flip (insertSession cid) model
-                |> flip (,) False
-        else
-            ( model, True )
+    if noVisible && anyHidden then
+        hidden
+            |> List.foldl restore session
+            |> flip (insertSession cid) model
+            |> flip (,) False
+
+    else
+        ( model, True )
 
 
 linkEndpointApp : AppId -> WindowId -> Model -> Model
@@ -581,12 +585,12 @@ getNewWindowPosition cid model =
                 |> Maybe.andThen (flip getWindow model)
                 |> Maybe.map getPosition
     in
-        case maybePosition of
-            Just { x, y } ->
-                Position (x + 32) (y + 32)
+    case maybePosition of
+        Just { x, y } ->
+            Position (x + 32) (y + 32)
 
-            Nothing ->
-                Position 32 (44 + 32)
+        Nothing ->
+            Position 32 (44 + 32)
 
 
 
@@ -781,7 +785,7 @@ move deltaX deltaY ({ position } as window) =
         position_ =
             Position (position.x + deltaX) (position.y + deltaY)
     in
-        { window | position = position_ }
+    { window | position = position_ }
 
 
 smartMove : Model -> Float -> Float -> Window -> Window
@@ -794,7 +798,7 @@ smartMove { appSize } deltaX deltaY ({ size, position } as window) =
         position_ =
             Position (position0.x + deltaX) (position0.y + deltaY)
     in
-        { window | position = position_ }
+    { window | position = position_ }
 
 
 getSize : Window -> Size
@@ -963,7 +967,7 @@ insertVisible windowId session =
                 |> (::) windowId
                 |> List.reverse
     in
-        { session_ | visible = visible, focusing = Just windowId }
+    { session_ | visible = visible, focusing = Just windowId }
 
 
 removeVisible : WindowId -> Session -> Session
@@ -983,7 +987,7 @@ insertHidden windowId session =
                 |> (::) windowId
                 |> List.reverse
     in
-        { session_ | hidden = hidden }
+    { session_ | hidden = hidden }
 
 
 removeHidden : WindowId -> Session -> Session
@@ -1025,7 +1029,7 @@ startDragging windowId cid model =
                 |> getSession cid
                 |> focusWindow (Just windowId)
     in
-        insertSession cid session model_
+    insertSession cid session model_
 
 
 stopDragging : Model -> Model
@@ -1047,12 +1051,12 @@ filterByWindowApp desktopApp model windowId =
                 |> Maybe.andThen (flip getApp model)
                 |> Maybe.map (getModel >> toDesktopApp)
     in
-        case maybeAppModel of
-            Just desktopApp_ ->
-                desktopApp == desktopApp_
+    case maybeAppModel of
+        Just desktopApp_ ->
+            desktopApp == desktopApp_
 
-            Nothing ->
-                False
+        Nothing ->
+            False
 
 
 cidToSessionId : CId -> SessionId
@@ -1071,7 +1075,7 @@ getUuid model =
         ( uuid, seed ) =
             Random.step Uuid.uuidGenerator model.seed
     in
-        ( Uuid.toString uuid, { model | seed = seed } )
+    ( Uuid.toString uuid, { model | seed = seed } )
 
 
 wmFringe : Maybe Size -> Size -> Position -> Position
@@ -1080,16 +1084,16 @@ wmFringe appSize { width } ({ x, y } as originalPosition) =
         Just appSize ->
             let
                 x_ =
-                    ((toFloat appSize.width) - 8)
+                    (toFloat appSize.width - 8)
                         |> min x
                         |> max (toFloat (8 - width))
 
                 y_ =
-                    ((toFloat appSize.height) - 8)
+                    (toFloat appSize.height - 8)
                         |> min y
                         |> max 0
             in
-                Position x_ y_
+            Position x_ y_
 
         Nothing ->
             originalPosition

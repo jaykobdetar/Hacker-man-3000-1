@@ -1,15 +1,15 @@
-module Requests.Requests exposing (request, report)
+module Requests.Requests exposing (report, request)
 
-import Http
-import Utils.Json.Decode as Decode
-import Json.Decode as Decode
-import Json.Decode.Pipeline exposing (decode, required, optional)
-import Json.Encode as Encode
 import Driver.Http.Http as HttpDriver
 import Driver.Websocket.Channels as WebsocketDriver
 import Driver.Websocket.Websocket as WebsocketDriver
+import Http
+import Json.Decode as Decode
+import Json.Decode.Pipeline exposing (decode, optional, required)
+import Json.Encode as Encode
 import Requests.Topics as Topics exposing (Topic(..))
 import Requests.Types exposing (..)
+import Utils.Json.Decode as Decode
 
 
 request : Topic -> Encode.Value -> FlagsSource a -> Cmd ResponseType
@@ -63,12 +63,12 @@ okWs msg value =
                 |> Debug.log "▶ Websocket (:ok)"
                 |> Decode.decodeValue response
     in
-        case result of
-            Ok response ->
-                msg ( OkCode, response.data )
+    case result of
+        Ok response ->
+            msg ( OkCode, response.data )
 
-            Err str ->
-                msg ( Timeout, toValue str )
+        Err str ->
+            msg ( Timeout, toValue str )
 
 
 errorWs : (ResponseType -> msg) -> Encode.Value -> msg
@@ -79,12 +79,12 @@ errorWs msg value =
                 |> Debug.log "⚠ Websocket (:error)"
                 |> Decode.decodeValue response
     in
-        case result of
-            Ok response ->
-                msg ( ErrorCode, response.data )
+    case result of
+        Ok response ->
+            msg ( ErrorCode, response.data )
 
-            Err str ->
-                msg ( Timeout, toValue str )
+        Err str ->
+            msg ( Timeout, toValue str )
 
 
 response : Decode.Decoder WebsocketResponse

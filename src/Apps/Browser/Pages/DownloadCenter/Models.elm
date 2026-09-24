@@ -1,8 +1,8 @@
 module Apps.Browser.Pages.DownloadCenter.Models exposing (..)
 
-import Game.Meta.Types.Network.Site as Site
 import Apps.Browser.Widgets.HackingToolkit.Model as HackingToolkit
 import Apps.Browser.Widgets.PublicFiles.Model as PublicFiles
+import Game.Meta.Types.Network.Site as Site
 
 
 type alias Model =
@@ -29,7 +29,7 @@ initialModel { title } meta =
 
 getTitle : Model -> String
 getTitle { toolkit } =
-    "Accessing " ++ (Tuple.second toolkit.target)
+    "Accessing " ++ Tuple.second toolkit.target
 
 
 setShowingPanel : Bool -> Model -> Model

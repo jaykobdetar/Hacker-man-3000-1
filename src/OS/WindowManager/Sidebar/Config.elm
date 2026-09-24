@@ -1,8 +1,8 @@
 module OS.WindowManager.Sidebar.Config exposing (..)
 
-import Html exposing (Attribute)
 import ContextMenu
 import Game.Storyline.Models as Storyline
+import Html exposing (Attribute)
 import OS.WindowManager.Sidebar.Messages exposing (..)
 
 

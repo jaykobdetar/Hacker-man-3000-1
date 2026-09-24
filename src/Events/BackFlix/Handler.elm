@@ -1,8 +1,8 @@
 module Events.BackFlix.Handler exposing (events)
 
-import Events.Shared exposing (Router)
-import Events.BackFlix.Handlers.NewLog as NewLog
 import Events.BackFlix.Config exposing (..)
+import Events.BackFlix.Handlers.NewLog as NewLog
+import Events.Shared exposing (Router)
 
 
 events : Config msg -> String -> Router msg

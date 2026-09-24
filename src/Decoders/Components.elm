@@ -1,25 +1,25 @@
 module Decoders.Components exposing (..)
 
 import Dict exposing (Dict)
+import Game.Meta.Types.Components exposing (..)
+import Game.Meta.Types.Components.Specs as Specs exposing (Spec, Specs)
+import Game.Meta.Types.Components.Type exposing (Type(..))
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , succeed
-        , fail
-        , bool
-        , int
-        , float
-        , string
-        , dict
-        , field
-        , map
         , andThen
+        , bool
+        , dict
+        , fail
+        , field
+        , float
+        , int
+        , map
+        , string
+        , succeed
         )
-import Json.Decode.Pipeline exposing (decode, required, optional, custom)
+import Json.Decode.Pipeline exposing (custom, decode, optional, required)
 import Utils.Json.Decode exposing (commonError)
-import Game.Meta.Types.Components exposing (..)
-import Game.Meta.Types.Components.Type exposing (Type(..))
-import Game.Meta.Types.Components.Specs as Specs exposing (Spec, Specs)
 
 
 components : Specs -> Decoder Components
@@ -46,7 +46,7 @@ getSpec =
                 Nothing ->
                     fail <| commonError "spec" id
     in
-        decoder >> flip andThen (field "spec_id" string)
+    decoder >> flip andThen (field "spec_id" string)
 
 
 type_ : Decoder Type
@@ -75,7 +75,7 @@ type_ =
                 _ ->
                     fail <| commonError "type" t
     in
-        andThen decoder string
+    andThen decoder string
 
 
 specs : Decoder Specs
@@ -154,4 +154,4 @@ meta =
                 _ ->
                     fail <| commonError "custom (spec meta)" t
     in
-        andThen meta <| field "type" string
+    andThen meta <| field "type" string

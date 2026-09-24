@@ -1,15 +1,15 @@
 module Apps.BounceManager.Launch exposing (..)
 
+import Apps.BounceManager.Config exposing (..)
+import Apps.BounceManager.Messages exposing (..)
+import Apps.BounceManager.Models exposing (..)
+import Apps.BounceManager.Shared exposing (..)
+import Game.Account.Bounces.Models as Bounces
+import Game.Account.Bounces.Shared as Bounces
 import Random.Pcg as Random
-import Utils.React as React exposing (React)
 import Utils.Maybe as Maybe
 import Utils.Model.RandomUuid as Random
-import Game.Account.Bounces.Shared as Bounces
-import Game.Account.Bounces.Models as Bounces
-import Apps.BounceManager.Config exposing (..)
-import Apps.BounceManager.Models exposing (..)
-import Apps.BounceManager.Messages exposing (..)
-import Apps.BounceManager.Shared exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias LaunchResponse msg =
@@ -32,7 +32,7 @@ launch config maybeParams =
                 Nothing ->
                     launchDefault config
     in
-        ( model, React.batch config.batchMsg [ reactRandom, react ] )
+    ( model, React.batch config.batchMsg [ reactRandom, react ] )
 
 
 launchDefault : Config msg -> LaunchResponse msg
@@ -72,4 +72,4 @@ launchWithBounce config bounceId =
                 |> setPath path
                 |> setSelectedBounce selectedBounce
     in
-        ( model, React.none )
+    ( model, React.none )

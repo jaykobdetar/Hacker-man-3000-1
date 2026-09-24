@@ -1,32 +1,31 @@
-module Core.Models
-    exposing
-        ( Model
-        , State(..)
-        , HomeModel
-        , SetupModel
-        , PlayModel
-        , init
-        , initialModel
-        , getFlags
-        , connect
-        , login
-        , logout
-        , crash
-        , setupToPlay
-        )
+module Core.Models exposing
+    ( HomeModel
+    , Model
+    , PlayModel
+    , SetupModel
+    , State(..)
+    , connect
+    , crash
+    , getFlags
+    , init
+    , initialModel
+    , login
+    , logout
+    , setupToPlay
+    )
 
 import ContextMenu exposing (ContextMenu)
 import Core.Flags as Flags exposing (Flags)
 import Core.Messages exposing (..)
 import Driver.Websocket.Launch as Ws
 import Driver.Websocket.Models as Ws
-import Landing.Models as Landing
-import Setup.Models as Setup
-import Game.Meta.Types.AwaitEvent as AwaitEvent exposing (AwaitEvent)
-import Game.Models as Game
 import Game.Account.Models as Account
 import Game.Dummy as Game
+import Game.Meta.Types.AwaitEvent as AwaitEvent exposing (AwaitEvent)
+import Game.Models as Game
+import Landing.Models as Landing
 import OS.Models as OS
+import Setup.Models as Setup
 
 
 type alias Model =
@@ -96,7 +95,7 @@ init seed flags =
         cmd =
             Cmd.map MenuMsg menuCmd
     in
-        ( model, cmd )
+    ( model, cmd )
 
 
 initialModel : Int -> Flags -> Model
@@ -126,7 +125,7 @@ connect id username token ({ state, flags } as model) =
                 model_ =
                     { model | state = state_ }
             in
-                model_
+            model_
 
         _ ->
             model
@@ -158,7 +157,7 @@ login ({ state, flags } as model) =
                         model_ =
                             { model | state = Setup state_ }
                     in
-                        ( model_, cmd )
+                    ( model_, cmd )
 
                 Nothing ->
                     ( model, Cmd.none )
@@ -193,7 +192,7 @@ setupToPlay state =
                 state_ =
                     Play play
             in
-                ( state_, cmd )
+            ( state_, cmd )
 
         _ ->
             ( state, Cmd.none )
@@ -230,7 +229,7 @@ initialPlay ws game =
             , os = OS.initialModel
             }
     in
-        ( play_, OS.startCmd (Game.getFlags game) )
+    ( play_, OS.startCmd (Game.getFlags game) )
 
 
 initialGame : Connecting -> Flags -> Game.Model

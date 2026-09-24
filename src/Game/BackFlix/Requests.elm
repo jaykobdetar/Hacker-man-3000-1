@@ -1,10 +1,9 @@
-module Game.BackFlix.Requests
-    exposing
-        ( Response(..)
-        , LogResponse(..)
-        , receive
-        , logReceive
-        )
+module Game.BackFlix.Requests exposing
+    ( LogResponse(..)
+    , Response(..)
+    , logReceive
+    , receive
+    )
 
 import Game.BackFlix.Messages exposing (..)
 

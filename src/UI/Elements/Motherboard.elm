@@ -1,13 +1,13 @@
-module UI.Elements.Motherboard exposing (guessMobo, defaultMobo)
+module UI.Elements.Motherboard exposing (defaultMobo, guessMobo)
 
+import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Game.Meta.Types.Components.Type exposing (Type(..))
 import Html exposing (Html)
 import Svg exposing (Svg, use)
 import Svg.Attributes exposing (..)
-import Svg.Lazy exposing (lazy3)
 import Svg.Keyed exposing (node)
+import Svg.Lazy exposing (lazy3)
 import Utils.Svg.Events exposing (..)
-import Game.Meta.Types.Components.Type exposing (Type(..))
-import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
 
 
 guessMobo : (Motherboard.SlotId -> msg) -> Maybe Type -> Motherboard -> Html msg
@@ -34,18 +34,18 @@ defaultMobo select highlight mobo =
         ( onNC, hasNC, highNC ) =
             getNC "nic_1" NIC select highlight mobo
     in
-        node "svg"
-            [ fill "red"
-            , fillOpacity "0"
-            , stroke "black"
-            ]
-            [ ( "mobo", use [ xlinkHref "images/mobo.svg#Motherboard" ] [] )
-            , ( "cpu", lazy3 (genericCompo "CPU_1") onCPU hasCPU highCPU )
-            , ( "hdd", lazy3 (genericCompo "HDD_1") onHDD hasHDD highHDD )
-            , ( "nic", lazy3 (genericCompo "NIC_1") onNIC hasNIC highNIC )
-            , ( "ram", lazy3 (genericCompo "RAM_1") onRAM hasRAM highRAM )
-            , ( "nc", lazy3 (genericCompo "NIC_1_NC") onNC hasNC highNC )
-            ]
+    node "svg"
+        [ fill "red"
+        , fillOpacity "0"
+        , stroke "black"
+        ]
+        [ ( "mobo", use [ xlinkHref "images/mobo.svg#Motherboard" ] [] )
+        , ( "cpu", lazy3 (genericCompo "CPU_1") onCPU hasCPU highCPU )
+        , ( "hdd", lazy3 (genericCompo "HDD_1") onHDD hasHDD highHDD )
+        , ( "nic", lazy3 (genericCompo "NIC_1") onNIC hasNIC highNIC )
+        , ( "ram", lazy3 (genericCompo "RAM_1") onRAM hasRAM highRAM )
+        , ( "nc", lazy3 (genericCompo "NIC_1_NC") onNC hasNC highNC )
+        ]
 
 
 
@@ -87,7 +87,7 @@ getCompo slotId type_ select highlight mobo =
         highCompo =
             hightlightIf highlight type_
     in
-        ( onCompo, hasCompo, highCompo )
+    ( onCompo, hasCompo, highCompo )
 
 
 getNC :
@@ -112,20 +112,22 @@ getNC slotId type_ select highlight mobo =
         highCompo =
             hightlightIf highlight type_
     in
-        ( onCompo, hasCompo, highCompo )
+    ( onCompo, hasCompo, highCompo )
 
 
 hasComponent : Bool -> Svg.Attribute msg
 hasComponent has =
     if has then
         stroke "black"
+
     else
         stroke "lightGray"
 
 
 hightlightIf : Maybe Type -> Type -> Svg.Attribute msg
 hightlightIf highlight comp =
-    if highlight == (Just comp) then
+    if highlight == Just comp then
         fillOpacity "1"
+
     else
         fillOpacity "0"

@@ -1,10 +1,10 @@
 module Setup.Models exposing (..)
 
 import Json.Encode as Encode exposing (Value)
-import Setup.Types exposing (..)
-import Setup.Settings as Settings exposing (Settings)
-import Setup.Pages.PickLocation.Models as PickLocation
 import Setup.Pages.Mainframe.Models as Mainframe
+import Setup.Pages.PickLocation.Models as PickLocation
+import Setup.Settings as Settings exposing (Settings)
+import Setup.Types exposing (..)
 
 
 type alias Model =
@@ -59,22 +59,22 @@ remainingPages : Pages -> Pages
 remainingPages pages =
     let
         newPages =
-            List.filter ((flip List.member pages) >> not) pageOrder
+            List.filter (flip List.member pages >> not) pageOrder
     in
-        case List.head newPages of
-            Just Welcome ->
-                newPages
+    case List.head newPages of
+        Just Welcome ->
+            newPages
 
-            Just _ ->
-                -- insert local greetings/farewells
-                newPages
-                    |> List.reverse
-                    |> (::) CustomFinish
-                    |> List.reverse
-                    |> (::) CustomWelcome
+        Just _ ->
+            -- insert local greetings/farewells
+            newPages
+                |> List.reverse
+                |> (::) CustomFinish
+                |> List.reverse
+                |> (::) CustomWelcome
 
-            Nothing ->
-                []
+        Nothing ->
+            []
 
 
 initializePages : Pages -> List PageModel
@@ -103,7 +103,7 @@ initializePages =
                 CustomFinish ->
                     CustomFinishModel
     in
-        List.map mapper
+    List.map mapper
 
 
 initialModel : Model
@@ -160,11 +160,11 @@ setPages pages model =
                 |> List.tail
                 |> Maybe.withDefault []
     in
-        { model
-            | pages = List.map pageModelToString models
-            , page = List.head models
-            , remaining = remaining
-        }
+    { model
+        | pages = List.map pageModelToString models
+        , page = List.head models
+        , remaining = remaining
+    }
 
 
 setBadPages : List String -> Model -> Model
@@ -218,7 +218,7 @@ nextPage settings model =
                 , done = done
             }
     in
-        model_
+    model_
 
 
 previousPage : Model -> Model
@@ -252,7 +252,7 @@ previousPage model =
                 , done = done
             }
     in
-        model_
+    model_
 
 
 undoPages : Model -> Model
@@ -263,11 +263,11 @@ undoPages model =
                 |> List.map Tuple.first
                 |> List.reverse
     in
-        { model
-            | done = []
-            , page = List.head pages
-            , remaining = List.drop 1 pages
-        }
+    { model
+        | done = []
+        , page = List.head pages
+        , remaining = List.drop 1 pages
+    }
 
 
 pageModelToString : PageModel -> String
@@ -306,7 +306,7 @@ encodeDone =
                 Err msg ->
                     list
     in
-        List.foldl encodePages []
+    List.foldl encodePages []
 
 
 encodePageModel : PageModel -> Result String Value
@@ -330,7 +330,7 @@ encodePageModel page =
         _ ->
             Err
                 ("Can't convert page `"
-                    ++ (pageModelToString page)
+                    ++ pageModelToString page
                     ++ "' to json, this is a local page."
                 )
 

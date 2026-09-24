@@ -1,11 +1,11 @@
 module Events.Account.Handlers.StoryStepProceeded exposing (Data, handler)
 
-import Json.Decode exposing (Decoder, decodeValue, string)
-import Json.Decode.Pipeline exposing (decode, required, optional)
-import Events.Shared exposing (Handler)
 import Decoders.Storyline exposing (stepWithActions)
-import Game.Storyline.Shared exposing (Reply, Quest, Step, ContactId)
+import Events.Shared exposing (Handler)
+import Game.Storyline.Shared exposing (ContactId, Quest, Reply, Step)
 import Game.Storyline.StepActions.Shared exposing (Action)
+import Json.Decode exposing (Decoder, decodeValue, string)
+import Json.Decode.Pipeline exposing (decode, optional, required)
 
 
 type alias Data =

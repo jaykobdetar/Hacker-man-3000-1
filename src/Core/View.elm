@@ -1,16 +1,16 @@
 module Core.View exposing (view)
 
-import Html exposing (..)
-import Core.Error as Error
 import Core.Config exposing (..)
+import Core.Error as Error
 import Core.Messages exposing (..)
 import Core.Models exposing (..)
-import Game.Models as Game
-import Game.Account.Models as Account
-import OS.View as OS
-import Landing.View as Landing
-import Setup.View as Setup
 import Core.Panic as Panic
+import Game.Account.Models as Account
+import Game.Models as Game
+import Html exposing (..)
+import Landing.View as Landing
+import OS.View as OS
+import Setup.View as Setup
 
 
 view : Model -> Html Msg
@@ -47,16 +47,16 @@ onPlay { game, os } { contextMenu } =
         ctx =
             Account.getContext <| Game.getAccount game
     in
-        case volatile_ of
-            ( Just gtw, Just srv ) ->
-                OS.view (osConfig game contextMenu ctx srv gtw) os
+    case volatile_ of
+        ( Just gtw, Just srv ) ->
+            OS.view (osConfig game contextMenu ctx srv gtw) os
 
-            ( Nothing, _ ) ->
-                "Player doesn't have a Gateway [View.play]"
-                    |> Error.astralProj
-                    |> uncurry Panic.view
+        ( Nothing, _ ) ->
+            "Player doesn't have a Gateway [View.play]"
+                |> Error.astralProj
+                |> uncurry Panic.view
 
-            ( _, Nothing ) ->
-                "Player doesn't have an active server [View.play]"
-                    |> Error.astralProj
-                    |> uncurry Panic.view
+        ( _, Nothing ) ->
+            "Player doesn't have an active server [View.play]"
+                |> Error.astralProj
+                |> uncurry Panic.view

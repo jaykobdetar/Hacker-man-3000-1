@@ -1,30 +1,30 @@
 module Game.Servers.Update exposing (..)
 
-import Dict
-import Set
-import Utils.React as React exposing (React)
-import Json.Decode as Decode exposing (Value)
 import Decoders.Servers
-import Game.Meta.Types.Network as Network
+import Dict
 import Game.Account.Bounces.Shared as Bounces
-import Game.Servers.Notifications.Messages as Notifications
-import Game.Servers.Notifications.Update as Notifications
+import Game.Meta.Types.Network as Network
+import Game.Servers.Config exposing (..)
 import Game.Servers.Filesystem.Messages as Filesystem
 import Game.Servers.Filesystem.Update as Filesystem
-import Game.Servers.Logs.Messages as Logs
-import Game.Servers.Logs.Update as Logs
-import Game.Servers.Processes.Messages as Processes
-import Game.Servers.Processes.Update as Processes
 import Game.Servers.Hardware.Messages as Hardware
 import Game.Servers.Hardware.Update as Hardware
-import Game.Servers.Tunnels.Messages as Tunnels
-import Game.Servers.Tunnels.Update as Tunnels
-import Game.Servers.Requests.Resync exposing (resyncRequest)
-import Game.Servers.Requests.Logout exposing (logoutRequest)
-import Game.Servers.Config exposing (..)
+import Game.Servers.Logs.Messages as Logs
+import Game.Servers.Logs.Update as Logs
 import Game.Servers.Messages exposing (..)
 import Game.Servers.Models exposing (..)
+import Game.Servers.Notifications.Messages as Notifications
+import Game.Servers.Notifications.Update as Notifications
+import Game.Servers.Processes.Messages as Processes
+import Game.Servers.Processes.Update as Processes
+import Game.Servers.Requests.Logout exposing (logoutRequest)
+import Game.Servers.Requests.Resync exposing (resyncRequest)
 import Game.Servers.Shared exposing (..)
+import Game.Servers.Tunnels.Messages as Tunnels
+import Game.Servers.Tunnels.Update as Tunnels
+import Json.Decode as Decode exposing (Value)
+import Set
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -90,7 +90,7 @@ onResync config cid model =
                 |> Cmd.map handler
                 |> React.cmd
     in
-        ( model, cmd )
+    ( model, cmd )
 
 
 updateServer :
@@ -195,7 +195,7 @@ onFilesystemMsg config cid id msg server =
                 server_ =
                     setStorage id storage_ server
             in
-                ( server_, cmd )
+            ( server_, cmd )
 
         Nothing ->
             ( server, React.none )
@@ -218,7 +218,7 @@ onLogsMsg config cid msg server =
         server_ =
             setLogs logs server
     in
-        ( server_, cmd )
+    ( server_, cmd )
 
 
 onProcessesMsg :
@@ -241,7 +241,7 @@ onProcessesMsg config cid msg server =
         server_ =
             setProcesses processes server
     in
-        ( server_, cmd )
+    ( server_, cmd )
 
 
 onHardwareMsg :
@@ -264,7 +264,7 @@ onHardwareMsg config cid msg server =
         server_ =
             setHardware hardware server
     in
-        ( server_, cmd )
+    ( server_, cmd )
 
 
 onTunnelsMsg :
@@ -284,7 +284,7 @@ onTunnelsMsg config cid msg server =
         server_ =
             setTunnels tunnels server
     in
-        ( server_, cmd )
+    ( server_, cmd )
 
 
 onNotificationsMsg :
@@ -304,7 +304,7 @@ onNotificationsMsg config cid msg server =
         model_ =
             setNotifications notifications server
     in
-        ( model_, cmd )
+    ( model_, cmd )
 
 
 handleJoinedServer :
@@ -320,28 +320,29 @@ handleJoinedServer config cid value model =
                 |> getGatewayCache cid
                 |> Decoders.Servers.server config.lastTick
     in
-        case Decode.decodeValue decodeBootstrap value of
-            Ok server ->
-                let
-                    cmd =
-                        if isGateway server then
-                            React.msg <| config.onNewGateway cid
-                        else
-                            React.none
+    case Decode.decodeValue decodeBootstrap value of
+        Ok server ->
+            let
+                cmd =
+                    if isGateway server then
+                        React.msg <| config.onNewGateway cid
 
-                    model_ =
-                        model
-                            |> insert cid server
-                            |> incEndpoint config cid server
-                in
-                    ( model_, cmd )
+                    else
+                        React.none
 
-            Err reason ->
-                let
-                    log =
-                        Debug.log ("▶ Server Bootstrap Error:\n" ++ reason) ""
-                in
-                    ( model, React.none )
+                model_ =
+                    model
+                        |> insert cid server
+                        |> incEndpoint config cid server
+            in
+            ( model_, cmd )
+
+        Err reason ->
+            let
+                log =
+                    Debug.log ("▶ Server Bootstrap Error:\n" ++ reason) ""
+            in
+            ( model, React.none )
 
 
 handleDisconnect :
@@ -373,12 +374,13 @@ handleDisconnect { activeCId, onSetGatewayContext } cid model =
                 |> remove cid
 
         react =
-            if (activeCId == Just cid) then
+            if activeCId == Just cid then
                 React.msg onSetGatewayContext
+
             else
                 React.none
     in
-        ( model_, react )
+    ( model_, react )
 
 
 handleLogout :
@@ -405,6 +407,7 @@ incEndpoint : Config msg -> CId -> Server -> Model -> Model
 incEndpoint { activeGateway } endpoint server model =
     if isGateway server then
         model
+
     else
         case activeGateway of
             Just ( gtwCId, gtw ) ->

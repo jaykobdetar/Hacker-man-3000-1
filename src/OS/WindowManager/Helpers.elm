@@ -1,11 +1,11 @@
 module OS.WindowManager.Helpers exposing (..)
 
-import Utils.Maybe as Maybe
 import Game.Meta.Types.Context exposing (Context(..))
 import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Shared as Servers exposing (CId(..))
 import OS.WindowManager.Config exposing (..)
 import OS.WindowManager.Models exposing (..)
+import Utils.Maybe as Maybe
 
 
 getActiveServer :
@@ -31,7 +31,7 @@ getEndpointOfGateway config server =
         server_ =
             Maybe.andThen (flip Servers.get <| serversFromConfig config) cid
     in
-        Maybe.uncurry cid server_
+    Maybe.uncurry cid server_
 
 
 getAppActiveServer : Config msg -> App -> Maybe ( CId, Server )
@@ -40,7 +40,7 @@ getAppActiveServer config app =
         cid =
             getAppCId app
     in
-        Maybe.map ((,) cid) <| Servers.get cid <| serversFromConfig config
+    Maybe.map ((,) cid) <| Servers.get cid <| serversFromConfig config
 
 
 getSessionId : Config msg -> CId
@@ -88,26 +88,26 @@ getCIdsOfWindow config window model =
                 Nothing ->
                     Nothing
     in
-        case cids of
-            _ :: _ :: _ ->
-                -- window has two contexts, use them both
-                List.filterMap appendServers cids
+    case cids of
+        _ :: _ :: _ ->
+            -- window has two contexts, use them both
+            List.filterMap appendServers cids
 
-            cid :: _ ->
-                -- window has a single  context, fetch it's counterpart
-                cid
-                    |> getBoundServers config
-                    |> List.filterMap appendServers
+        cid :: _ ->
+            -- window has a single  context, fetch it's counterpart
+            cid
+                |> getBoundServers config
+                |> List.filterMap appendServers
 
-            _ ->
-                -- window has no context, fetch session contexts
-                appIds
-                    |> List.head
-                    |> Maybe.andThen (flip getWindowOfApp model)
-                    |> Maybe.andThen (flip getSessionOfWindow model)
-                    |> Maybe.andThen appendServers
-                    |> Maybe.map List.singleton
-                    |> Maybe.withDefault []
+        _ ->
+            -- window has no context, fetch session contexts
+            appIds
+                |> List.head
+                |> Maybe.andThen (flip getWindowOfApp model)
+                |> Maybe.andThen (flip getSessionOfWindow model)
+                |> Maybe.andThen appendServers
+                |> Maybe.map List.singleton
+                |> Maybe.withDefault []
 
 
 getBoundServers : Config msg -> CId -> List CId
@@ -119,14 +119,14 @@ getBoundServers config cid =
         maybeServer =
             Servers.get cid servers
     in
-        case Servers.getGatewayOfEndpoint cid servers of
-            Just gcid ->
-                -- it was an endpoint cid, so join it with a gateway
-                [ gcid, cid ]
+    case Servers.getGatewayOfEndpoint cid servers of
+        Just gcid ->
+            -- it was an endpoint cid, so join it with a gateway
+            [ gcid, cid ]
 
-            Nothing ->
-                -- it was an gateway cid, so try to find its endpoint
-                maybeServer
-                    |> Maybe.andThen Servers.getEndpointCId
-                    |> Maybe.map (flip (::) [ cid ])
-                    |> Maybe.withDefault [ cid ]
+        Nothing ->
+            -- it was an gateway cid, so try to find its endpoint
+            maybeServer
+                |> Maybe.andThen Servers.getEndpointCId
+                |> Maybe.map (flip (::) [ cid ])
+                |> Maybe.withDefault [ cid ]

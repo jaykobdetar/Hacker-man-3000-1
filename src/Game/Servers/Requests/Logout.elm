@@ -1,10 +1,10 @@
 module Game.Servers.Requests.Logout exposing (Data, logoutRequest)
 
+import Game.Servers.Shared exposing (CId)
 import Json.Decode as Decode exposing (Value)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..), emptyPayload)
-import Game.Servers.Shared exposing (CId)
+import Requests.Types exposing (Code(..), FlagsSource, emptyPayload)
 
 
 type alias Data =

@@ -1,12 +1,12 @@
 module Game.Servers.Processes.ModelTest exposing (all, processContractTests, processOperationsTests)
 
 import Expect
-import Gen.Processes as Gen
 import Fuzz exposing (int, tuple)
-import Test exposing (Test, describe)
-import TestUtils exposing (fuzz, once, batch, ensureDifferentSeed)
-import Utils.Core exposing (swap)
 import Game.Servers.Processes.Models as Processes exposing (..)
+import Gen.Processes as Gen
+import Test exposing (Test, describe)
+import TestUtils exposing (batch, ensureDifferentSeed, fuzz, once)
+import Utils.Core exposing (swap)
 
 
 all : Test
@@ -58,7 +58,7 @@ whenIncompleteTests =
                 process2 =
                     whenIncomplete resume process1
             in
-                Expect.notEqual process1 process2
+            Expect.notEqual process1 process2
     , fuzz
         Gen.process
         "can't perform action on complete processes"
@@ -77,10 +77,10 @@ whenIncompleteTests =
                 processFailed_ =
                     conclude (Just True) processFailed
             in
-                batch
-                    [ Expect.equal processSucceeded processSucceeded_
-                    , Expect.equal processFailed processFailed_
-                    ]
+            batch
+                [ Expect.equal processSucceeded processSucceeded_
+                , Expect.equal processFailed processFailed_
+                ]
     ]
 
 
@@ -104,7 +104,7 @@ whenFullAccessTests =
                 process2 =
                     whenFullAccess resume process1
             in
-                Expect.notEqual process1 process2
+            Expect.notEqual process1 process2
     , fuzz
         Gen.partialProcess
         "can perform action on full processes"
@@ -117,7 +117,7 @@ whenFullAccessTests =
                 process2 =
                     whenFullAccess resume process1
             in
-                Expect.equal process1 process2
+            Expect.equal process1 process2
     ]
 
 
@@ -214,7 +214,7 @@ deleteAssert process =
             Expect.equal (Just process)
 
         _ ->
-            Expect.equal (Nothing)
+            Expect.equal Nothing
 
 
 deleteProcessGenericTests : List Test

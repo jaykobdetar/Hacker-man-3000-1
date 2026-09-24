@@ -1,8 +1,8 @@
 module Game.Storyline.Emails.View exposing (..)
 
-import Html exposing (Html, text)
-import Game.Storyline.Shared exposing (Reply(..))
 import Game.Storyline.Emails.Config exposing (..)
+import Game.Storyline.Shared exposing (Reply(..))
+import Html exposing (Html, text)
 import UI.Inlines.Networking exposing (..)
 
 

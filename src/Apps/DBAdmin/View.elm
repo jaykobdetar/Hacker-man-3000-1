@@ -1,18 +1,18 @@
 module Apps.DBAdmin.View exposing (view)
 
-import Dict as Dict exposing (Dict)
-import Html exposing (..)
-import Html.CssHelpers
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.Elements.HorizontalTabs exposing (hzTabs)
 import Apps.DBAdmin.Config exposing (..)
 import Apps.DBAdmin.Messages exposing (Msg(..))
 import Apps.DBAdmin.Models exposing (..)
 import Apps.DBAdmin.Resources exposing (Classes(..), prefix)
 import Apps.DBAdmin.Tabs.Servers.View as Servers exposing (view)
-import Game.Account.Finances.Shared exposing (toMoney)
+import Dict exposing (Dict)
 import Game.Account.Database.Models as Database
+import Game.Account.Finances.Shared exposing (toMoney)
+import Html exposing (..)
+import Html.CssHelpers
+import UI.Elements.HorizontalTabs exposing (hzTabs)
+import UI.Layouts.VerticalList exposing (verticalList)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
 
 
 { id, class, classList } =
@@ -28,7 +28,7 @@ view config ({ selected } as model) =
         viewData =
             case selected of
                 TabServers ->
-                    (Servers.view config model)
+                    Servers.view config model
 
                 TabBankAccs ->
                     Html.map config.toMsg <|
@@ -45,10 +45,10 @@ view config ({ selected } as model) =
                 (GoTab >> config.toMsg)
                 tabs
     in
-        verticalSticked
-            (Just [ viewTabs ])
-            [ viewData ]
-            Maybe.Nothing
+    verticalSticked
+        (Just [ viewTabs ])
+        [ viewData ]
+        Maybe.Nothing
 
 
 tabs : List MainTab
@@ -84,7 +84,7 @@ renderBitcoinAccount address account acc =
             [ text "Bitcoin Wallet: ", text address ]
 
         accountContent =
-            [ text <| "BTC : " ++ (toString account.balance) ]
+            [ text <| "BTC : " ++ toString account.balance ]
 
         content =
             div
@@ -93,7 +93,7 @@ renderBitcoinAccount address account acc =
                 , div [ class [ RightSide ] ] accountContent
                 ]
     in
-        content :: acc
+    content :: acc
 
 
 renderBitcoinAccounts : Database.Model -> Model -> Html msg
@@ -133,7 +133,7 @@ renderBankAccount id account acc =
                 , div [ class [ RightSide ] ] accountContent
                 ]
     in
-        content :: acc
+    content :: acc
 
 
 renderBankAccounts : Database.Model -> Model -> Html msg

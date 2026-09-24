@@ -1,12 +1,12 @@
 module Apps.Hebamp.Update exposing (update)
 
-import Time exposing (Time)
-import Utils.React as React exposing (React)
-import Utils.Ports.Audio exposing (..)
 import Apps.Hebamp.Config exposing (..)
-import Apps.Hebamp.Models exposing (..)
 import Apps.Hebamp.Messages as Hebamp exposing (Msg(..))
+import Apps.Hebamp.Models exposing (..)
 import Apps.Hebamp.Shared exposing (..)
+import Time exposing (Time)
+import Utils.Ports.Audio exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -46,10 +46,11 @@ onTimeUpdate playerId time model =
         model_ =
             if playerId == model.playerId then
                 { model | currentTime = time }
+
             else
                 model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onPlay : Model -> UpdateResponse msg
@@ -58,7 +59,7 @@ onPlay model =
         react =
             React.cmd (play model.playerId)
     in
-        ( model, react )
+    ( model, react )
 
 
 onPause : Model -> UpdateResponse msg
@@ -67,7 +68,7 @@ onPause model =
         react =
             React.cmd (pause model.playerId)
     in
-        ( model, react )
+    ( model, react )
 
 
 onClose : Config msg -> Model -> UpdateResponse msg
@@ -83,7 +84,7 @@ onSetCurrentTime time model =
         react =
             React.cmd <| setCurrentTime ( model.playerId, time )
     in
-        ( model, react )
+    ( model, react )
 
 
 onLaunchApp : Config msg -> Params -> Model -> UpdateResponse msg
@@ -94,4 +95,4 @@ onLaunchApp config params model =
                 model_ =
                     setPlaylist playlist model
             in
-                ( model_, React.none )
+            ( model_, React.none )

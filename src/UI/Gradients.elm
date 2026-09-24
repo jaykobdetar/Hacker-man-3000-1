@@ -1,6 +1,7 @@
 module UI.Gradients exposing (..)
 
-import Css exposing (Style, AngleOrDirection, backgroundImage, linearGradient2, stop, stop2, hex, pct)
+import Css exposing (AngleOrDirection, Style, backgroundImage, hex, linearGradient2, pct, stop, stop2)
+
 
 
 -- AUTO Generated from: https://raw.githubusercontent.com/ghosh/uiGradients/master/gradients.json
@@ -19,7 +20,7 @@ gradient2 c1 c2 dir =
 gradient3 : String -> String -> String -> AngleOrDirection c -> Style
 gradient3 c1 c2 c3 dir =
     backgroundImage <|
-        linearGradient2 dir (stop2 (hex c1) (pct 0)) (stop2 (hex c2) (pct 0)) [ (stop <| hex c3) ]
+        linearGradient2 dir (stop2 (hex c1) (pct 0)) (stop2 (hex c2) (pct 0)) [ stop <| hex c3 ]
 
 
 sel : AngleOrDirection c -> Style

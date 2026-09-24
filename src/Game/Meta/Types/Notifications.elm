@@ -1,7 +1,7 @@
 module Game.Meta.Types.Notifications exposing (..)
 
-import Time exposing (Time)
 import Dict exposing (Dict)
+import Time exposing (Time)
 
 
 type alias Notifications a =
@@ -50,12 +50,13 @@ countUnreaded : Notifications a -> Int
 countUnreaded =
     let
         counter k v a =
-            if (not v.isRead) then
+            if not v.isRead then
                 a + 1
+
             else
                 a
     in
-        Dict.foldl counter 0
+    Dict.foldl counter 0
 
 
 {-| If there is another one born in the same time,
@@ -75,7 +76,7 @@ markRead value_ id notifications =
         |> get id
         |> Maybe.map
             ((\n -> { n | isRead = value_ })
-                >> (flip (Dict.insert id) notifications)
+                >> flip (Dict.insert id) notifications
             )
         |> Maybe.withDefault notifications
 

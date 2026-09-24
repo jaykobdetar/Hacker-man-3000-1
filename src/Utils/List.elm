@@ -1,20 +1,19 @@
-module Utils.List
-    exposing
-        ( find
-        , memberIndex
-        , findIndex
-        , move
-        , last
-        , splitOut
-        , indexedFoldl
-        , indexedFoldr
-        , foldlWhile
-        , foldrWhile
-        , unique
-        , uniqueBy
-        , dropRight
-        , insertAt
-        )
+module Utils.List exposing
+    ( dropRight
+    , find
+    , findIndex
+    , foldlWhile
+    , foldrWhile
+    , indexedFoldl
+    , indexedFoldr
+    , insertAt
+    , last
+    , memberIndex
+    , move
+    , splitOut
+    , unique
+    , uniqueBy
+    )
 
 import Set exposing (Set)
 
@@ -23,15 +22,16 @@ find : (a -> Bool) -> List a -> Maybe a
 find check list =
     let
         reducer item acc =
-            if (check item) then
+            if check item then
                 ( True, Just item )
+
             else
                 ( False, Nothing )
 
         ( _, value ) =
             foldlWhile reducer Nothing list
     in
-        value
+    value
 
 
 memberIndex : comparable -> List comparable -> Maybe Int
@@ -43,18 +43,20 @@ findIndex : (a -> Bool) -> List a -> Maybe Int
 findIndex check list =
     let
         reducer item acc =
-            if (check item) then
+            if check item then
                 ( True, acc )
+
             else
                 ( False, acc + 1 )
 
         ( found, index ) =
             foldlWhile reducer 0 list
     in
-        if found then
-            Just index
-        else
-            Nothing
+    if found then
+        Just index
+
+    else
+        Nothing
 
 
 last : List a -> Maybe a
@@ -74,6 +76,7 @@ move from to list =
         reducer append i next ( state, found, list ) =
             if state == 0 && from == i then
                 ( 1, Just next, list )
+
             else if state == 1 && to == i then
                 let
                     list_ =
@@ -81,24 +84,27 @@ move from to list =
                             |> Maybe.map (\item -> append item next list)
                             |> Maybe.withDefault []
                 in
-                    ( 2, Nothing, list_ )
+                ( 2, Nothing, list_ )
+
             else
                 ( state, found, next :: list )
     in
-        if from < to then
-            let
-                ( _, _, list_ ) =
-                    indexedFoldl (reducer appendLeft) ( 0, Nothing, [] ) list
-            in
-                List.reverse list_
-        else if from > to then
-            let
-                ( _, _, list_ ) =
-                    indexedFoldr (reducer appendRight) ( 0, Nothing, [] ) list
-            in
-                list_
-        else
-            list
+    if from < to then
+        let
+            ( _, _, list_ ) =
+                indexedFoldl (reducer appendLeft) ( 0, Nothing, [] ) list
+        in
+        List.reverse list_
+
+    else if from > to then
+        let
+            ( _, _, list_ ) =
+                indexedFoldr (reducer appendRight) ( 0, Nothing, [] ) list
+        in
+        list_
+
+    else
+        list
 
 
 indexedFoldl : (Int -> a -> b -> b) -> b -> List a -> b
@@ -111,7 +117,7 @@ indexedFoldl func init xs =
 indexedFoldr : (Int -> a -> b -> b) -> b -> List a -> b
 indexedFoldr func init xs =
     xs
-        |> List.foldr (countDown func) ( init, (List.length xs) - 1 )
+        |> List.foldr (countDown func) ( init, List.length xs - 1 )
         |> Tuple.first
 
 
@@ -129,10 +135,11 @@ foldlWhile func acc list =
                 ( halt, acc_ ) =
                     result
             in
-                if halt then
-                    result
-                else
-                    foldlWhile func acc_ tail
+            if halt then
+                result
+
+            else
+                foldlWhile func acc_ tail
 
 
 foldrWhile : (a -> b -> ( Bool, b )) -> b -> List a -> ( Bool, b )
@@ -161,10 +168,11 @@ uniqueHelp f existing remaining =
                 computedFirst =
                     f first
             in
-                if Set.member computedFirst existing then
-                    uniqueHelp f existing rest
-                else
-                    first :: uniqueHelp f (Set.insert computedFirst existing) rest
+            if Set.member computedFirst existing then
+                uniqueHelp f existing rest
+
+            else
+                first :: uniqueHelp f (Set.insert computedFirst existing) rest
 
 
 dropRight : Int -> List a -> List a
@@ -207,6 +215,6 @@ insertAt where_ value list =
             dropRight where_ list
 
         rightSide =
-            List.drop ((List.length list) - where_) list
+            List.drop (List.length list - where_) list
     in
-        leftSide ++ (value :: rightSide)
+    leftSide ++ (value :: rightSide)

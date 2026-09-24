@@ -1,10 +1,10 @@
 module Game.Dummy exposing (dummy)
 
 import Core.Flags exposing (Flags)
-import Game.Models exposing (..)
 import Game.Account.Models as Account
-import Game.Servers.Models as Servers
 import Game.Meta.Dummy as Meta
+import Game.Models exposing (..)
+import Game.Servers.Models as Servers
 
 
 dummy : Account.ID -> Account.Username -> Account.Token -> Flags -> Model
@@ -22,8 +22,8 @@ dummy id username token flags =
         meta =
             Meta.dummy
     in
-        { model
-            | account = account
-            , servers = servers
-            , meta = meta
-        }
+    { model
+        | account = account
+        , servers = servers
+        , meta = meta
+    }

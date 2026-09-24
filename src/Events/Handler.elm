@@ -1,11 +1,11 @@
 module Events.Handler exposing (Error, handler, report)
 
-import Json.Decode exposing (Value)
 import Driver.Websocket.Channels as Ws
 import Events.Account.Handler as Account
-import Events.Server.Handler as Server
 import Events.BackFlix.Handler as BackFlix
 import Events.Config exposing (..)
+import Events.Server.Handler as Server
+import Json.Decode exposing (Value)
 
 
 type alias Error =

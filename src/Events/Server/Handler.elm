@@ -1,15 +1,15 @@
 module Events.Server.Handler exposing (events)
 
-import Events.Shared exposing (Router)
-import Game.Servers.Shared as Servers exposing (CId)
+import Events.Server.Config exposing (..)
 import Events.Server.Handlers.FileAdded as FileAdded
 import Events.Server.Handlers.FileDownloaded as FileDownloaded
-import Events.Server.Handlers.ProcessCompleted as ProcessCompleted
-import Events.Server.Handlers.ProcessesRecalcado as ProcessesRecalcado
-import Events.Server.Handlers.ProcessBruteforceFailed as ProcessBruteforceFailed
 import Events.Server.Handlers.LogCreated as LogCreated
 import Events.Server.Handlers.MotherboardUpdated as MotherboardUpdated
-import Events.Server.Config exposing (..)
+import Events.Server.Handlers.ProcessBruteforceFailed as ProcessBruteforceFailed
+import Events.Server.Handlers.ProcessCompleted as ProcessCompleted
+import Events.Server.Handlers.ProcessesRecalcado as ProcessesRecalcado
+import Events.Shared exposing (Router)
+import Game.Servers.Shared as Servers exposing (CId)
 
 
 events : Config msg -> String -> CId -> Router msg

@@ -1,18 +1,17 @@
-module Game.Servers.Requests
-    exposing
-        ( Response(..)
-        , ServerResponse(..)
-        , receive
-        , serverReceive
-        )
+module Game.Servers.Requests exposing
+    ( Response(..)
+    , ServerResponse(..)
+    , receive
+    , serverReceive
+    )
 
-import Time exposing (Time)
-import Game.Servers.Requests.Resync as Resync
 import Game.Servers.Messages
     exposing
         ( RequestMsg(..)
         , ServerRequestMsg(..)
         )
+import Game.Servers.Requests.Resync as Resync
+import Time exposing (Time)
 
 
 type Response

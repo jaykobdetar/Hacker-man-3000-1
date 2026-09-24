@@ -1,9 +1,8 @@
-module Apps.Browser.Pages.NotFound.Models
-    exposing
-        ( Model
-        , initialModel
-        , getTitle
-        )
+module Apps.Browser.Pages.NotFound.Models exposing
+    ( Model
+    , getTitle
+    , initialModel
+    )
 
 import Game.Meta.Types.Network.Site as Site
 

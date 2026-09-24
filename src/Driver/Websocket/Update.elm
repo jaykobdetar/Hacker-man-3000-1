@@ -1,14 +1,14 @@
 module Driver.Websocket.Update exposing (update)
 
 import Dict exposing (Dict)
-import Json.Decode exposing (Value, decodeValue, value, string, field, maybe, map)
-import Json.Decode.Pipeline exposing (decode, required, optional)
-import Phoenix.Channel as Channel
-import Utils.React as React exposing (React)
-import Driver.Websocket.Config exposing (..)
 import Driver.Websocket.Channels exposing (..)
+import Driver.Websocket.Config exposing (..)
 import Driver.Websocket.Messages exposing (..)
 import Driver.Websocket.Models exposing (..)
+import Json.Decode exposing (Value, decodeValue, field, map, maybe, string, value)
+import Json.Decode.Pipeline exposing (decode, optional, required)
+import Phoenix.Channel as Channel
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -63,7 +63,7 @@ onJoined config channel payload model =
                 BackFlixChannel ->
                     React.none
     in
-        ( model, react )
+    ( model, react )
 
 
 onJoinFailed : Config msg -> Channel -> Value -> Model msg -> UpdateResponse msg
@@ -79,14 +79,14 @@ onJoinFailed config channel payload model =
                         _ ->
                             React.none
             in
-                ( model, react )
+            ( model, react )
 
         Err err ->
             let
                 _ =
                     Debug.log "▶ JoinFailed decode error" err
             in
-                ( model, React.none )
+            ( model, React.none )
 
 
 handleJoin :
@@ -128,7 +128,7 @@ handleJoin config channel payload model =
         channels =
             Dict.insert channelAddress driverChannel_ model.channels
     in
-        ( { model | channels = channels }, React.none )
+    ( { model | channels = channels }, React.none )
 
 
 handleLeave :
@@ -145,9 +145,9 @@ handleLeave config channel payload model =
         channels =
             Dict.remove channelAddress model.channels
     in
-        ( { model | channels = channels }
-        , React.msg <| config.onLeft channel payload
-        )
+    ( { model | channels = channels }
+    , React.msg <| config.onLeft channel payload
+    )
 
 
 
@@ -170,11 +170,11 @@ decodeEvent =
         meta =
             map (Maybe.withDefault "") <| maybe (field "request_id" string)
     in
-        decode (,,)
-            |> required "event" string
-            |> required "meta" meta
-            |> required "data" value
-            |> decodeValue
+    decode (,,)
+        |> required "event" string
+        |> required "meta" meta
+        |> required "data" value
+        |> decodeValue
 
 
 decodeBackFlixEvent : Value -> Result String ( String, String, Value )

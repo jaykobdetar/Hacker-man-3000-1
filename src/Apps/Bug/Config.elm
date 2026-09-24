@@ -1,7 +1,7 @@
 module Apps.Bug.Config exposing (..)
 
-import Game.Account.Notifications.Shared as AccountNotifications
 import Apps.Bug.Messages exposing (..)
+import Game.Account.Notifications.Shared as AccountNotifications
 
 
 type alias Config msg =

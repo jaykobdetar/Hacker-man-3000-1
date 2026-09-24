@@ -1,7 +1,7 @@
 module Utils.Html.Events exposing (..)
 
 import Html exposing (Attribute)
-import Html.Events exposing (on, onWithOptions, keyCode, targetValue)
+import Html.Events exposing (keyCode, on, onWithOptions, targetValue)
 import Json.Decode as Json
 
 

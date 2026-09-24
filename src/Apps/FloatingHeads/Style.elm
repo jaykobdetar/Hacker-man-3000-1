@@ -1,15 +1,15 @@
 module Apps.FloatingHeads.Style exposing (..)
 
+import Apps.FloatingHeads.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Colors as Colors
-import Css.Elements exposing (ul, li, div, span)
+import Css.Elements exposing (div, li, span, ul)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (..)
 import OS.WindowManager.Resources as WM
-import Apps.FloatingHeads.Resources exposing (Classes(..), prefix)
-import UI.Icons as Icons
-import UI.Common exposing (..)
 import UI.Colors as Colors
+import UI.Common exposing (..)
+import UI.Icons as Icons
+import Utils.Css exposing (..)
 
 
 css : Stylesheet
@@ -148,7 +148,7 @@ chat =
 
 preC : String -> class -> String
 preC prefix class =
-    prefix ++ (toString class)
+    prefix ++ toString class
 
 
 wmClass : WM.Classes -> (List Style -> Snippet)

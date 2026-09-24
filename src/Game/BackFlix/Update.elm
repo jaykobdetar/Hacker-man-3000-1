@@ -1,9 +1,9 @@
 module Game.BackFlix.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.BackFlix.Models exposing (..)
-import Game.BackFlix.Messages exposing (..)
 import Game.BackFlix.Config exposing (..)
+import Game.BackFlix.Messages exposing (..)
+import Game.BackFlix.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

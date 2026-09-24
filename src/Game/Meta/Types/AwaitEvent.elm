@@ -1,11 +1,10 @@
-module Game.Meta.Types.AwaitEvent
-    exposing
-        ( AwaitEvent
-        , RequestId
-        , empty
-        , subscribe
-        , receive
-        )
+module Game.Meta.Types.AwaitEvent exposing
+    ( AwaitEvent
+    , RequestId
+    , empty
+    , receive
+    , subscribe
+    )
 
 import Dict exposing (Dict)
 
@@ -38,7 +37,7 @@ subscribe requestId event awaitEvent =
                 |> Dict.insert eventName effectMsg
                 |> flip (Dict.insert requestId) awaitEvent
     in
-        insertEffect event msgs
+    insertEffect event msgs
 
 
 receive : String -> RequestId -> AwaitEvent msg -> ( Maybe msg, AwaitEvent msg )

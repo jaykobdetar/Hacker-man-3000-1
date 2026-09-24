@@ -1,8 +1,8 @@
 module Apps.LanViewer.Style exposing (..)
 
+import Apps.LanViewer.Resources exposing (..)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
-import Apps.LanViewer.Resources exposing (..)
 
 
 css : Stylesheet

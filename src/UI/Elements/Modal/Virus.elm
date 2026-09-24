@@ -1,10 +1,16 @@
 module UI.Elements.Modal.Virus exposing (..)
 
+import Apps.VirusPanel.Config as App
+import Apps.VirusPanel.Models as App
+    exposing
+        ( CollectBehavior(..)
+        , CollectType(..)
+        , getCollectSelected
+        , setCollectingAccount
+        , setCollectingBounce
+        , setCollectingWallet
+        )
 import Dict exposing (Dict)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import UI.Elements.Modal as Modal exposing (..)
 import Game.Account.Bounces.Models as Bounces
 import Game.Account.Database.Models as Database exposing (HackedServer)
 import Game.Account.Finances.Models as Finances
@@ -12,16 +18,10 @@ import Game.Account.Finances.Models as Finances
         ( AccountId
         , BitcoinAddress
         )
-import Apps.VirusPanel.Config as App
-import Apps.VirusPanel.Models as App
-    exposing
-        ( CollectBehavior(..)
-        , CollectType(..)
-        , setCollectingBounce
-        , setCollectingAccount
-        , setCollectingWallet
-        , getCollectSelected
-        )
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import UI.Elements.Modal as Modal exposing (..)
 
 
 modalSetActiveVirus :
@@ -55,10 +55,10 @@ modalSetActiveVirus config server selectMsg okMsg cancelMsg model =
         btns =
             okCancelButtons okMsg cancelMsg
     in
-        modalFrame
-            (Just "Virus Panel")
-            body
-            btns
+    modalFrame
+        (Just "Virus Panel")
+        body
+        btns
 
 
 modalCollect :
@@ -94,10 +94,10 @@ modalCollect config type_ selectMsg ( okMsg, cancelMsg ) model =
             , cancelButton
             ]
     in
-        modalFrame
-            (Just "Virus Panel")
-            body
-            btns
+    modalFrame
+        (Just "Virus Panel")
+        body
+        btns
 
 
 
@@ -125,11 +125,11 @@ bounceSelect ({ bounces } as config) selectMsg model =
                 [ text (Bounces.getNameWithBounce bounce) ]
                 |> flip (::) acu
     in
-        bounces
-            |> Bounces.getBounces
-            |> Dict.foldr reducer []
-            |> (::) noneOption
-            |> Html.select []
+    bounces
+        |> Bounces.getBounces
+        |> Dict.foldr reducer []
+        |> (::) noneOption
+        |> Html.select []
 
 
 accountSelect :
@@ -153,11 +153,11 @@ accountSelect ({ finances } as config) selectMsg model =
                 [ text (Finances.accountToString id acc) ]
                 |> flip (::) acu
     in
-        finances
-            |> Finances.getBankAccounts
-            |> Dict.foldr reducer []
-            |> (::) noneOption
-            |> Html.select []
+    finances
+        |> Finances.getBankAccounts
+        |> Dict.foldr reducer []
+        |> (::) noneOption
+        |> Html.select []
 
 
 walletSelect :
@@ -181,11 +181,11 @@ walletSelect ({ finances } as config) selectMsg model =
                 [ text address ]
                 |> flip (::) acu
     in
-        finances
-            |> Finances.getBitcoinWallets
-            |> Dict.foldr reducer []
-            |> (::) noneOption
-            |> Html.select []
+    finances
+        |> Finances.getBitcoinWallets
+        |> Dict.foldr reducer []
+        |> (::) noneOption
+        |> Html.select []
 
 
 collectSelect :

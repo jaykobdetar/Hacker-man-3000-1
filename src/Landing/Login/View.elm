@@ -2,16 +2,16 @@ module Landing.Login.View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, onBlur)
 import Html.CssHelpers
-import Landing.Resources as R
+import Html.Events exposing (onBlur, onClick, onInput)
 import Landing.Login.Messages exposing (..)
 import Landing.Login.Models exposing (..)
+import Landing.Resources as R
 
 
 landClass : List class -> Attribute msg
 landClass =
-    (.class) <| Html.CssHelpers.withNamespace R.prefix
+    .class <| Html.CssHelpers.withNamespace R.prefix
 
 
 view : (Msg -> msg) -> Model -> Html msg
@@ -81,5 +81,6 @@ buttonClass : Model -> String
 buttonClass model =
     if model.formErrors.usernameErrors /= "" || model.formErrors.passwordErrors /= "" then
         "disabled"
+
     else
         ""

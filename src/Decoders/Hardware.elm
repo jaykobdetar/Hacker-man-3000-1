@@ -1,19 +1,19 @@
 module Decoders.Hardware exposing (..)
 
+import Decoders.Components
+import Decoders.Network
+import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Game.Meta.Types.Network.Connections as NetConnections
+import Game.Servers.Hardware.Models exposing (..)
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , string
         , dict
         , map
+        , string
         )
 import Json.Decode.Pipeline exposing (decode, required)
 import Utils.Json.Decode exposing (optionalMaybe)
-import Game.Servers.Hardware.Models exposing (..)
-import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
-import Game.Meta.Types.Network.Connections as NetConnections
-import Decoders.Network
-import Decoders.Components
 
 
 hardware : Decoder Model

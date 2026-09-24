@@ -1,8 +1,8 @@
 module Apps.Email.Config exposing (..)
 
-import Game.Storyline.Models as Storyline
 import Apps.Email.Messages exposing (..)
 import Apps.Params as AppParams exposing (AppParams)
+import Game.Storyline.Models as Storyline
 
 
 {-| Callbacks:

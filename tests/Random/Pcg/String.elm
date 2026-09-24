@@ -1,4 +1,4 @@
-module Random.Pcg.String exposing (string, rangeLengthString)
+module Random.Pcg.String exposing (rangeLengthString, string)
 
 {-| String generators the tests used from kress95/random-pcg-extra (no longer available).
 -}

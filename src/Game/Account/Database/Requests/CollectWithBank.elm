@@ -1,18 +1,15 @@
-module Game.Account.Database.Requests.CollectWithBank
-    exposing
-        ( collectWithBankRequest
-        )
+module Game.Account.Database.Requests.CollectWithBank exposing (collectWithBankRequest)
 
-import Utils.Json.Decode exposing (commonError, message)
-import Json.Decode as Decode exposing (Decoder, decodeValue, succeed, fail)
-import Json.Encode as Encode exposing (Value)
-import Requests.Types exposing (FlagsSource, Code(..))
-import Requests.Topics as Topics
-import Requests.Requests as Requests exposing (report)
-import Game.Account.Models exposing (..)
 import Game.Account.Bounces.Shared as Bounces
 import Game.Account.Database.Shared exposing (..)
 import Game.Account.Finances.Models as Finances
+import Game.Account.Models exposing (..)
+import Json.Decode as Decode exposing (Decoder, decodeValue, fail, succeed)
+import Json.Encode as Encode exposing (Value)
+import Requests.Requests as Requests exposing (report)
+import Requests.Topics as Topics
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =
@@ -48,7 +45,7 @@ encoder :
 encoder gateway viruses bounceId atmId accNum =
     let
         valueList =
-            List.map (Encode.string) viruses
+            List.map Encode.string viruses
 
         base =
             [ ( "gateway_id", Encode.string gateway )
@@ -65,7 +62,7 @@ encoder gateway viruses bounceId atmId accNum =
                 Nothing ->
                     base
     in
-        Encode.object obj
+    Encode.object obj
 
 
 errorMessage : Decoder CollectWithBankError

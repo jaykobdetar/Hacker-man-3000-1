@@ -66,7 +66,7 @@ toTunnelID bounce endpoint =
         ( network, ip ) =
             Network.fromString endpoint
     in
-        ( bounce_, network, ip )
+    ( bounce_, network, ip )
 
 
 getTunnel : ID -> Model -> Tunnel
@@ -89,7 +89,7 @@ insertConnection id conn ({ connections } as tunnel) =
         tunnel_ =
             { tunnel | connections = connections_ }
     in
-        tunnel_
+    tunnel_
 
 
 insertTunnel : ID -> Tunnel -> Model -> Model

@@ -1,9 +1,9 @@
 module Events.Server.Handlers.ProcessesRecalcado exposing (..)
 
-import Json.Decode exposing (decodeValue)
+import Decoders.Processes exposing (processDict)
 import Events.Shared exposing (Handler)
 import Game.Servers.Processes.Models exposing (..)
-import Decoders.Processes exposing (processDict)
+import Json.Decode exposing (decodeValue)
 
 
 type alias Data =
