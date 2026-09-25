@@ -1,13 +1,14 @@
-module UI.Style exposing (css, clickableBox)
+module UI.Style exposing (clickableBox, css)
 
 import Css exposing (..)
 import Css.Colors as Colors
+import Css.Elements exposing (button, input, span, typeSelector)
 import Css.Namespace exposing (namespace)
-import Css.Elements exposing (typeSelector, input, span, button)
-import Utils.Css as Css exposing (..)
 import UI.Colors as Colors
-import UI.Common exposing (internalPadding, flexContainerHorz, flexContainerVert)
+import UI.Common exposing (flexContainerHorz, flexContainerVert, internalPadding)
 import UI.Icons as Icons exposing (locationTarget)
+import Utils.Css as Css exposing (..)
+
 
 
 -- Utils

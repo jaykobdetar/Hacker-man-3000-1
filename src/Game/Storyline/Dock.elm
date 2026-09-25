@@ -20,8 +20,9 @@ dockApps model =
 
 addIf : Model -> DesktopApp -> Checkpoint -> List DesktopApp -> List DesktopApp
 addIf model app checkpoint acu =
-    if (checkpointIsGTE (getCheckpoint model) checkpoint) then
+    if checkpointIsGTE (getCheckpoint model) checkpoint then
         app :: acu
+
     else
         acu
 

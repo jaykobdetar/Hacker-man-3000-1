@@ -1,9 +1,9 @@
 module Driver.Websocket.Launch exposing (launch)
 
 import Dict exposing (Dict)
-import Phoenix.Socket as Socket
 import Driver.Websocket.Messages exposing (..)
 import Driver.Websocket.Models exposing (..)
+import Phoenix.Socket as Socket
 
 
 launch : (Msg -> msg) -> ApiUrl -> Token -> ClientName -> Model msg

@@ -1,15 +1,10 @@
 module OS.WindowManager.Update exposing (update)
 
-import Draggable
-import Window
-import Utils.Maybe as Maybe
-import Utils.React as React exposing (React)
-import Apps.Params as AppsParams exposing (AppParams)
 import Apps.BackFlix.Update as BackFlix
 import Apps.BounceManager.Messages as BounceManager
 import Apps.BounceManager.Update as BounceManager
-import Apps.Browser.Update as Browser
 import Apps.Browser.Messages as Browser
+import Apps.Browser.Update as Browser
 import Apps.Bug.Update as Bug
 import Apps.Calculator.Update as Calculator
 import Apps.ConnManager.Update as ConnManager
@@ -17,17 +12,19 @@ import Apps.DBAdmin.Update as DBAdmin
 import Apps.Email.Update as Email
 import Apps.Explorer.Update as Explorer
 import Apps.Finance.Update as Finance
-import Apps.FloatingHeads.Update as FloatingHeads
 import Apps.FloatingHeads.Messages as FloatingHeads
-import Apps.Hebamp.Update as Hebamp
+import Apps.FloatingHeads.Update as FloatingHeads
 import Apps.Hebamp.Messages as Hebamp
+import Apps.Hebamp.Update as Hebamp
 import Apps.LocationPicker.Update as LocationPicker
 import Apps.LogViewer.Update as LogViewer
+import Apps.Params as AppsParams exposing (AppParams)
 import Apps.ServersGears.Update as ServersGears
 import Apps.TaskManager.Update as TaskManager
 import Apps.VirusPanel.Update as VirusPanel
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
+import Draggable
 import Game.Meta.Types.Context exposing (Context(..))
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Shared as Servers exposing (CId(..))
 import OS.WindowManager.Config exposing (..)
@@ -38,6 +35,9 @@ import OS.WindowManager.Models exposing (..)
 import OS.WindowManager.Shared exposing (..)
 import OS.WindowManager.Sidebar.Messages as Sidebar
 import OS.WindowManager.Sidebar.Update as Sidebar
+import Utils.Maybe as Maybe
+import Utils.React as React exposing (React)
+import Window
 
 
 type alias UpdateResponse msg =
@@ -133,10 +133,10 @@ onSidebarMsg config msg model =
                 |> Tuple.second
                 |> Servers.isFreeplay
     in
-        model
-            |> getSidebar
-            |> Sidebar.update (sidebarConfig isFreeplay config) msg
-            |> Tuple.mapFirst (flip setSidebar model)
+    model
+        |> getSidebar
+        |> Sidebar.update (sidebarConfig isFreeplay config) msg
+        |> Tuple.mapFirst (flip setSidebar model)
 
 
 onOpenApp : Config msg -> AppParams -> CId -> Model -> UpdateResponse msg
@@ -153,21 +153,22 @@ onOpenApp config params cid model =
                 Just endpointCId ->
                     if endpointCId == cid then
                         Just Endpoint
+
                     else
                         Just Gateway
 
                 Nothing ->
                     Nothing
     in
-        case maybeAppId of
-            Just appId ->
-                -- it's probably worth to restore the window unless we can't
-                -- guarantee that the launch event will always reuse an
-                -- existing window
-                updateAppParams config appId params model
+    case maybeAppId of
+        Just appId ->
+            -- it's probably worth to restore the window unless we can't
+            -- guarantee that the launch event will always reuse an
+            -- existing window
+            updateAppParams config appId params model
 
-            Nothing ->
-                launch config desktopApp (Just params) maybeContext cid model
+        Nothing ->
+            launch config desktopApp (Just params) maybeContext cid model
 
 
 withWindow :
@@ -180,10 +181,10 @@ withWindow windowId model map =
         andMap ( window, react ) =
             ( insertWindow windowId window model, react )
     in
-        model
-            |> getWindow windowId
-            |> Maybe.map (map >> andMap)
-            |> Maybe.withDefault ( model, React.none )
+    model
+        |> getWindow windowId
+        |> Maybe.map (map >> andMap)
+        |> Maybe.withDefault ( model, React.none )
 
 
 onDragging : Float -> Float -> Model -> UpdateResponse msg
@@ -212,21 +213,23 @@ onClickIcon config desktopApp model =
         context =
             if config.activeGateway == config.activeServer then
                 Gateway
+
             else
                 Endpoint
 
         ( model_, shouldLaunch ) =
             openOrRestoreApp desktopApp sessionId model
     in
-        if shouldLaunch then
-            launch config
-                desktopApp
-                Nothing
-                (Just context)
-                (Tuple.first config.activeGateway)
-                model_
-        else
-            React.update model_
+    if shouldLaunch then
+        launch config
+            desktopApp
+            Nothing
+            (Just context)
+            (Tuple.first config.activeGateway)
+            model_
+
+    else
+        React.update model_
 
 
 updateAppParams :
@@ -293,24 +296,24 @@ updateApp config appId appMsg model =
                 Nothing ->
                     Nothing
     in
-        case uncurried of
-            Just ( windowId, app, active, gateway ) ->
-                let
-                    ( appModel, react ) =
-                        updateAppDelegate config
-                            active
-                            gateway
-                            appMsg
-                            windowId
-                            appId
-                            app
-                in
-                    ( insertApp appId (setModel appModel app) model
-                    , react
-                    )
+    case uncurried of
+        Just ( windowId, app, active, gateway ) ->
+            let
+                ( appModel, react ) =
+                    updateAppDelegate config
+                        active
+                        gateway
+                        appMsg
+                        windowId
+                        appId
+                        app
+            in
+            ( insertApp appId (setModel appModel app) model
+            , react
+            )
 
-            Nothing ->
-                React.update model
+        Nothing ->
+            React.update model
 
 
 updateAppDelegate :
@@ -537,9 +540,9 @@ updateApps config appMsg model =
                 ( model_, react ) =
                     updateApp config appId appMsg model
             in
-                ( model, react :: list )
+            ( model, react :: list )
     in
-        model
-            |> listAppsOfType (msgToDesktopApp appMsg)
-            |> List.foldl reducer ( model, [] )
-            |> Tuple.mapSecond (React.batch config.batchMsg)
+    model
+        |> listAppsOfType (msgToDesktopApp appMsg)
+        |> List.foldl reducer ( model, [] )
+        |> Tuple.mapSecond (React.batch config.batchMsg)

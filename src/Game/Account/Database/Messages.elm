@@ -4,8 +4,8 @@ import Events.Account.Handlers.ServerPasswordAcquired as ServerPasswordAcquired
 import Events.Account.Handlers.VirusCollected as VirusCollected
 import Game.Account.Database.Models
     exposing
-        ( HackedBankAccountID
-        , HackedBankAccount
+        ( HackedBankAccount
+        , HackedBankAccountID
         )
 
 

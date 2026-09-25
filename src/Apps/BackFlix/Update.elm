@@ -1,9 +1,9 @@
 module Apps.BackFlix.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Apps.BackFlix.Config exposing (..)
-import Apps.BackFlix.Models exposing (..)
 import Apps.BackFlix.Messages as BackFlix exposing (Msg(..))
+import Apps.BackFlix.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -30,7 +30,7 @@ onGoTabs config tab model =
         model_ =
             { model | selected = tab }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onUpdateFilter : Config msg -> String -> Model -> UpdateResponse msg

@@ -1,20 +1,20 @@
 module Decoders.Bounces exposing (..)
 
-import Dict as Dict exposing (Dict)
+import Dict exposing (Dict)
+import Game.Account.Bounces.Models exposing (..)
+import Game.Account.Bounces.Shared exposing (..)
+import Game.Meta.Types.Network exposing (NIP)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , dict
-        , list
-        , string
-        , int
         , field
+        , int
+        , list
         , map
+        , string
         )
-import Json.Decode.Pipeline exposing (decode, required, custom, hardcoded)
-import Game.Account.Bounces.Models exposing (..)
-import Game.Account.Bounces.Shared exposing (..)
-import Game.Meta.Types.Network exposing (NIP)
+import Json.Decode.Pipeline exposing (custom, decode, hardcoded, required)
 
 
 bounces : Decoder Model

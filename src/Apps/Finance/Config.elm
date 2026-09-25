@@ -1,7 +1,7 @@
 module Apps.Finance.Config exposing (..)
 
-import Game.Account.Finances.Models as Finances
 import Apps.Finance.Messages exposing (..)
+import Game.Account.Finances.Models as Finances
 
 
 type alias Config msg =

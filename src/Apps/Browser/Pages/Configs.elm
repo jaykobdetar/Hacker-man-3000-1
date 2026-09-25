@@ -1,12 +1,12 @@
 module Apps.Browser.Pages.Configs exposing (..)
 
-import Game.Account.Finances.Models exposing (BankLoginRequest, BankTransferRequest)
 import Apps.Browser.Config as Browser
+import Apps.Browser.Messages exposing (..)
 import Apps.Browser.Pages.Bank.Config as Bank
 import Apps.Browser.Pages.DownloadCenter.Config as DownloadCenter
 import Apps.Browser.Pages.Home.Config as Home
 import Apps.Browser.Pages.Webserver.Config as Webserver
-import Apps.Browser.Messages exposing (..)
+import Game.Account.Finances.Models exposing (BankLoginRequest, BankTransferRequest)
 
 
 bankConfig : Bank.Config Msg

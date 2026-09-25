@@ -1,13 +1,13 @@
 module Game.Messages exposing (..)
 
-import Json.Decode exposing (Value)
 import Game.Account.Messages as Account
-import Game.Servers.Messages as Servers
-import Game.Meta.Messages as Meta
-import Game.Storyline.Messages as Story
-import Game.Inventory.Messages as Inventory
-import Game.Web.Messages as Web
 import Game.BackFlix.Messages as BackFlix
+import Game.Inventory.Messages as Inventory
+import Game.Meta.Messages as Meta
+import Game.Servers.Messages as Servers
+import Game.Storyline.Messages as Story
+import Game.Web.Messages as Web
+import Json.Decode exposing (Value)
 import Requests.Types exposing (ResponseType)
 
 

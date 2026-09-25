@@ -1,12 +1,12 @@
 module OS.Toasts.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Process
-import Task
-import Time exposing (Time)
 import OS.Toasts.Config exposing (..)
 import OS.Toasts.Messages exposing (..)
 import OS.Toasts.Models exposing (..)
+import Process
+import Task
+import Time exposing (Time)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -46,7 +46,7 @@ onRemove config id model =
         model_ =
             remove id model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onTrash : Config msg -> Int -> Model -> UpdateResponse msg
@@ -59,7 +59,7 @@ onTrash config id model =
             Maybe.map setState_ (get id model)
                 |> Maybe.withDefault model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onFade : Config msg -> Int -> Model -> UpdateResponse msg
@@ -68,8 +68,8 @@ onFade config id model =
         fade_ elem =
             fade config id elem model
     in
-        Maybe.map fade_ (get id model)
-            |> Maybe.withDefault ( model, React.none )
+    Maybe.map fade_ (get id model)
+        |> Maybe.withDefault ( model, React.none )
 
 
 fade : Config msg -> Int -> Toast -> Model -> UpdateResponse msg
@@ -78,11 +78,12 @@ fade config id elem model =
         setState_ =
             setState Garbage >> flip (replace id) model
     in
-        if elem.state == Garbage then
-            onRemove config id model
-        else
-            setState_ elem
-                |> waitDeath config id
+    if elem.state == Garbage then
+        onRemove config id model
+
+    else
+        setState_ elem
+            |> waitDeath config id
 
 
 waitFade : Config msg -> Int -> Model -> UpdateResponse msg

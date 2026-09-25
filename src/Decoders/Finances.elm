@@ -1,17 +1,17 @@
 module Decoders.Finances exposing (..)
 
 import Dict
+import Game.Account.Finances.Models exposing (..)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , field
-        , map
-        , string
         , int
         , list
+        , map
+        , string
         )
-import Json.Decode.Pipeline exposing (decode, required, custom, hardcoded)
-import Game.Account.Finances.Models exposing (..)
+import Json.Decode.Pipeline exposing (custom, decode, hardcoded, required)
 
 
 finances : Decoder Model

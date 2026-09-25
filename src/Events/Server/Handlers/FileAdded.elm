@@ -1,11 +1,11 @@
 module Events.Server.Handlers.FileAdded exposing (..)
 
-import Json.Decode exposing (decodeValue, field)
-import Events.Shared exposing (Handler)
-import Game.Servers.Shared as Servers
-import Game.Servers.Filesystem.Shared as Filesystem
 import Decoders.Filesystem
 import Decoders.Servers
+import Events.Shared exposing (Handler)
+import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Shared as Servers
+import Json.Decode exposing (decodeValue, field)
 
 
 type alias Data =

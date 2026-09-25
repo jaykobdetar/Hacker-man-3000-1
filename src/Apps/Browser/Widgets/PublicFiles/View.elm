@@ -1,11 +1,11 @@
 module Apps.Browser.Widgets.PublicFiles.View exposing (..)
 
-import Html exposing (..)
-import Html.Events exposing (onClick)
-import Html.CssHelpers
-import Game.Servers.Filesystem.Shared as Filesystem
 import Apps.Browser.Resources exposing (Classes(..), prefix)
 import Apps.Browser.Widgets.PublicFiles.Model exposing (..)
+import Game.Servers.Filesystem.Shared as Filesystem
+import Html exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (onClick)
 
 
 type alias Config msg =

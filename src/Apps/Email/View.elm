@@ -1,16 +1,16 @@
 module Apps.Email.View exposing (view)
 
-import Dict
-import Html exposing (..)
-import Html.CssHelpers
-import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
-import Game.Storyline.Models exposing (Contact, getContacts)
-import Game.Storyline.Shared exposing (ContactId)
 import Apps.Email.Config exposing (..)
 import Apps.Email.Messages exposing (Msg(..))
 import Apps.Email.Models exposing (..)
 import Apps.Email.Resources exposing (Classes(..), prefix)
+import Dict
+import Game.Storyline.Models exposing (Contact, getContacts)
+import Game.Storyline.Shared exposing (ContactId)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (onClick)
 
 
 { id, class, classList } =
@@ -47,5 +47,5 @@ contact { toMsg } contactId { about } acu =
         attrs =
             [ onClick <| toMsg <| SelectContact contactId ]
     in
-        li attrs [ image, text about.nick ]
-            |> flip (::) acu
+    li attrs [ image, text about.nick ]
+        |> flip (::) acu

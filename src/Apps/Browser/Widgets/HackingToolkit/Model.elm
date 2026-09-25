@@ -1,10 +1,9 @@
-module Apps.Browser.Widgets.HackingToolkit.Model
-    exposing
-        ( Model
-        , Password
-        , Address
-        , setPassword
-        )
+module Apps.Browser.Widgets.HackingToolkit.Model exposing
+    ( Address
+    , Model
+    , Password
+    , setPassword
+    )
 
 import Game.Meta.Types.Network exposing (NIP)
 
@@ -29,7 +28,8 @@ setPassword password model =
         newPassword =
             if password == "" then
                 Nothing
+
             else
                 Just password
     in
-        { model | password = newPassword }
+    { model | password = newPassword }

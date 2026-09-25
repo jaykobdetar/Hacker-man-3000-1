@@ -5,9 +5,9 @@ import Game.BackFlix.Models as BackFlix
 import Html exposing (Html, div, span, text)
 import Html.Attributes exposing (style)
 import Html.CssHelpers
-import UI.ToString exposing (timestampToFullData)
 import OS.Console.Config exposing (..)
 import OS.Console.Resources exposing (..)
+import UI.ToString exposing (timestampToFullData)
 
 
 { id, class, classList } =
@@ -20,11 +20,11 @@ view config =
         view_ =
             viewLogs config.logs ++ [ text "elliot@localhost_>" ]
     in
-        div
-            [ class [ LogConsole ]
-            , style [ ( "pointerEvents", "none" ) ]
-            ]
-            view_
+    div
+        [ class [ LogConsole ]
+        , style [ ( "pointerEvents", "none" ) ]
+        ]
+        view_
 
 
 viewLogs : BackFlix.Model -> List (Html msg)
@@ -40,21 +40,21 @@ viewLog id log =
             text (toString log.data)
 
         type_ =
-            text (log.typeString)
+            text log.typeString
 
         time =
             timestampToFullData log.timestamp
     in
-        div []
-            [ div [ class [ LogConsoleHeader ] ]
-                [ span (setClass log)
-                    [ type_ ]
-                , span [] [ text " " ]
-                , span [] [ text time ]
-                ]
-            , div []
-                [ data ]
+    div []
+        [ div [ class [ LogConsoleHeader ] ]
+            [ span (setClass log)
+                [ type_ ]
+            , span [] [ text " " ]
+            , span [] [ text time ]
             ]
+        , div []
+            [ data ]
+        ]
 
 
 setClass : BackFlix.Log -> List (Html.Attribute msg)

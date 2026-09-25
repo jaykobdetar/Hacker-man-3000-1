@@ -1,7 +1,7 @@
 module Apps.DBAdmin.Messages exposing (Msg(..))
 
-import Game.Servers.Logs.Models exposing (ID)
 import Apps.DBAdmin.Models exposing (MainTab(..))
+import Game.Servers.Logs.Models exposing (ID)
 
 
 type Msg

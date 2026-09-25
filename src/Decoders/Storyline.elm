@@ -1,25 +1,25 @@
 module Decoders.Storyline exposing (..)
 
 import Dict exposing (Dict)
+import Game.Storyline.Models exposing (Contact, Model, fromContacts, initialAbout)
+import Game.Storyline.Shared exposing (..)
+import Game.Storyline.StepActions.Helper exposing (initialActions)
+import Game.Storyline.StepActions.Shared exposing (Action)
 import Json.Decode as Decode
     exposing
         ( Decoder
-        , succeed
-        , fail
-        , map
         , andThen
-        , field
-        , list
         , dict
-        , string
+        , fail
+        , field
         , float
+        , list
+        , map
+        , string
+        , succeed
         )
-import Json.Decode.Pipeline exposing (decode, required, hardcoded, custom)
-import Utils.Json.Decode exposing (optionalMaybe, commonError)
-import Game.Storyline.Models exposing (Contact, Model, initialAbout, fromContacts)
-import Game.Storyline.Shared exposing (..)
-import Game.Storyline.StepActions.Shared exposing (Action)
-import Game.Storyline.StepActions.Helper exposing (initialActions)
+import Json.Decode.Pipeline exposing (custom, decode, hardcoded, required)
+import Utils.Json.Decode exposing (commonError, optionalMaybe)
 
 
 story : Decoder Model

@@ -1,11 +1,11 @@
 module Apps.TaskManager.Config exposing (..)
 
+import Apps.TaskManager.Messages exposing (..)
 import ContextMenu
-import Html exposing (Attribute)
-import Time exposing (Time)
 import Game.Servers.Processes.Models as Processes
 import Game.Servers.Processes.Shared as Processes
-import Apps.TaskManager.Messages exposing (..)
+import Html exposing (Attribute)
+import Time exposing (Time)
 
 
 type alias Config msg =

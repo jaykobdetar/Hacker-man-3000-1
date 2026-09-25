@@ -1,23 +1,22 @@
-module Game.Requests.Resync
-    exposing
-        ( Data
-        , resyncRequest
-        , resyncReceive
-        )
+module Game.Requests.Resync exposing
+    ( Data
+    , resyncReceive
+    , resyncRequest
+    )
 
 import Decoders.Game exposing (ServersToJoin)
+import Game.Account.Models as Account
+import Game.Models exposing (..)
 import Json.Decode exposing (Value, decodeValue)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
 import Requests.Types
     exposing
-        ( FlagsSource
+        ( Code(..)
+        , FlagsSource
         , ResponseType
-        , Code(..)
         , emptyPayload
         )
-import Game.Models exposing (..)
-import Game.Account.Models as Account
 
 
 type alias Data =

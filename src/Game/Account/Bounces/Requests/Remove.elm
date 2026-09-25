@@ -1,13 +1,13 @@
 module Game.Account.Bounces.Requests.Remove exposing (removeRequest)
 
-import Json.Decode as Decode exposing (Decoder, decodeValue, succeed, fail)
+import Game.Account.Bounces.Shared as Bounces exposing (RemoveError(..))
+import Game.Account.Models exposing (..)
+import Json.Decode as Decode exposing (Decoder, decodeValue, fail, succeed)
 import Json.Encode as Encode exposing (Value)
-import Utils.Json.Decode exposing (commonError, message)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
-import Game.Account.Models exposing (..)
-import Game.Account.Bounces.Shared as Bounces exposing (RemoveError(..))
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =

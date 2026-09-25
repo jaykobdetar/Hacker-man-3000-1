@@ -1,10 +1,10 @@
 module Apps.Params exposing (..)
 
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Apps.BounceManager.Shared as BounceManager
 import Apps.Browser.Shared as Browser
 import Apps.FloatingHeads.Models as FloatingHeads
 import Apps.Hebamp.Shared as Hebamp
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 
 
 type AppParams

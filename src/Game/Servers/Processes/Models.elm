@@ -1,13 +1,13 @@
 module Game.Servers.Processes.Models exposing (..)
 
 import Dict exposing (Dict)
-import Time exposing (Time)
-import Random.Pcg as Random
-import Utils.Model.RandomUuid as RandomUuid
 import Game.Meta.Types.Network as Network
-import Game.Servers.Tunnels.Models exposing (ConnectionID)
 import Game.Servers.Logs.Models as Logs
 import Game.Servers.Processes.Shared exposing (..)
+import Game.Servers.Tunnels.Models exposing (ConnectionID)
+import Random.Pcg as Random
+import Time exposing (Time)
+import Utils.Model.RandomUuid as RandomUuid
 
 
 type alias Model =
@@ -170,6 +170,7 @@ whenStarted : (Process -> Process) -> Process -> Process
 whenStarted func process =
     if isStarting process then
         process
+
     else
         func process
 
@@ -178,6 +179,7 @@ whenIncomplete : (Process -> Process) -> Process -> Process
 whenIncomplete func process =
     if isConcluded process then
         process
+
     else
         func process
 
@@ -225,7 +227,7 @@ insertOptimistic process model0 =
             Dict.insert id process model1.processes
                 |> flip setProcesses model1
     in
-        ( id, model2 )
+    ( id, model2 )
 
 
 get : ID -> Model -> Maybe Process
@@ -323,7 +325,7 @@ conclude succeeded process =
                 Nothing ->
                     Concluded
     in
-        { process | state = state }
+    { process | state = state }
 
 
 failWithReason : Reason -> Process -> Process

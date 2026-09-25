@@ -1,11 +1,11 @@
 module Setup.Requests.Setup exposing (Data, setupRequest)
 
+import Game.Account.Models as Account
+import Json.Encode as Encode exposing (Value)
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Json.Encode as Encode exposing (Value)
-import Requests.Types exposing (FlagsSource, Code(..))
+import Requests.Types exposing (Code(..), FlagsSource)
 import Setup.Models exposing (..)
-import Game.Account.Models as Account
 
 
 type alias Data =
@@ -19,9 +19,9 @@ setupRequest pages id flagsSrc =
             Encode.object
                 [ ( "pages", Encode.list <| encodeDone pages ) ]
     in
-        flagsSrc
-            |> Requests.request (Topics.clientSetup id) payload
-            |> Cmd.map (uncurry receiver)
+    flagsSrc
+        |> Requests.request (Topics.clientSetup id) payload
+        |> Cmd.map (uncurry receiver)
 
 
 

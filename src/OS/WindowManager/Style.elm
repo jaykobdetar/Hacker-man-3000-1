@@ -4,16 +4,16 @@ import Css exposing (..)
 import Css.Colors as Colors
 import Css.Elements exposing (div)
 import Css.Namespace exposing (namespace)
-import Utils.Css as Css exposing (pseudoContent, withAttribute, nest, child)
 import OS.WindowManager.Resources exposing (..)
 import UI.Colors as Colors
-import UI.Common exposing (globalShadow, flexContainerHorz, flexContainerVert, internalPadding)
+import UI.Common exposing (flexContainerHorz, flexContainerVert, globalShadow, internalPadding)
 import UI.Icons as Icons
+import Utils.Css as Css exposing (child, nest, pseudoContent, withAttribute)
 
 
 wmBorderRadius : Px
 wmBorderRadius =
-    (px 4)
+    px 4
 
 
 addIco : String -> Style -> Style
@@ -44,7 +44,7 @@ css =
 window : Snippet
 window =
     class Window
-        [ position (absolute)
+        [ position absolute
         , zIndex (int 0)
         , displayFlex
         , borderRadius wmBorderRadius

@@ -1,8 +1,8 @@
 module Apps.FloatingHeads.Launch exposing (..)
 
-import Utils.React as React exposing (React)
 import Apps.FloatingHeads.Config exposing (..)
 import Apps.FloatingHeads.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias LaunchResponse msg =
@@ -25,4 +25,4 @@ launchOpenAtContact config contact =
         model =
             initialModel (Just contact) config.reference
     in
-        ( model, React.none )
+    ( model, React.none )

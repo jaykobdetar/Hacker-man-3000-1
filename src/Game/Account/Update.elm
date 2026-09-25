@@ -1,21 +1,21 @@
 module Game.Account.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Core.Error as Error exposing (Error)
-import Game.Servers.Shared as Servers
-import Game.Account.Notifications.Messages as Notifications
-import Game.Account.Notifications.Update as Notifications
-import Game.Meta.Types.Context exposing (..)
-import Game.Account.Finances.Messages as Finances
-import Game.Account.Finances.Update as Finances
+import Game.Account.Bounces.Messages as Bounces
+import Game.Account.Bounces.Update as Bounces
+import Game.Account.Config exposing (..)
 import Game.Account.Database.Messages as Database
 import Game.Account.Database.Update as Database
-import Game.Account.Bounces.Update as Bounces
-import Game.Account.Bounces.Messages as Bounces
-import Game.Account.Requests.SignOut exposing (signOutRequest)
-import Game.Account.Config exposing (..)
+import Game.Account.Finances.Messages as Finances
+import Game.Account.Finances.Update as Finances
 import Game.Account.Messages exposing (..)
 import Game.Account.Models exposing (..)
+import Game.Account.Notifications.Messages as Notifications
+import Game.Account.Notifications.Update as Notifications
+import Game.Account.Requests.SignOut exposing (signOutRequest)
+import Game.Meta.Types.Context exposing (..)
+import Game.Servers.Shared as Servers
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -94,7 +94,7 @@ handleSetEndpoint config cid model =
                 model_ =
                     { model | context = Gateway }
             in
-                ( model_, react )
+            ( model_, react )
 
         Nothing ->
             "Trying to set endpoint without gateway."
@@ -111,7 +111,7 @@ handleSetContext config context model =
         model_ =
             { model | context = context }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onDatabase : Config msg -> Database.Msg -> Model -> UpdateResponse msg
@@ -126,7 +126,7 @@ onDatabase config msg model =
         model_ =
             setDatabase database model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onFinances : Config msg -> Finances.Msg -> Model -> UpdateResponse msg
@@ -141,7 +141,7 @@ onFinances config msg model =
         model_ =
             setFinances finances model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onNotifications : Config msg -> Notifications.Msg -> Model -> UpdateResponse msg
@@ -156,7 +156,7 @@ onNotifications config msg model =
         model_ =
             setNotifications notifications model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 handleSignOut : Config msg -> Model -> UpdateResponse msg
@@ -174,7 +174,7 @@ handleSignOut config model =
                 |> Cmd.map (always <| config.batchMsg [])
                 |> React.cmd
     in
-        ( model_, react )
+    ( model_, react )
 
 
 handleTutorialCompleted : Config msg -> Bool -> Model -> UpdateResponse msg
@@ -199,7 +199,7 @@ handleSignOutAndCrash config error model =
                 |> Cmd.map (always <| config.batchMsg [])
                 |> React.cmd
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onBounces : Config msg -> Bounces.Msg -> Model -> UpdateResponse msg
@@ -214,7 +214,7 @@ onBounces config msg model =
         model_ =
             setBounces bounces model
     in
-        ( model_, react )
+    ( model_, react )
 
 
 handleNewGateway : Servers.CId -> Model -> UpdateResponse msg
@@ -224,7 +224,7 @@ handleNewGateway cid model =
 
 handleConnected : Config msg -> Model -> UpdateResponse msg
 handleConnected config model =
-    ( model, React.msg <| config.onConnected (model.id) )
+    ( model, React.msg <| config.onConnected model.id )
 
 
 handleDisconnected : Config msg -> Model -> UpdateResponse msg
@@ -241,4 +241,4 @@ handleDisconnected config model =
                 _ ->
                     React.none
     in
-        ( model, react )
+    ( model, react )

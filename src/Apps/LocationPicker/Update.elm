@@ -1,12 +1,12 @@
 module Apps.LocationPicker.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Json.Decode exposing (Value)
-import Utils.Ports.Leaflet as Leaflet
-import Utils.Ports.Geolocation as Geolocation
 import Apps.LocationPicker.Config exposing (..)
-import Apps.LocationPicker.Models exposing (..)
 import Apps.LocationPicker.Messages as LocationPicker exposing (Msg(..))
+import Apps.LocationPicker.Models exposing (..)
+import Json.Decode exposing (Value)
+import Utils.Ports.Geolocation as Geolocation
+import Utils.Ports.Leaflet as Leaflet
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -23,12 +23,14 @@ update config msg model =
         LeafletMsg id msg ->
             if id == model.mapEId then
                 onLeafletMsg config msg model
+
             else
                 ( model, React.none )
 
         GeolocationMsg id msg ->
             if id == model.self then
                 onGeoMsg config msg model
+
             else
                 ( model, React.none )
 

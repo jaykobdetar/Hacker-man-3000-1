@@ -1,33 +1,32 @@
 module OS.Config exposing (..)
 
 import ContextMenu
-import Html exposing (Html, Attribute)
-import Utils.Core exposing (..)
 import Core.Flags exposing (Flags)
-import Game.Models as Game
-import Game.Messages as Game
+import Game.Account.Bounces.Shared as Bounces
 import Game.Account.Messages as Account
 import Game.Account.Models as Account
-import Game.Account.Bounces.Shared as Bounces
 import Game.Account.Notifications.Messages as AccountNotifications
 import Game.Account.Notifications.Shared as AccountNotifications
 import Game.Account.Requests.ActionPerformed as ActionPerformed
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
+import Game.Messages as Game
 import Game.Meta.Types.Context exposing (..)
-import Game.Meta.Types.Desktop.Apps exposing (Requester)
-import Game.Servers.Shared exposing (CId, StorageId)
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp, Requester)
+import Game.Models as Game
 import Game.Servers.Messages as Servers
 import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Notifications.Messages as ServersNotifications
+import Game.Servers.Shared exposing (CId, StorageId)
+import Html exposing (Attribute, Html)
 import OS.Console.Config as Console
 import OS.Header.Config as Header
 import OS.Map.Config as Map
 import OS.Map.Messages as Map
-import OS.WindowManager.Config as WindowManager
-import OS.WindowManager.Messages as WindowManager
+import OS.Messages exposing (..)
 import OS.Toasts.Config as Toasts
 import OS.Toasts.Messages as Toasts
-import OS.Messages exposing (..)
+import OS.WindowManager.Config as WindowManager
+import OS.WindowManager.Messages as WindowManager
+import Utils.Core exposing (..)
 
 
 type alias Config msg =
@@ -97,32 +96,32 @@ headerConfig ({ game } as config) =
         onReadAllServerNotifications =
             serverNotif config cid ServersNotifications.HandleReadAll
     in
-        { toMsg = HeaderMsg >> config.toMsg
-        , batchMsg = config.batchMsg
-        , activeContext = config.activeContext
-        , activeGatewayCId = cid
-        , activeEndpointCId = Servers.getEndpointCId gateway
-        , activeBounce = Servers.getBounce server_
-        , activeNIP = Servers.getActiveNIP server_
-        , gateways = Account.getGateways account_
-        , endpoints = endpoints
-        , bounces = Account.getBounces account_
-        , nips = Servers.getNIPs server_
-        , accountNotifications = Account.getNotifications account_
-        , serversNotifications = Servers.getNotifications server_
-        , onNewApp = WindowManager.NewApp >>>>> WindowManagerMsg >>>>> config.toMsg
-        , onOpenApp = WindowManager.OpenApp >>> WindowManagerMsg >>> config.toMsg
-        , onSignOut = onSignOut config
-        , onSetGateway = Account.HandleSetGateway >> account config
-        , onSetEndpoint = Account.HandleSetEndpoint >> account config
-        , onSetContext = onSetContext config
-        , onSetBounce = onSetBounce config
-        , onReadAllAccountNotifications = onReadAllAccountNotifications
-        , onReadAllServerNotifications = onReadAllServerNotifications
-        , onSetActiveNIP = Servers.HandleSetActiveNIP >> server config cid
-        , getLabel = flip Servers.getLabel servers_
-        , menuAttr = config.menuAttr
-        }
+    { toMsg = HeaderMsg >> config.toMsg
+    , batchMsg = config.batchMsg
+    , activeContext = config.activeContext
+    , activeGatewayCId = cid
+    , activeEndpointCId = Servers.getEndpointCId gateway
+    , activeBounce = Servers.getBounce server_
+    , activeNIP = Servers.getActiveNIP server_
+    , gateways = Account.getGateways account_
+    , endpoints = endpoints
+    , bounces = Account.getBounces account_
+    , nips = Servers.getNIPs server_
+    , accountNotifications = Account.getNotifications account_
+    , serversNotifications = Servers.getNotifications server_
+    , onNewApp = WindowManager.NewApp >>>>> WindowManagerMsg >>>>> config.toMsg
+    , onOpenApp = WindowManager.OpenApp >>> WindowManagerMsg >>> config.toMsg
+    , onSignOut = onSignOut config
+    , onSetGateway = Account.HandleSetGateway >> account config
+    , onSetEndpoint = Account.HandleSetEndpoint >> account config
+    , onSetContext = onSetContext config
+    , onSetBounce = onSetBounce config
+    , onReadAllAccountNotifications = onReadAllAccountNotifications
+    , onReadAllServerNotifications = onReadAllServerNotifications
+    , onSetActiveNIP = Servers.HandleSetActiveNIP >> server config cid
+    , getLabel = flip Servers.getLabel servers_
+    , menuAttr = config.menuAttr
+    }
 
 
 consoleConfig : Config msg -> Console.Config
@@ -197,7 +196,7 @@ onSetBounce ({ activeGateway } as config) =
                 |> Servers.getEndpointCId
                 |> Maybe.withDefault (Tuple.first activeGateway)
     in
-        Servers.HandleSetBounce >> server config cid
+    Servers.HandleSetBounce >> server config cid
 
 
 isCampaignFromConfig : Config msg -> Bool

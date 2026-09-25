@@ -2,8 +2,8 @@ module Landing.SignUp.View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, onBlur)
 import Html.CssHelpers
+import Html.Events exposing (onBlur, onClick, onInput)
 import Landing.Resources as R
 import Landing.SignUp.Messages exposing (..)
 import Landing.SignUp.Models exposing (..)
@@ -11,7 +11,7 @@ import Landing.SignUp.Models exposing (..)
 
 landClass : List class -> Attribute msg
 landClass =
-    (.class) <| Html.CssHelpers.withNamespace R.prefix
+    .class <| Html.CssHelpers.withNamespace R.prefix
 
 
 view : (Msg -> msg) -> Model -> Html msg
@@ -72,6 +72,7 @@ viewErrorsUsername : Model -> String
 viewErrorsUsername model =
     if model.usernameTaken then
         "Username already taken"
+
     else
         model.formErrors.usernameErrors
 
@@ -85,5 +86,6 @@ signUpButtonClass : Model -> String
 signUpButtonClass model =
     if model.formErrors.usernameErrors /= "" || model.formErrors.passwordErrors /= "" then
         "disabled"
+
     else
         ""

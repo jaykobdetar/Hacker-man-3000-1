@@ -1,12 +1,12 @@
 module Apps.Calculator.View exposing (..)
 
-import Html exposing (..)
-import Html.Events exposing (..)
-import Html.CssHelpers
 import Apps.Calculator.Config exposing (..)
-import Apps.Calculator.Models exposing (..)
 import Apps.Calculator.Messages exposing (Msg(..))
+import Apps.Calculator.Models exposing (..)
 import Apps.Calculator.Resources exposing (..)
+import Html exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (..)
 
 
 { id, class, classList } =
@@ -51,41 +51,43 @@ view config model =
                 string =
                     toString x
             in
-                if x <= 3 && x /= 0 then
-                    btn config [ NormalSubBtn ] (Input string) string
-                else if x == 0 then
-                    btn config [ ZeroBtn ] (Input string) string
-                else
-                    btn config [ NormalBtn ] (Input string) string
+            if x <= 3 && x /= 0 then
+                btn config [ NormalSubBtn ] (Input string) string
+
+            else if x == 0 then
+                btn config [ ZeroBtn ] (Input string) string
+
+            else
+                btn config [ NormalBtn ] (Input string) string
     in
-        div [ class [ MainContainer ] ]
-            [ div [ class [ DisplayContainer ] ]
-                [ text (renderTyping model.display) ]
-            , div [ class [ ButtonsContainer ] ]
-                [ clearallBtn
-                , bkspaceBtn
-                , percentBtn
-                , divideBtn
-                , multiplyBtn
-                , subtractBtn
-                , numBtn 7
-                , numBtn 8
-                , numBtn 9
-                , addBtn
-                , numBtn 4
-                , numBtn 5
-                , numBtn 6
-                , squarerootBtn
-                , div [ class [ ButtonsContainerSub ] ]
-                    [ numBtn 1
-                    , numBtn 2
-                    , numBtn 3
-                    , numBtn 0
-                    , commaBtn
-                    ]
-                , applyBtn
+    div [ class [ MainContainer ] ]
+        [ div [ class [ DisplayContainer ] ]
+            [ text (renderTyping model.display) ]
+        , div [ class [ ButtonsContainer ] ]
+            [ clearallBtn
+            , bkspaceBtn
+            , percentBtn
+            , divideBtn
+            , multiplyBtn
+            , subtractBtn
+            , numBtn 7
+            , numBtn 8
+            , numBtn 9
+            , addBtn
+            , numBtn 4
+            , numBtn 5
+            , numBtn 6
+            , squarerootBtn
+            , div [ class [ ButtonsContainerSub ] ]
+                [ numBtn 1
+                , numBtn 2
+                , numBtn 3
+                , numBtn 0
+                , commaBtn
                 ]
+            , applyBtn
             ]
+        ]
 
 
 btn : Config msg -> List Classes -> Msg -> String -> Html msg
@@ -96,9 +98,9 @@ btn { toMsg } class_ action label =
             , onClick (toMsg action)
             ]
     in
-        button
-            attrib
-            [ text label ]
+    button
+        attrib
+        [ text label ]
 
 
 renderTyping : Operator -> String

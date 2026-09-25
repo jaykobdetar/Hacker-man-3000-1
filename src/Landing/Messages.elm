@@ -1,7 +1,7 @@
 module Landing.Messages exposing (Msg(..))
 
-import Landing.SignUp.Messages as SignUp
 import Landing.Login.Messages as Login
+import Landing.SignUp.Messages as SignUp
 
 
 type Msg

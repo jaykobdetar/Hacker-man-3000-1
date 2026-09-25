@@ -1,16 +1,16 @@
 module Setup.Pages.PickLocation.View exposing (view)
 
 import Html exposing (..)
-import Html.Events exposing (onClick)
 import Html.Attributes exposing (disabled)
 import Html.CssHelpers
+import Html.Events exposing (onClick)
 import Native.Untouchable
+import Setup.Pages.Helpers exposing (withHeader)
+import Setup.Pages.PickLocation.Config exposing (..)
+import Setup.Pages.PickLocation.Messages exposing (..)
+import Setup.Pages.PickLocation.Models exposing (..)
 import Setup.Resources exposing (..)
 import Setup.Settings as Settings exposing (Settings)
-import Setup.Pages.Helpers exposing (withHeader)
-import Setup.Pages.PickLocation.Models exposing (..)
-import Setup.Pages.PickLocation.Messages exposing (..)
-import Setup.Pages.PickLocation.Config exposing (..)
 
 
 { id, class, classList } =
@@ -61,7 +61,7 @@ locPickerBox { toMsg, onNext, onPrevious } model =
                 , buttonNext onNext model
                 ]
     in
-        div [] [ info, btns ]
+    div [] [ info, btns ]
 
 
 buttonNext : (List Settings -> msg) -> Model -> Html msg
@@ -70,7 +70,8 @@ buttonNext onNext model =
         attrs =
             if isOkay model then
                 [ onClick <| onNext <| settings model ]
+
             else
                 [ disabled True ]
     in
-        button attrs [ text "NEXT" ]
+    button attrs [ text "NEXT" ]

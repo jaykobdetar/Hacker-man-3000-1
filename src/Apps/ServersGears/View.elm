@@ -1,21 +1,21 @@
 module Apps.ServersGears.View exposing (view)
 
-import Dict
-import Html exposing (..)
-import Html.Events exposing (onClick)
-import Html.Lazy exposing (lazy, lazy2)
-import Html.CssHelpers
-import Game.Inventory.Models as Inventory
-import Game.Inventory.Shared as Inventory
-import Game.Servers.Models as Servers
-import Game.Meta.Types.Components as Components exposing (Components)
-import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
-import Game.Meta.Types.Components.Type exposing (Type(..))
-import Game.Meta.Types.Network.Connections as NetConnections exposing (Connections)
 import Apps.ServersGears.Config exposing (..)
 import Apps.ServersGears.Messages exposing (..)
 import Apps.ServersGears.Models exposing (..)
 import Apps.ServersGears.Resources exposing (Classes(..), prefix)
+import Dict
+import Game.Inventory.Models as Inventory
+import Game.Inventory.Shared as Inventory
+import Game.Meta.Types.Components as Components exposing (Components)
+import Game.Meta.Types.Components.Motherboard as Motherboard exposing (Motherboard)
+import Game.Meta.Types.Components.Type exposing (Type(..))
+import Game.Meta.Types.Network.Connections as NetConnections exposing (Connections)
+import Game.Servers.Models as Servers
+import Html exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (onClick)
+import Html.Lazy exposing (lazy, lazy2)
 import UI.Elements.Motherboard exposing (..)
 
 
@@ -30,10 +30,11 @@ view config model =
             config.activeServer
                 |> Servers.isGateway
     in
-        if isGateway then
-            Html.map config.toMsg <| editablePanel config model
-        else
-            Html.map config.toMsg <| readonlyPanel config model
+    if isGateway then
+        Html.map config.toMsg <| editablePanel config model
+
+    else
+        Html.map config.toMsg <| readonlyPanel config model
 
 
 readonlyPanel : Config msg -> Model -> Html Msg
@@ -49,20 +50,20 @@ editablePanel config model =
         inventory =
             config.inventory
     in
-        case getMotherboard model of
-            Just motherboard ->
-                div [ class [ WindowFull ] ]
-                    [ lazy2 toolbar motherboard model
-                    , div [ class [ MoboSplit ] ]
-                        [ lazy (viewMotherboard inventory motherboard) model
-                        , lazy2 viewInventory (filterMobo inventory) model
-                        ]
+    case getMotherboard model of
+        Just motherboard ->
+            div [ class [ WindowFull ] ]
+                [ lazy2 toolbar motherboard model
+                , div [ class [ MoboSplit ] ]
+                    [ lazy (viewMotherboard inventory motherboard) model
+                    , lazy2 viewInventory (filterMobo inventory) model
                     ]
+                ]
 
-            Nothing ->
-                div [ class [ WindowPick ] ]
-                    [ lazy2 viewPickMobo inventory model
-                    ]
+        Nothing ->
+            div [ class [ WindowPick ] ]
+                [ lazy2 viewPickMobo inventory model
+                ]
 
 
 toolbar : Motherboard -> Model -> Html Msg
@@ -71,7 +72,7 @@ toolbar { slots } { selection, anyChange } =
         unlink =
             case selection of
                 Just (SelectingSlot slotId) ->
-                    case (Maybe.andThen (.component) <| Dict.get slotId slots) of
+                    case Maybe.andThen .component <| Dict.get slotId slots of
                         Just _ ->
                             div [ onClick <| Unlink ]
                                 [ text "Unlink" ]
@@ -95,11 +96,12 @@ toolbar { slots } { selection, anyChange } =
             if anyChange then
                 div [ onClick <| Save ]
                     [ text "Save" ]
+
             else
                 text ""
     in
-        div [ class [ Toolbar ] ]
-            [ unlink, deselect, save ]
+    div [ class [ Toolbar ] ]
+        [ unlink, deselect, save ]
 
 
 viewMotherboard : Inventory.Model -> Motherboard -> Model -> Html Msg
@@ -108,17 +110,17 @@ viewMotherboard inventory motherboard model =
         slots =
             Motherboard.getSlots motherboard
     in
-        div [ class [ PanelMobo ] ]
-            [ selectedComponent inventory motherboard model
-            , div
-                [ class [ MoboContainer ]
-                ]
-                [ guessMobo
-                    (SelectingSlot >> Just >> Select)
-                    model.highlight
-                    motherboard
-                ]
+    div [ class [ PanelMobo ] ]
+        [ selectedComponent inventory motherboard model
+        , div
+            [ class [ MoboContainer ]
             ]
+            [ guessMobo
+                (SelectingSlot >> Just >> Select)
+                model.highlight
+                motherboard
+            ]
+        ]
 
 
 selectedComponent : Inventory.Model -> Motherboard -> Model -> Html Msg
@@ -163,14 +165,14 @@ viewInventory inventory model =
 filterMobo : Inventory.Model -> Inventory.Model
 filterMobo inventory =
     inventory.components
-        |> Dict.filter (\_ compo -> (Components.getType compo) /= MOB)
+        |> Dict.filter (\_ compo -> Components.getType compo /= MOB)
         |> (\c -> { inventory | components = c })
 
 
 viewPickMobo : Inventory.Model -> Model -> Html Msg
 viewPickMobo inventory model =
     inventory.components
-        |> Dict.filter (\_ compo -> (Components.getType compo) == MOB)
+        |> Dict.filter (\_ compo -> Components.getType compo == MOB)
         |> (\c -> { inventory | components = c, ncs = Dict.empty })
         |> flip viewInventory model
 
@@ -201,7 +203,7 @@ viewEntryEnabled selection entry inventory model =
                 Inventory.Component id ->
                     inventory.components
                         |> Dict.get id
-                        |> Maybe.map (Components.getType)
+                        |> Maybe.map Components.getType
                         |> (==) model.highlight
 
                 Inventory.NetConnection nc ->
@@ -210,15 +212,16 @@ viewEntryEnabled selection entry inventory model =
         highlight =
             if isHighlighted then
                 class [ Highlight ]
+
             else
                 class []
 
         select =
             onClick <| Select <| Just selection
     in
-        inventory
-            |> viewEntryContents entry
-            |> div [ select, highlight ]
+    inventory
+        |> viewEntryContents entry
+        |> div [ select, highlight ]
 
 
 viewEntryContents : Inventory.Entry -> Inventory.Model -> List (Html Msg)

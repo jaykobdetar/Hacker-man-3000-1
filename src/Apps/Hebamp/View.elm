@@ -1,17 +1,17 @@
 module Apps.Hebamp.View exposing (view)
 
-import Json.Decode as Json
-import Css
-import Html exposing (..)
-import Html.Attributes exposing (src, type_, controls, style)
-import Html.CssHelpers
-import Html.Events exposing (on, onClick)
-import Utils.Html.Events exposing (onClickMe)
 import Apps.Hebamp.Config exposing (..)
 import Apps.Hebamp.Messages exposing (Msg(..))
 import Apps.Hebamp.Models exposing (..)
-import Apps.Hebamp.Shared exposing (..)
 import Apps.Hebamp.Resources exposing (Classes(..), prefix)
+import Apps.Hebamp.Shared exposing (..)
+import Css
+import Html exposing (..)
+import Html.Attributes exposing (controls, src, style, type_)
+import Html.CssHelpers
+import Html.Events exposing (on, onClick)
+import Json.Decode as Json
+import Utils.Html.Events exposing (onClickMe)
 
 
 { id, class, classList } =
@@ -81,12 +81,14 @@ atLeastTwoDigits val =
         count =
             String.length pure
     in
-        if count >= 2 then
-            pure
-        else if count == 1 then
-            "0" ++ pure
-        else
-            "00"
+    if count >= 2 then
+        pure
+
+    else if count == 1 then
+        "0" ++ pure
+
+    else
+        "00"
 
 
 viewableTime : Float -> String
@@ -94,17 +96,17 @@ viewableTime src =
     let
         min =
             src
-                |> (flip (/)) 60
+                |> flip (/) 60
                 |> floor
                 |> toString
 
         sec =
             src
                 |> floor
-                |> (flip (%)) 60
+                |> flip (%) 60
                 |> atLeastTwoDigits
     in
-        min ++ ":" ++ sec
+    min ++ ":" ++ sec
 
 
 songTitle : Maybe AudioData -> Html msg
@@ -129,7 +131,7 @@ sliderStyle audioData currentTime =
                 Nothing ->
                     []
     in
-        styles |> Css.asPairs |> style
+    styles |> Css.asPairs |> style
 
 
 nativeAudio : Config msg -> String -> Maybe AudioData -> Html msg
@@ -151,4 +153,4 @@ nativeAudio { toMsg } playerId audioData =
                 Nothing ->
                     []
     in
-        audio (staticAttr ++ dynamicAttr) []
+    audio (staticAttr ++ dynamicAttr) []

@@ -1,22 +1,25 @@
 var app = index.app;
 
 var maps = {};
-var address = "//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+var address = process.env.HEBORN_MAP_TILES_URL;
+var attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 function send(data) {
   app.ports.leafletSub.send(data);
 }
 
+// Runs cb once an element with the given id exists (Elm may render it later).
+// Uses MutationObserver: the DOMNodeInserted event it replaces was removed from browsers.
 function withElement(id, cb) {
   if (document.getElementById(id)) return cb();
 
-  var listener = function() {
+  var observer = new MutationObserver(function() {
     if (!document.getElementById(id)) return;
-    document.removeEventListener("DOMNodeInserted", listener);
+    observer.disconnect();
     cb();
-  };
+  });
 
-  document.addEventListener("DOMNodeInserted", listener);
+  observer.observe(document.body, { childList: true, subtree: true });
 }
 
 // creates a new map (cmd)
@@ -29,7 +32,7 @@ function init(cmd) {
     var shapes = {};
     var previousCenter = map.latLngToLayerPoint(map.getCenter());
 
-    L.tileLayer(address, { maxZoom: 18 }).addTo(map);
+    L.tileLayer(address, { maxZoom: 18, attribution: attribution }).addTo(map);
     maps[id] = [map, projections, shapes];
     map.invalidateSize();
 

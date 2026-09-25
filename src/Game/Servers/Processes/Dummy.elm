@@ -1,7 +1,7 @@
 module Game.Servers.Processes.Dummy exposing (dummy)
 
 import Dict
-import Game.Servers.Processes.Models exposing (Processes, Process, ProcessProp(LocalProcess))
+import Game.Servers.Processes.Models exposing (Process, ProcessProp(LocalProcess), Processes)
 import Game.Servers.Processes.Types.Local as Local exposing (..)
 
 
@@ -9,7 +9,7 @@ dummy : Processes
 dummy =
     Dict.fromList
         -- DUMMY VALUE FOR PLAYING
-        [ ( "dummy0000", (Process "dummy0000" (LocalProcess dummyLocalProcess)) )
+        [ ( "dummy0000", Process "dummy0000" (LocalProcess dummyLocalProcess) )
         ]
 
 

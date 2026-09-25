@@ -1,36 +1,36 @@
 module Core.Panic exposing (view)
 
-import Regex exposing (HowMany(All), regex)
+import Core.Messages exposing (Msg(HandleShutdown))
+import Css
+    exposing
+        ( alignItems
+        , backgroundColor
+        , center
+        , color
+        , column
+        , cursor
+        , displayFlex
+        , flex
+        , flexDirection
+        , fontSize
+        , hex
+        , int
+        , left
+        , marginTop
+        , maxWidth
+        , minHeight
+        , pct
+        , pointer
+        , px
+        , textAlign
+        , width
+        )
+import Css.Colors exposing (white)
 import Html exposing (..)
 import Html.Attributes as Html
 import Html.Events exposing (onClick)
-import Css
-    exposing
-        ( backgroundColor
-        , color
-        , textAlign
-        , width
-        , maxWidth
-        , minHeight
-        , fontSize
-        , flex
-        , displayFlex
-        , flexDirection
-        , alignItems
-        , marginTop
-        , cursor
-        , hex
-        , px
-        , int
-        , pct
-        , left
-        , center
-        , column
-        , pointer
-        )
-import Css.Colors exposing (white)
+import Regex exposing (HowMany(All), regex)
 import Utils.Css exposing (selectableText)
-import Core.Messages exposing (Msg(HandleShutdown))
 
 
 style : List Css.Style -> Attribute Msg

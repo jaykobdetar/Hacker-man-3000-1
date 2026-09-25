@@ -1,47 +1,50 @@
 module UI.ToString exposing (..)
 
-import Time exposing (Time, inHours, inMinutes, inSeconds)
 import Date exposing (fromTime)
 import Date.Format as Date exposing (format)
+import Time exposing (Time, inHours, inMinutes, inSeconds)
 
 
 bytesToString : Float -> String
 bytesToString value =
-    (floatToPrefixedValues value) ++ "B"
+    floatToPrefixedValues value ++ "B"
 
 
 bibytesToString : Float -> String
 bibytesToString value =
-    (floatToPrefixedValues value) ++ "iB"
+    floatToPrefixedValues value ++ "iB"
 
 
 bitsPerSecondToString : Float -> String
 bitsPerSecondToString value =
-    (floatToPrefixedValues value) ++ "bps"
+    floatToPrefixedValues value ++ "bps"
 
 
 frequencyToString : Float -> String
 frequencyToString value =
-    (floatToPrefixedValues value) ++ "Hz"
+    floatToPrefixedValues value ++ "Hz"
 
 
 floatToPrefixedValues : Float -> String
 floatToPrefixedValues x =
     -- TODO: Move this function to a better place
     -- TODO: Use "round 2" from elm-round
-    if (x > (10 ^ 9)) then
+    if x > (10 ^ 9) then
         toString (x / (10 ^ 9)) ++ " G"
-    else if (x > (10 ^ 6)) then
+
+    else if x > (10 ^ 6) then
         toString (x / (10 ^ 6)) ++ " M"
-    else if (x > (10 ^ 3)) then
+
+    else if x > (10 ^ 3) then
         toString (x / (10 ^ 3)) ++ " K"
+
     else
-        toString (x) ++ " "
+        toString x ++ " "
 
 
 pointToSvgAttr : ( Float, Float ) -> String
 pointToSvgAttr ( x, y ) =
-    (toString x) ++ "," ++ (toString y)
+    toString x ++ "," ++ toString y
 
 
 secondsToTimeNotation : Time -> String
@@ -57,16 +60,17 @@ secondsToTimeNotation timeLeft =
             totalHours % 24
 
         minutes =
-            (floor (inMinutes timeLeft)) % 60
+            floor (inMinutes timeLeft) % 60
 
         seconds =
-            (ceiling (inSeconds timeLeft)) % 60
+            ceiling (inSeconds timeLeft) % 60
 
         showFun ( value, posfix ) accum =
-            if (String.isEmpty accum) && (value <= 0) then
+            if String.isEmpty accum && (value <= 0) then
                 accum
+
             else
-                (accum ++ " " ++ (toString value) ++ posfix)
+                accum ++ " " ++ toString value ++ posfix
 
         show =
             List.foldl
@@ -78,7 +82,7 @@ secondsToTimeNotation timeLeft =
                 , ( seconds, "s" )
                 ]
     in
-        show
+    show
 
 
 timestampToFullData : Time -> String

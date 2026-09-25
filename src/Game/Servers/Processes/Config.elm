@@ -1,11 +1,11 @@
 module Game.Servers.Processes.Config exposing (Config)
 
-import Time exposing (Time)
 import Core.Flags as Core
-import Game.Servers.Shared as Servers exposing (CId)
 import Game.Meta.Types.Network as Network exposing (NIP)
 import Game.Servers.Filesystem.Shared as Filesystem
 import Game.Servers.Processes.Messages exposing (..)
+import Game.Servers.Shared as Servers exposing (CId)
+import Time exposing (Time)
 
 
 type alias Config msg =

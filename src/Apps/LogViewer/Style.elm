@@ -1,10 +1,10 @@
 module Apps.LogViewer.Style exposing (..)
 
+import Apps.LogViewer.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
 import UI.Common exposing (flexContainerHorz)
 import UI.Icons as Icons
-import Apps.LogViewer.Resources exposing (Classes(..), prefix)
 
 
 ico : Style

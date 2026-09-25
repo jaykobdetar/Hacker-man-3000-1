@@ -1,11 +1,11 @@
 module Decoders.Processes exposing (..)
 
-import Time exposing (Time)
 import Dict exposing (Dict)
 import Game.Servers.Processes.Models exposing (..)
 import Game.Servers.Processes.Shared exposing (..)
 import Json.Decode as Decode exposing (..)
-import Json.Decode.Pipeline exposing (decode, required, optional, custom)
+import Json.Decode.Pipeline exposing (custom, decode, optional, required)
+import Time exposing (Time)
 import Utils.Json.Decode exposing (optionalMaybe)
 
 
@@ -26,7 +26,7 @@ model now maybeModel =
                 , lastModified = now
             }
     in
-        map apply processDict
+    map apply processDict
 
 
 processDict : Decoder (Dict ID Process)
@@ -82,8 +82,8 @@ type_ =
                 value ->
                     fail ("Unknown process type `" ++ value ++ "'")
     in
-        field "type" string
-            |> andThen decodeType
+    field "type" string
+        |> andThen decodeType
 
 
 access : Decoder Access
@@ -105,7 +105,7 @@ access =
                 |> optionalMaybe "target_connection_id" string
                 |> map Partial
     in
-        oneOf [ full, partial ]
+    oneOf [ full, partial ]
 
 
 state : Decoder State
@@ -128,7 +128,7 @@ state =
                 value ->
                     fail ("Invalid process state `" ++ value ++ "'")
     in
-        andThen decode string
+    andThen decode string
 
 
 priority : Decoder Priority
@@ -153,9 +153,9 @@ priority =
                     succeed Highest
 
                 n ->
-                    fail ("Unknown priority `" ++ (toString n) ++ "'")
+                    fail ("Unknown priority `" ++ toString n ++ "'")
     in
-        andThen decode int
+    andThen decode int
 
 
 resourcesUsage : Decoder ResourcesUsage
@@ -216,4 +216,4 @@ connType =
                 _ ->
                     PrivateFTP
     in
-        map match string
+    map match string

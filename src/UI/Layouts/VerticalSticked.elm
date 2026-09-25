@@ -1,6 +1,6 @@
 module UI.Layouts.VerticalSticked exposing (..)
 
-import Html exposing (Html, node, header, footer)
+import Html exposing (Html, footer, header, node)
 
 
 verticalSticked : Maybe (List (Html msg)) -> List (Html msg) -> Maybe (List (Html msg)) -> Html msg

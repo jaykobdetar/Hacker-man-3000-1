@@ -5,7 +5,7 @@ import Json.Decode.Pipeline exposing (decode, required)
 import Json.Encode as Encode
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
+import Requests.Types exposing (Code(..), FlagsSource)
 
 
 type alias Data =

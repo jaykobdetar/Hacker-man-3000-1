@@ -1,10 +1,10 @@
 module Game.Servers.Notifications.Config exposing (..)
 
-import Time exposing (Time)
 import Core.Flags as Core
-import Game.Servers.Notifications.Shared exposing (..)
-import Game.Servers.Notifications.Messages exposing (..)
 import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Notifications.Messages exposing (..)
+import Game.Servers.Notifications.Shared exposing (..)
+import Time exposing (Time)
 
 
 type alias Config msg =

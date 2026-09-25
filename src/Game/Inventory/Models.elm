@@ -1,11 +1,11 @@
 module Game.Inventory.Models exposing (..)
 
 import Dict exposing (Dict)
-import Game.Meta.Types.Components as Components exposing (Components)
-import Game.Meta.Types.Components.Type as Components
-import Game.Meta.Types.Components.Specs as Specs exposing (Specs)
-import Game.Meta.Types.Network.Connections as NetConnections exposing (Connections)
 import Game.Inventory.Shared exposing (..)
+import Game.Meta.Types.Components as Components exposing (Components)
+import Game.Meta.Types.Components.Specs as Specs exposing (Specs)
+import Game.Meta.Types.Components.Type as Components
+import Game.Meta.Types.Network.Connections as NetConnections exposing (Connections)
 
 
 type alias Model =
@@ -39,7 +39,7 @@ insertComponent id component model =
         components =
             Components.insert id component model.components
     in
-        { model | components = components }
+    { model | components = components }
 
 
 removeComponent : Components.Id -> Model -> Model
@@ -48,7 +48,7 @@ removeComponent id model =
         components =
             Components.remove id model.components
     in
-        { model | components = components }
+    { model | components = components }
 
 
 getNC : NetConnections.Id -> Model -> Maybe NetConnections.Connection
@@ -62,7 +62,7 @@ insertNC id connection model =
         ncs =
             NetConnections.insert id connection model.ncs
     in
-        { model | ncs = ncs }
+    { model | ncs = ncs }
 
 
 removeNC : NetConnections.Id -> Model -> Model
@@ -71,7 +71,7 @@ removeNC id model =
         ncs =
             NetConnections.remove id model.ncs
     in
-        { model | ncs = ncs }
+    { model | ncs = ncs }
 
 
 setAvailability : Bool -> Entry -> Model -> Model
@@ -133,9 +133,9 @@ group isAvailable model =
         appendFold func =
             flip <| Dict.foldl func
     in
-        model.components
-            |> Dict.foldl reduceComponents Dict.empty
-            |> appendFold reduceConnections model.ncs
+    model.components
+        |> Dict.foldl reduceComponents Dict.empty
+        |> appendFold reduceConnections model.ncs
 
 
 
@@ -158,7 +158,8 @@ groupHelper isAvailable key entry groups =
         value =
             if isAvailable entry then
                 ( entry :: free, using )
+
             else
                 ( free, entry :: using )
     in
-        Dict.insert key value groups
+    Dict.insert key value groups

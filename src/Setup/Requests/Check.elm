@@ -1,13 +1,14 @@
-module Setup.Requests.Check exposing (serverName, serverLocation)
+module Setup.Requests.Check exposing (serverLocation, serverName)
 
+import Game.Servers.Shared exposing (CId)
 import Json.Decode as Decode exposing (Decoder, Value, decodeValue)
 import Json.Encode as Encode
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..), ResponseType)
-import Game.Servers.Shared exposing (CId)
-import Utils.Ports.Leaflet exposing (Coordinates)
+import Requests.Types exposing (Code(..), FlagsSource, ResponseType)
 import Setup.Settings exposing (..)
+import Utils.Ports.Leaflet exposing (Coordinates)
+
 
 
 {- This is a meta/multi request module, use it to build custom requests -}
@@ -22,9 +23,9 @@ serverName name cid flagsSrc =
                 |> encodeSettings
                 |> encodeKV
     in
-        flagsSrc
-            |> Requests.request (Topics.serverConfigCheck cid) payload
-            |> Cmd.map (uncurry receiveServerName)
+    flagsSrc
+        |> Requests.request (Topics.serverConfigCheck cid) payload
+        |> Cmd.map (uncurry receiveServerName)
 
 
 serverLocation :
@@ -40,9 +41,9 @@ serverLocation coords cid flagsSrc =
                 |> encodeSettings
                 |> encodeKV
     in
-        flagsSrc
-            |> Requests.request (Topics.serverConfigCheck cid) payload
-            |> Cmd.map (uncurry receiveServerLocation)
+    flagsSrc
+        |> Requests.request (Topics.serverConfigCheck cid) payload
+        |> Cmd.map (uncurry receiveServerLocation)
 
 
 

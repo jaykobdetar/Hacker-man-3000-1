@@ -1,12 +1,12 @@
 module OS.Toasts.Config exposing (..)
 
-import Game.Account.Notifications.Config as AccountNotifications
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp(..))
-import Game.Meta.Types.Context exposing (Context)
-import Game.Servers.Shared exposing (CId)
-import Game.Servers.Notifications.Config as ServerNotifications
-import OS.Toasts.Messages exposing (..)
 import Apps.Params as AppParams exposing (AppParams)
+import Game.Account.Notifications.Config as AccountNotifications
+import Game.Meta.Types.Context exposing (Context)
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp(..))
+import Game.Servers.Notifications.Config as ServerNotifications
+import Game.Servers.Shared exposing (CId)
+import OS.Toasts.Messages exposing (..)
 
 
 type alias Config msg =

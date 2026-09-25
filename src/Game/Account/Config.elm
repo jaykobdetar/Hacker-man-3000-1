@@ -1,21 +1,21 @@
 module Game.Account.Config exposing (..)
 
-import Time exposing (Time)
-import Core.Flags as Core
 import Core.Error as Error exposing (Error)
-import Game.Account.Models exposing (..)
-import Game.Account.Messages exposing (..)
+import Core.Flags as Core
 import Game.Account.Bounces.Config as Bounces
+import Game.Account.Bounces.Shared as Bounces
 import Game.Account.Database.Config as Database
 import Game.Account.Database.Models as Database
+import Game.Account.Finances.Config as Finances
 import Game.Account.Finances.Requests.Login as BankLoginRequest
 import Game.Account.Finances.Requests.Transfer as BankTransferRequest
-import Game.Account.Finances.Config as Finances
+import Game.Account.Messages exposing (..)
+import Game.Account.Models exposing (..)
 import Game.Account.Notifications.Config as Notifications
 import Game.Account.Notifications.Shared as Notifications
 import Game.Meta.Types.Desktop.Apps exposing (Requester)
 import Game.Servers.Shared exposing (CId)
-import Game.Account.Bounces.Shared as Bounces
+import Time exposing (Time)
 
 
 type alias Config msg =

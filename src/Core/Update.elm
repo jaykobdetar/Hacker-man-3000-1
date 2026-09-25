@@ -1,32 +1,33 @@
 module Core.Update exposing (update)
 
-import ContextMenu
-import Task
-import Window
-import Utils.React as React exposing (React)
-import Events.Handler as Events
-import Landing.Messages as Landing
-import Landing.Update as Landing
-import Driver.Websocket.Messages as Ws
-import Driver.Websocket.Channels as Ws
-import Driver.Websocket.Update as Ws
-import Game.Messages as Game
-import Game.Models as Game
-import Game.Meta.Types.AwaitEvent as AwaitEvent
-import Game.Meta.Models as Meta
-import Game.Meta.Messages as Meta
-import Game.Update as Game
-import Game.Account.Models as Account
-import Setup.Messages as Setup
-import Setup.Update as Setup
-import OS.Messages as OS
-import OS.Update as OS
-import OS.WindowManager.Messages as WindowManager
 import Apps.TaskManager.Messages as TaskManager
+import ContextMenu
 import Core.Config exposing (..)
 import Core.Flags as Flags exposing (Flags)
 import Core.Messages exposing (..)
 import Core.Models exposing (..)
+import Driver.Websocket.Channels as Ws
+import Driver.Websocket.Messages as Ws
+import Driver.Websocket.Update as Ws
+import Events.Handler as Events
+import Game.Account.Models as Account
+import Game.Messages as Game
+import Game.Meta.Messages as Meta
+import Game.Meta.Models as Meta
+import Game.Meta.Types.AwaitEvent as AwaitEvent
+import Game.Models as Game
+import Game.Update as Game
+import Landing.Messages as Landing
+import Landing.Update as Landing
+import OS.Messages as OS
+import OS.Update as OS
+import OS.WindowManager.Messages as WindowManager
+import Setup.Messages as Setup
+import Setup.Update as Setup
+import Task
+import Utils.React as React exposing (React)
+import Window
+
 
 
 -- TODO: Use onSth pattern
@@ -34,7 +35,7 @@ import Core.Models exposing (..)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case (onDebug model received msg) of
+    case onDebug model received msg of
         BatchMsg msgs ->
             case msgs of
                 [ msg ] ->
@@ -51,7 +52,7 @@ update msg model =
                         ( model_, cmd1 ) =
                             update (BatchMsg msgs) model0
                     in
-                        ( model_, Cmd.batch [ cmd0, cmd1 ] )
+                    ( model_, Cmd.batch [ cmd0, cmd1 ] )
 
                 [] ->
                     ( model, Cmd.none )
@@ -78,7 +79,7 @@ update msg model =
                         |> flip (::) [ cmd0 ]
                         |> Cmd.batch
             in
-                ( { model | state = state }, cmd )
+            ( { model | state = state }, cmd )
 
         HandleEvent channel result ->
             let
@@ -107,16 +108,16 @@ update msg model =
                             always awaitMsgs <|
                                 Debug.log (Events.report error) ""
             in
-                update (BatchMsg msgs) { model | awaitEvent = awaitEvent }
+            update (BatchMsg msgs) { model | awaitEvent = awaitEvent }
 
         HandleAwait requestId event ->
             let
                 awaitEvent =
                     AwaitEvent.subscribe requestId event model.awaitEvent
             in
-                ( { model | awaitEvent = awaitEvent }
-                , Cmd.none
-                )
+            ( { model | awaitEvent = awaitEvent }
+            , Cmd.none
+            )
 
         LoadingEnd z ->
             ( { model | windowLoaded = True }, Cmd.none )
@@ -126,9 +127,9 @@ update msg model =
                 ( menuModel, menuCmd ) =
                     ContextMenu.update msg model.contextMenu
             in
-                ( { model | contextMenu = menuModel }
-                , Cmd.map MenuMsg menuCmd
-                )
+            ( { model | contextMenu = menuModel }
+            , Cmd.map MenuMsg menuCmd
+            )
 
         _ ->
             dispatch <| updateState msg model
@@ -177,7 +178,7 @@ updateHome msg model stateModel =
                 ( model_, reactNext ) =
                     updateState msg modelLogin
             in
-                ( model_, React.addCmd cmdLogin reactNext )
+            ( model_, React.addCmd cmdLogin reactNext )
 
         WebsocketMsg msg ->
             case stateModel.websocket of
@@ -191,7 +192,7 @@ updateHome msg model stateModel =
                         stateModel_ =
                             { stateModel | websocket = Just websocket_ }
                     in
-                        ( { model | state = Home stateModel_ }, react )
+                    ( { model | state = Home stateModel_ }, react )
 
                 Nothing ->
                     ( model, React.none )
@@ -235,7 +236,7 @@ updateSetupWS flags msg stateModel =
         ( websocket, react ) =
             Ws.update (websocketConfig flags) msg stateModel.websocket
     in
-        ( { stateModel | websocket = websocket }, react )
+    ( { stateModel | websocket = websocket }, react )
 
 
 updateSetupSetup : Setup.Msg -> SetupModel -> ( SetupModel, React Msg )
@@ -250,7 +251,7 @@ updateSetupSetup msg stateModel =
         ( setup, react ) =
             Setup.update config msg stateModel.setup
     in
-        ( { stateModel | setup = setup }, react )
+    ( { stateModel | setup = setup }, react )
 
 
 updateSetupGame : Game.Msg -> SetupModel -> ( SetupModel, React Msg )
@@ -259,7 +260,7 @@ updateSetupGame msg stateModel =
         ( game, react ) =
             Game.update gameConfig msg stateModel.game
     in
-        ( { stateModel | game = game }, react )
+    ( { stateModel | game = game }, react )
 
 
 finishSetupUpdate : Model -> ( SetupModel, a ) -> ( Model, a )
@@ -295,7 +296,7 @@ updatePlayWS flags msg stateModel =
         ( websocket, react ) =
             Ws.update (websocketConfig flags) msg stateModel.websocket
     in
-        ( { stateModel | websocket = websocket }, react )
+    ( { stateModel | websocket = websocket }, react )
 
 
 updatePlayOS : OS.Msg -> PlayModel -> Model -> ( PlayModel, React Msg )
@@ -309,24 +310,24 @@ updatePlayOS msg ({ game, os } as state) { contextMenu } =
         ctx =
             Account.getContext <| Game.getAccount game
     in
-        case volatile_ of
-            ( Just gtw, Just srv ) ->
-                let
-                    lastTick =
-                        game
-                            |> Game.getMeta
-                            |> Meta.getLastTick
+    case volatile_ of
+        ( Just gtw, Just srv ) ->
+            let
+                lastTick =
+                    game
+                        |> Game.getMeta
+                        |> Meta.getLastTick
 
-                    config =
-                        osConfig game contextMenu ctx srv gtw
+                config =
+                    osConfig game contextMenu ctx srv gtw
 
-                    ( os_, react ) =
-                        OS.update config msg os
-                in
-                    ( { state | os = os_ }, react )
+                ( os_, react ) =
+                    OS.update config msg os
+            in
+            ( { state | os = os_ }, react )
 
-            _ ->
-                ( state, React.none )
+        _ ->
+            ( state, React.none )
 
 
 updatePlayGame : Game.Msg -> PlayModel -> ( PlayModel, React Msg )
@@ -335,7 +336,7 @@ updatePlayGame msg stateModel =
         ( game, react ) =
             Game.update gameConfig msg stateModel.game
     in
-        ( { stateModel | game = game }, react )
+    ( { stateModel | game = game }, react )
 
 
 finishPlayUpdate : Model -> ( PlayModel, a ) -> ( Model, a )
@@ -358,7 +359,7 @@ updateLanding msg model ({ landing } as stateModel) =
         stateModel_ =
             { stateModel | landing = landing_ }
     in
-        ( { model | state = Home stateModel_ }, react )
+    ( { model | state = Home stateModel_ }, react )
 
 
 
@@ -374,6 +375,7 @@ onDebug : Model -> (a -> a) -> a -> a
 onDebug model fun a =
     if isDev model then
         fun a
+
     else
         a
 

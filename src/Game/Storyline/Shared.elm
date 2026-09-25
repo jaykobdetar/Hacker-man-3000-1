@@ -92,7 +92,7 @@ emailToReply email =
 
 checkpointIsGTE : Checkpoint -> Checkpoint -> Bool
 checkpointIsGTE l r =
-    (l >= r)
+    l >= r
 
 
 checkpoint : Maybe Quest -> Maybe Step -> Maybe Reply -> Checkpoint
@@ -212,4 +212,4 @@ checkpoint q s r =
                 Just CleanYourLogs ->
                     28
     in
-        ( x, y, z )
+    ( x, y, z )

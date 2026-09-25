@@ -1,25 +1,23 @@
 module Game.Servers.Processes.IntegrationTest exposing (all)
 
+import Core.Messages as Core
+import Driver.Websocket.Channels exposing (Channel(..))
 import Expect
 import Fuzz exposing (tuple, tuple3)
-import Test exposing (Test, describe)
-import Utils.React as React exposing (React)
-import Core.Messages as Core
-import Json.Decode as Decode
-import TestUtils exposing (fuzz, updateGame, gameDispatcher, fromJust, applyEvent)
-import Requests.Types exposing (Code(OkCode))
-import Gen.Processes as GenProcesses
-import Gen.Game as GenGame
-import Driver.Websocket.Channels exposing (Channel(..))
 import Game.Messages as Game
 import Game.Models as Game
 import Game.Servers.Messages as Servers
 import Game.Servers.Models as Servers
-import Game.Servers.Processes.Models exposing (..)
-import Game.Servers.Processes.Models exposing (..)
 import Game.Servers.Processes.Messages exposing (..)
 import Game.Servers.Processes.Models exposing (..)
 import Game.Servers.Processes.Update exposing (..)
+import Gen.Game as GenGame
+import Gen.Processes as GenProcesses
+import Json.Decode as Decode
+import Requests.Types exposing (Code(OkCode))
+import Test exposing (Test, describe)
+import TestUtils exposing (applyEvent, fromJust, fuzz, gameDispatcher, updateGame)
+import Utils.React as React exposing (React)
 
 
 all : Test
@@ -78,15 +76,15 @@ eventTests =
                         { "process_id": "id" }
                         """
             in
-                game1
-                    |> applyEvent name json channel
-                    |> Game.getServers
-                    |> Servers.get serverId
-                    |> fromJust "process.conclusion fetching serverId"
-                    |> Servers.getProcesses
-                    |> get "id"
-                    |> Maybe.map getState
-                    |> Expect.equal (Just <| Succeeded)
+            game1
+                |> applyEvent name json channel
+                |> Game.getServers
+                |> Servers.get serverId
+                |> fromJust "process.conclusion fetching serverId"
+                |> Servers.getProcesses
+                |> get "id"
+                |> Maybe.map getState
+                |> Expect.equal (Just <| Succeeded)
     , fuzz
         (tuple ( GenGame.model, GenProcesses.fullProcess ))
         "event 'bruteforce_failed' concludes a process"
@@ -129,13 +127,13 @@ eventTests =
                         }
                         """
             in
-                game1
-                    |> applyEvent name json channel
-                    |> Game.getServers
-                    |> Servers.get serverId
-                    |> fromJust "bruteforce_failed fetching serverId"
-                    |> Servers.getProcesses
-                    |> get "id"
-                    |> Maybe.map getState
-                    |> Expect.equal (Just <| Failed Unknown)
+            game1
+                |> applyEvent name json channel
+                |> Game.getServers
+                |> Servers.get serverId
+                |> fromJust "bruteforce_failed fetching serverId"
+                |> Servers.getProcesses
+                |> get "id"
+                |> Maybe.map getState
+                |> Expect.equal (Just <| Failed Unknown)
     ]

@@ -1,9 +1,9 @@
 module UI.Elements.ProgressBar exposing (progressBar)
 
-import Html exposing (Html, Attribute, text, node)
+import Css exposing (Style, asPairs, fontSize, int, lineHeight, minHeight, pct, px, width)
+import Html exposing (Attribute, Html, node, text)
 import Html.Attributes as Html exposing (style)
 import Html.CssHelpers exposing (withNamespace)
-import Css exposing (Style, asPairs, width, minHeight, fontSize, lineHeight, pct, px, int)
 
 
 { id, class, classList } =

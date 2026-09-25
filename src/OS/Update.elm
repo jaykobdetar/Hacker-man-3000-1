@@ -1,18 +1,18 @@
 module OS.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Core.Flags as Flags
+import OS.Config exposing (..)
 import OS.Header.Messages as Header
 import OS.Header.Update as Header
 import OS.Map.Messages as Map
 import OS.Map.Update as Map
-import OS.WindowManager.Messages as WindowManager
-import OS.WindowManager.Update as WindowManager
-import OS.Toasts.Messages as Toasts
-import OS.Toasts.Update as Toasts
-import OS.Config exposing (..)
 import OS.Messages exposing (..)
 import OS.Models exposing (..)
+import OS.Toasts.Messages as Toasts
+import OS.Toasts.Update as Toasts
+import OS.WindowManager.Messages as WindowManager
+import OS.WindowManager.Update as WindowManager
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -28,6 +28,7 @@ update config msg model =
         MapMsg msg ->
             if Flags.isHE2 config.flags then
                 onMapMsg config msg model
+
             else
                 ( model, React.none )
 

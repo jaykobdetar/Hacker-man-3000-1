@@ -1,18 +1,18 @@
 module Apps.FloatingHeads.View exposing (view)
 
+import Apps.FloatingHeads.Config exposing (..)
+import Apps.FloatingHeads.Messages exposing (Msg(..))
+import Apps.FloatingHeads.Models exposing (..)
+import Apps.FloatingHeads.Resources exposing (Classes(..), prefix)
 import Dict
+import Game.Storyline.Emails.View as Emails
+import Game.Storyline.Models as Storyline exposing (Contact)
+import Game.Storyline.Shared as Storyline
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.CssHelpers
 import Html.Events exposing (onClick)
 import Utils.Html.Events exposing (onClickMe, onKeyDown)
-import Game.Storyline.Models as Storyline exposing (Contact)
-import Game.Storyline.Shared as Storyline
-import Game.Storyline.Emails.View as Emails
-import Apps.FloatingHeads.Config exposing (..)
-import Apps.FloatingHeads.Messages exposing (Msg(..))
-import Apps.FloatingHeads.Models exposing (..)
-import Apps.FloatingHeads.Resources exposing (Classes(..), prefix)
 
 
 { id, class, classList } =
@@ -27,12 +27,12 @@ view config model =
                 model.activeContact
                 config.story
     in
-        case model.mode of
-            Compact ->
-                viewCompact config person model
+    case model.mode of
+        Compact ->
+            viewCompact config person model
 
-            Expanded ->
-                viewExpanded config person model
+        Expanded ->
+            viewExpanded config person model
 
 
 viewExpanded : Config msg -> Maybe Contact -> Model -> Html msg
@@ -86,14 +86,14 @@ renderHeader { draggable, toMsg } person =
                 Nothing ->
                     src "images/avatar.jpg"
     in
-        div [ class [ AvatarContainer ], draggable ]
-            [ img
-                [ class [ Avatar ]
-                , imgSource
-                , onClick <| toMsg <| ToggleMode
-                ]
-                []
+    div [ class [ AvatarContainer ], draggable ]
+        [ img
+            [ class [ Avatar ]
+            , imgSource
+            , onClick <| toMsg <| ToggleMode
             ]
+            []
+        ]
 
 
 renderChat : Config msg -> Maybe Contact -> Html msg

@@ -1,9 +1,5 @@
 module OS.WindowManager.Launch exposing (launch, lazyLaunchEndpoint)
 
-import Utils.Maybe as Maybe
-import Utils.React as React exposing (React)
-import Apps.Params as Apps exposing (AppParams)
-import Apps.Shared as Apps exposing (AppContext)
 import Apps.BackFlix.Models as BackFlix
 import Apps.BounceManager.Launch as BounceManager
 import Apps.Browser.Launch as Browser
@@ -20,14 +16,16 @@ import Apps.Hebamp.Launch as Hebamp
 import Apps.LanViewer.Models as LanViewer
 import Apps.LocationPicker.Models as LocationPicker
 import Apps.LogViewer.Models as LogViewer
+import Apps.Params as Apps exposing (AppParams)
 import Apps.ServersGears.Models as ServersGears
+import Apps.Shared as Apps exposing (AppContext)
 import Apps.TaskManager.Models as TaskManager
 import Apps.VirusPanel.Models as VirusPanel
 import Game.Account.Models as Account
 import Game.Account.Requests.ActionPerformed as ActionPerformed
 import Game.Meta.Types.ClientActions as ClientActions
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Meta.Types.Context exposing (Context(..))
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Shared as Servers exposing (CId)
 import Game.Storyline.Models as Story
@@ -37,6 +35,8 @@ import OS.WindowManager.Helpers exposing (..)
 import OS.WindowManager.Messages exposing (..)
 import OS.WindowManager.Models exposing (..)
 import OS.WindowManager.Shared exposing (..)
+import Utils.Maybe as Maybe
+import Utils.React as React exposing (React)
 
 
 launch :
@@ -96,19 +96,19 @@ lazyLaunchEndpoint config windowId desktopApp model =
         maybeAcitveGateway =
             Maybe.andThen (getGatewayOfWindow config model) maybeWindow
     in
-        case Maybe.uncurry maybeActiveEndpoint maybeAcitveGateway of
-            Just ( activeEndpoint, activeGateway ) ->
-                Tuple.second <|
-                    launchAppHelper config
-                        activeEndpoint
-                        activeGateway
-                        desktopApp
-                        Nothing
-                        windowId
-                        model
+    case Maybe.uncurry maybeActiveEndpoint maybeAcitveGateway of
+        Just ( activeEndpoint, activeGateway ) ->
+            Tuple.second <|
+                launchAppHelper config
+                    activeEndpoint
+                    activeGateway
+                    desktopApp
+                    Nothing
+                    windowId
+                    model
 
-            Nothing ->
-                ( model, React.none )
+        Nothing ->
+            ( model, React.none )
 
 
 
@@ -176,26 +176,26 @@ launchDoubleHelper config desktopApp maybeParams context activeGateway model =
                 Nothing ->
                     model2
     in
-        case getEndpointOfGateway config gateway of
-            Just activeEndpoint ->
-                let
-                    ( model_, react2 ) =
-                        Tuple.second <|
-                            launchAppHelper config
-                                activeEndpoint
-                                activeGateway
-                                desktopApp
-                                endpointParams
-                                windowId
-                                model3
+    case getEndpointOfGateway config gateway of
+        Just activeEndpoint ->
+            let
+                ( model_, react2 ) =
+                    Tuple.second <|
+                        launchAppHelper config
+                            activeEndpoint
+                            activeGateway
+                            desktopApp
+                            endpointParams
+                            windowId
+                            model3
 
-                    react_ =
-                        React.batch config.batchMsg [ react1, react2 ]
-                in
-                    ( model_, react_ )
+                react_ =
+                    React.batch config.batchMsg [ react1, react2 ]
+            in
+            ( model_, react_ )
 
-            Nothing ->
-                ( model3, react1 )
+        Nothing ->
+            ( model3, react1 )
 
 
 launchSingleHelper :
@@ -237,7 +237,7 @@ launchSingleHelper config desktopApp maybeParams context activeGateway model =
                 model_ =
                     insert sessionId windowId size instance model2
             in
-                ( model_, react )
+            ( model_, react )
 
         Nothing ->
             ( model, React.none )
@@ -272,6 +272,7 @@ launchAppHelper config activeServer activeGateway desktopApp maybeParams windowI
         context =
             if Servers.isGateway server then
                 Gateway
+
             else
                 Endpoint
 
@@ -291,7 +292,7 @@ launchAppHelper config activeServer activeGateway desktopApp maybeParams windowI
                 Endpoint ->
                     linkEndpointApp appId windowId model2
     in
-        ( appId, ( model_, react ) )
+    ( appId, ( model_, react ) )
 
 
 
@@ -424,29 +425,30 @@ launchLocationPicker config windowId appId =
                 |> Cmd.map (LocationPickerMsg >> AppMsg appId >> config.toMsg)
                 |> React.cmd
     in
-        ( LocationPickerModel model, react )
+    ( LocationPickerModel model, react )
 
 
 launchTaskManager : Config msg -> WindowId -> AppId -> ( AppModel, React msg )
 launchTaskManager config windowId appId =
     let
         isRightStep =
-            (isCampaignFromConfig config)
+            isCampaignFromConfig config
                 && Story.isAnyoneInStep
                     Story.Tutorial_NastyVirus
                     (storyFromConfig config)
 
         storyReact =
-            if (isRightStep) then
+            if isRightStep then
                 config
                     |> ActionPerformed.request
                         ClientActions.AccessedTaskManager
                         (Account.getId <| accountFromConfig <| config)
                     |> Cmd.map config.handleActionPerformed
                     |> React.cmd
+
             else
                 React.none
     in
-        ( TaskManagerModel TaskManager.initialModel
-        , storyReact
-        )
+    ( TaskManagerModel TaskManager.initialModel
+    , storyReact
+    )

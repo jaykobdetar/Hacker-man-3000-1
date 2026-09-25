@@ -1,16 +1,16 @@
 module Game.Account.Bounces.Requests.Create exposing (createRequest)
 
-import Utils.Json.Decode exposing (commonError, message)
-import Json.Decode as Decode exposing (Decoder, decodeValue, succeed, fail)
-import Json.Encode as Encode exposing (Value)
-import Requests.Types exposing (FlagsSource, Code(..))
-import Requests.Topics as Topics
-import Requests.Requests as Requests exposing (report)
-import Game.Account.Models exposing (..)
 import Game.Account.Bounces.Models as Bounces
 import Game.Account.Bounces.Shared as Bounces exposing (CreateError(..))
 import Game.Account.Database.Models as Database
+import Game.Account.Models exposing (..)
 import Game.Meta.Types.Network as Network
+import Json.Decode as Decode exposing (Decoder, decodeValue, fail, succeed)
+import Json.Encode as Encode exposing (Value)
+import Requests.Requests as Requests exposing (report)
+import Requests.Topics as Topics
+import Requests.Types exposing (Code(..), FlagsSource)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =
@@ -41,11 +41,11 @@ encoder hackedServers bounce requestId =
         valueList =
             List.map (encodeNIP hackedServers) bounce.path
     in
-        Encode.object
-            [ ( "name", Encode.string bounce.name )
-            , ( "links", Encode.list valueList )
-            , ( "request_id", Encode.string requestId )
-            ]
+    Encode.object
+        [ ( "name", Encode.string bounce.name )
+        , ( "links", Encode.list valueList )
+        , ( "request_id", Encode.string requestId )
+        ]
 
 
 encodeNIP : Database.HackedServers -> Network.NIP -> Value
@@ -53,7 +53,7 @@ encodeNIP hackedServers nip =
     let
         password =
             nip
-                |> flip (Database.getHackedServer) hackedServers
+                |> flip Database.getHackedServer hackedServers
                 |> Maybe.andThen (Database.getPassword >> Just)
                 |> Maybe.withDefault ""
 
@@ -64,7 +64,7 @@ encodeNIP hackedServers nip =
                 , ( "password", Encode.string password )
                 ]
     in
-        encode nip
+    encode nip
 
 
 errorToString : CreateError -> String

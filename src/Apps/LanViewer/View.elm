@@ -1,10 +1,10 @@
 module Apps.LanViewer.View exposing (view)
 
+import Apps.LanViewer.Config exposing (..)
+import Apps.LanViewer.Models exposing (..)
+import Apps.LanViewer.Resources exposing (..)
 import Html exposing (..)
 import Html.CssHelpers
-import Apps.LanViewer.Models exposing (..)
-import Apps.LanViewer.Config exposing (..)
-import Apps.LanViewer.Resources exposing (..)
 
 
 { id, class, classList } =

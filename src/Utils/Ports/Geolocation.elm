@@ -1,18 +1,17 @@
-port module Utils.Ports.Geolocation
-    exposing
-        ( Id
-        , Latitude
-        , Longitude
-        , Coords
-        , Msg(..)
-        , getCoordinates
-        , getLabel
-        , subscribe
-        )
+port module Utils.Ports.Geolocation exposing
+    ( Coords
+    , Id
+    , Latitude
+    , Longitude
+    , Msg(..)
+    , getCoordinates
+    , getLabel
+    , subscribe
+    )
 
 import Json.Decode as Decode exposing (Decoder)
-import Json.Encode as Encode
 import Json.Decode.Pipeline exposing (decode, required)
+import Json.Encode as Encode
 import Utils.Json.Decode exposing (commonError)
 
 
@@ -89,7 +88,7 @@ subscribe toMsg =
                         _ =
                             Debug.log "Geolocation communication error" msg
                     in
-                        toMsg "" Unknown
+                    toMsg "" Unknown
 
 
 

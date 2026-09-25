@@ -4,7 +4,10 @@ function send(data) {
   app.ports.geolocationSub.send(data);
 }
 
-var mk=process.env.HEBORN_MAPZEN_API_KEY || 'mapzen-0000000';
+// Reverse geocoding (coordinates -> place name) with a Nominatim-compatible API.
+// Mapzen, used originally, shut down in 2018. See the Nominatim usage policy before
+// pointing a public server at nominatim.openstreetmap.org.
+var geocoderUrl = process.env.HEBORN_GEOCODER_URL;
 
 app.ports.geolocationCmd.subscribe(function(cmd) {
   switch (cmd.msg) {
@@ -29,18 +32,19 @@ app.ports.geolocationCmd.subscribe(function(cmd) {
     case 'label':
       var lat = cmd.lat, lng = cmd.lng;
       var conn = new XMLHttpRequest();
-      var url = '//search.mapzen.com/v1/reverse?api_key='+mk+'&point.lat='+lat+'&point.lon='+lng;
+      var url = geocoderUrl + '?format=jsonv2&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng);
 
       conn.onreadystatechange = function() {
         if (conn.readyState == 4 && conn.status == 200) {
-          var resp = JSON.parse(conn.responseText),
-            feat = resp['features'][0]['properties'];
+          var resp = JSON.parse(conn.responseText);
 
-          send({
-            'msg': 'label',
-            'id': cmd.id,
-            'label': feat['label']
-          });
+          if (resp && resp['display_name']) {
+            send({
+              'msg': 'label',
+              'id': cmd.id,
+              'label': resp['display_name']
+            });
+          }
 
         }
       }

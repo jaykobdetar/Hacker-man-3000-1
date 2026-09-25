@@ -2,11 +2,11 @@ module Landing.View exposing (view)
 
 import Html exposing (..)
 import Html.CssHelpers
-import Landing.Login.View as Login
-import Landing.SignUp.View as SignUp
 import Landing.Config exposing (..)
+import Landing.Login.View as Login
 import Landing.Models exposing (..)
 import Landing.Resources exposing (..)
+import Landing.SignUp.View as SignUp
 
 
 { id, class, classList } =
@@ -56,6 +56,7 @@ viewDisplayManager config model =
         , class
             (if config.windowLoaded then
                 [ Loaded ]
+
              else
                 []
             )
@@ -74,5 +75,6 @@ viewSignUp : Config msg -> Model -> Html msg
 viewSignUp config model =
     if config.flags.version == "dev" then
         SignUp.view (.toMsg (signupConfig config)) model.signUp
+
     else
         div [] []

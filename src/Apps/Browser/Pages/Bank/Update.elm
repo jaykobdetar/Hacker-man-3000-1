@@ -1,11 +1,11 @@
 module Apps.Browser.Pages.Bank.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.Meta.Types.Network as Network exposing (NIP)
 import Apps.Browser.Pages.Bank.Config exposing (..)
-import Apps.Browser.Pages.Bank.Models exposing (..)
 import Apps.Browser.Pages.Bank.Messages exposing (..)
+import Apps.Browser.Pages.Bank.Models exposing (..)
 import Game.Account.Finances.Shared exposing (BankAccountData)
+import Game.Meta.Types.Network as Network exposing (NIP)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -53,10 +53,11 @@ onUpdateLoginField :
     -> Model
     -> UpdateResponse msg
 onUpdateLoginField config str model =
-    if (String.contains "-" str) then
+    if String.contains "-" str then
         ( model, React.none )
+
     else
-        case (String.toInt str) of
+        case String.toInt str of
             Result.Ok num ->
                 ( { model | accountNum = Just num }, React.none )
 
@@ -79,8 +80,9 @@ onUpdateTransferBankField :
     -> Model
     -> UpdateResponse msg
 onUpdateTransferBankField config str model =
-    if (String.contains "-" str) then
+    if String.contains "-" str then
         ( model, React.none )
+
     else
         ( { model | toBankTransfer = Just (Network.fromString str) }, React.none )
 
@@ -91,10 +93,11 @@ onUpdateTransferAccountField :
     -> Model
     -> UpdateResponse msg
 onUpdateTransferAccountField config str model =
-    if (String.contains "-" str) then
+    if String.contains "-" str then
         ( model, React.none )
+
     else
-        case (String.toInt str) of
+        case String.toInt str of
             Result.Ok num ->
                 ( { model | toAccountTransfer = Just num }, React.none )
 
@@ -108,10 +111,11 @@ onUpdateTransferValueField :
     -> Model
     -> UpdateResponse msg
 onUpdateTransferValueField config str model =
-    if (String.contains "-" str) then
+    if String.contains "-" str then
         ( model, React.none )
+
     else
-        case (String.toInt str) of
+        case String.toInt str of
             Result.Ok num ->
                 ( { model | transferValue = Just num }, React.none )
 
@@ -134,7 +138,7 @@ handleLogin config accData model =
                 , error = Nothing
             }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 handleLoginError :
@@ -146,7 +150,7 @@ handleLoginError config model =
         model_ =
             { model | error = Just "Invalid Login Information" }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 handleTransfer :
@@ -158,7 +162,7 @@ handleTransfer config model =
         model_ =
             { model | bankState = Transfer }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 handleTransferError :
@@ -170,4 +174,4 @@ handleTransferError config model =
         model_ =
             { model | error = Just "Transfer Error" }
     in
-        ( model_, React.none )
+    ( model_, React.none )

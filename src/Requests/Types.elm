@@ -1,18 +1,17 @@
-module Requests.Types
-    exposing
-        ( Driver(..)
-        , Code(..)
-        , FlagsSource
-        , ResponseType
-        , WebsocketResponse
-        , Context
-        , getCode
-        , emptyPayload
-        )
+module Requests.Types exposing
+    ( Code(..)
+    , Context
+    , Driver(..)
+    , FlagsSource
+    , ResponseType
+    , WebsocketResponse
+    , emptyPayload
+    , getCode
+    )
 
+import Core.Flags as Core
 import Json.Decode exposing (Value)
 import Json.Encode as Encode
-import Core.Flags as Core
 
 
 type alias FlagsSource a =

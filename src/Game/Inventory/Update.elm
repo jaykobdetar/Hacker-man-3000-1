@@ -1,10 +1,10 @@
 module Game.Inventory.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Game.Inventory.Config exposing (..)
 import Game.Inventory.Messages exposing (..)
 import Game.Inventory.Models exposing (..)
 import Game.Inventory.Shared exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

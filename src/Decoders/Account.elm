@@ -1,14 +1,14 @@
 module Decoders.Account exposing (..)
 
-import Json.Decode as Decode exposing (Decoder, map, field, string, succeed, oneOf)
-import Json.Decode.Pipeline exposing (decode, required, hardcoded, optional)
 import Decoders.Bounces exposing (bounces)
 import Decoders.Database exposing (database)
 import Decoders.Finances exposing (finances)
-import Game.Account.Models exposing (..)
 import Game.Account.Database.Models as Database
 import Game.Account.Finances.Models as Finances
+import Game.Account.Models exposing (..)
 import Game.Servers.Shared as Servers
+import Json.Decode as Decode exposing (Decoder, field, map, oneOf, string, succeed)
+import Json.Decode.Pipeline exposing (decode, hardcoded, optional, required)
 
 
 account : Model -> Decoder Model

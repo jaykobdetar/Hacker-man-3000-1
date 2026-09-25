@@ -1,31 +1,31 @@
 module Apps.Browser.View exposing (..)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Html.CssHelpers
-import ContextMenu
-import Css exposing (pct, width, asPairs)
 import Apps.Browser.Config exposing (..)
 import Apps.Browser.Messages exposing (..)
 import Apps.Browser.Models exposing (..)
-import Apps.Browser.Resources exposing (Classes(..), prefix)
-import Apps.Browser.Pages.NotFound.View as NotFound
-import Apps.Browser.Pages.Home.View as Home
-import Apps.Browser.Pages.Webserver.View as Webserver
-import Apps.Browser.Pages.Profile.View as Profile
-import Apps.Browser.Pages.Whois.View as Whois
-import Apps.Browser.Pages.DownloadCenter.View as DownloadCenter
-import Apps.Browser.Pages.ISP.View as ISP
-import Apps.Browser.Pages.Bank.View as Bank
-import Apps.Browser.Pages.Store.View as Store
 import Apps.Browser.Pages.BTC.View as BTC
-import Apps.Browser.Pages.FBI.View as FBI
-import Apps.Browser.Pages.News.View as News
+import Apps.Browser.Pages.Bank.View as Bank
 import Apps.Browser.Pages.Bithub.View as Bithub
+import Apps.Browser.Pages.DownloadCenter.View as DownloadCenter
+import Apps.Browser.Pages.FBI.View as FBI
+import Apps.Browser.Pages.Home.View as Home
+import Apps.Browser.Pages.ISP.View as ISP
 import Apps.Browser.Pages.MissionCenter.View as MissionCenter
+import Apps.Browser.Pages.News.View as News
+import Apps.Browser.Pages.NotFound.View as NotFound
+import Apps.Browser.Pages.Profile.View as Profile
+import Apps.Browser.Pages.Store.View as Store
+import Apps.Browser.Pages.Webserver.View as Webserver
+import Apps.Browser.Pages.Whois.View as Whois
+import Apps.Browser.Resources exposing (Classes(..), prefix)
+import ContextMenu
+import Css exposing (asPairs, pct, width)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (..)
 import UI.Elements.HorizontalTabs exposing (hzTabs)
-import UI.Elements.Modal exposing (modalPickStorage, modalOk)
+import UI.Elements.Modal exposing (modalOk, modalPickStorage)
 
 
 { id, class, classList } =
@@ -43,13 +43,13 @@ view config model =
         tab =
             getNowTab model
     in
-        div
-            [ class [ Window, Content, Client ]
-            ]
-            [ viewTabs config model
-            , viewToolbar config tab
-            , viewPg config tab
-            ]
+    div
+        [ class [ Window, Content, Client ]
+        ]
+        [ viewTabs config model
+        , viewToolbar config tab
+        , viewPg config tab
+        ]
 
 
 renderToolbarBtn : Bool -> String -> msg -> Html msg
@@ -58,6 +58,7 @@ renderToolbarBtn active label callback =
         [ class
             (if active then
                 [ Btn ]
+
              else
                 [ Btn, InactiveBtn ]
             )
@@ -70,8 +71,9 @@ viewToolbar : Config msg -> Tab -> Html msg
 viewToolbar { menuAttr, toMsg } browser =
     let
         btnClass lengthFn =
-            if (lengthFn browser) > 0 then
+            if lengthFn browser > 0 then
                 [ Btn ]
+
             else
                 [ Btn, InactiveBtn ]
 
@@ -84,19 +86,19 @@ viewToolbar { menuAttr, toMsg } browser =
 
         prevBtn =
             genBtn
-                ((.previousPages) >> List.length)
+                (.previousPages >> List.length)
                 (ActiveTabMsg GoPrevious)
                 "<"
 
         nextBtn =
             genBtn
-                ((.nextPages) >> List.length)
+                (.nextPages >> List.length)
                 (ActiveTabMsg GoNext)
                 ">"
 
         goBtn =
             genBtn
-                ((.addressBar) >> String.length)
+                (.addressBar >> String.length)
                 (ActiveTabMsg <| GoAddress browser.addressBar)
                 "%"
 
@@ -117,33 +119,33 @@ viewToolbar { menuAttr, toMsg } browser =
                   ]
                 ]
     in
-        div
-            [ class [ Toolbar ]
-            , menuNav
-            ]
-            [ prevBtn
-            , nextBtn
-            , goBtn
-            , div
-                [ class [ AddressBar ] ]
-                [ Html.form
-                    [ browser.addressBar
-                        |> GoAddress
-                        |> ActiveTabMsg
-                        |> toMsg
-                        |> onSubmit
+    div
+        [ class [ Toolbar ]
+        , menuNav
+        ]
+        [ prevBtn
+        , nextBtn
+        , goBtn
+        , div
+            [ class [ AddressBar ] ]
+            [ Html.form
+                [ browser.addressBar
+                    |> GoAddress
+                    |> ActiveTabMsg
+                    |> toMsg
+                    |> onSubmit
+                ]
+                [ input
+                    [ value browser.addressBar
+                    , UpdateAddress
+                        >> ActiveTabMsg
+                        >> toMsg
+                        |> onInput
                     ]
-                    [ input
-                        [ value browser.addressBar
-                        , UpdateAddress
-                            >> ActiveTabMsg
-                            >> toMsg
-                            |> onInput
-                        ]
-                        []
-                    ]
+                    []
                 ]
             ]
+        ]
 
 
 viewTabLabel : Config msg -> Tabs -> Bool -> Int -> ( List (Attribute msg), List (Html msg) )
@@ -198,7 +200,7 @@ viewPg config { page, modal } =
                             |> List.map config.toMsg
                             |> config.batchMsg
                 in
-                    modalPickStorage storages onPick
+                modalPickStorage storages onPick
 
             Just ImpossibleToLogin ->
                 modalOk (Just "Impossible to login!")

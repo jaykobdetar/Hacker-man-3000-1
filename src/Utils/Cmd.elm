@@ -1,8 +1,8 @@
 module Utils.Cmd exposing (delay, fromMsg)
 
-import Time
-import Task
 import Process
+import Task
+import Time
 
 
 delay : Float -> msg -> Cmd msg

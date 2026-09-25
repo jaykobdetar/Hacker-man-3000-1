@@ -1,8 +1,8 @@
 module Driver.Websocket.Websocket exposing (send)
 
+import Json.Decode exposing (Value)
 import Phoenix
 import Phoenix.Push as Push
-import Json.Decode exposing (Value)
 
 
 send :
@@ -17,8 +17,8 @@ send okMsg errorMsg apiHttpUrl channel topic payload =
     let
         message =
             Push.init channel topic
-                |> Push.onError (errorMsg)
-                |> Push.onOk (okMsg)
+                |> Push.onError errorMsg
+                |> Push.onOk okMsg
                 |> Push.withPayload payload
     in
-        Phoenix.push apiHttpUrl message
+    Phoenix.push apiHttpUrl message

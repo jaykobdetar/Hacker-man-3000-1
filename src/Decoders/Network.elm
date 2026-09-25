@@ -7,8 +7,8 @@ import Game.Meta.Types.Network.Connections as Connections
         ( Connection
         , Connections
         )
-import Json.Decode exposing (Decoder, index, bool, string, list, map)
-import Json.Decode.Pipeline exposing (decode, custom, required)
+import Json.Decode exposing (Decoder, bool, index, list, map, string)
+import Json.Decode.Pipeline exposing (custom, decode, required)
 
 
 connections : Decoder Connections
@@ -24,9 +24,9 @@ connection =
                 |> required "name" string
                 |> required "used?" bool
     in
-        decode (,)
-            |> custom nip
-            |> custom connection
+    decode (,)
+        |> custom nip
+        |> custom connection
 
 
 nipTuple : Decoder NIP

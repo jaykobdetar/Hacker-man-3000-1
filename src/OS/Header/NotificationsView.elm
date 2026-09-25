@@ -1,15 +1,15 @@
-module OS.Header.NotificationsView exposing (view, notifications)
+module OS.Header.NotificationsView exposing (notifications, view)
 
 import Dict
+import Game.Meta.Types.Notifications as Notifications
 import Html exposing (..)
 import Html.CssHelpers
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
-import Utils.Html exposing (spacer)
-import Game.Meta.Types.Notifications as Notifications
 import OS.Header.Config exposing (..)
-import OS.Header.Models exposing (..)
 import OS.Header.Messages exposing (..)
+import OS.Header.Models exposing (..)
 import OS.Header.Resources exposing (..)
+import Utils.Html exposing (spacer)
 
 
 type alias Renderer a =
@@ -36,7 +36,7 @@ view :
     -> Notifications.Notifications a
     -> Html msg
 view config render actioner current activator uniqueClass title readAllMsg itens =
-    if (current == activator) then
+    if current == activator then
         visibleNotifications config
             render
             actioner
@@ -44,6 +44,7 @@ view config render actioner current activator uniqueClass title readAllMsg itens
             readAllMsg
             itens
             uniqueClass
+
     else
         emptyNotifications config uniqueClass activator
 
@@ -81,6 +82,7 @@ visibleNotifications config render actioner title readAllMsg itens uniqueClass =
             , onClick <|
                 if Notifications.isEmpty itens then
                     config.batchMsg []
+
                 else
                     readAllMsg
             , onMouseEnter <| config.toMsg MouseEnterDropdown

@@ -1,11 +1,11 @@
 module Game.Servers.Filesystem.Requests.Move exposing (moveRequest)
 
+import Game.Servers.Filesystem.Shared exposing (..)
+import Game.Servers.Shared exposing (CId)
 import Json.Encode as Encode exposing (Value)
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..), ResponseType)
-import Game.Servers.Shared exposing (CId)
-import Game.Servers.Filesystem.Shared exposing (..)
+import Requests.Types exposing (Code(..), FlagsSource, ResponseType)
 
 
 moveRequest : Path -> Id -> CId -> FlagsSource a -> Cmd ResponseType
@@ -27,7 +27,7 @@ encoder path id =
                 |> List.map Encode.string
                 |> Encode.list
     in
-        Encode.object
-            [ ( "file_id", Encode.string id )
-            , ( "destination", destination )
-            ]
+    Encode.object
+        [ ( "file_id", Encode.string id )
+        , ( "destination", destination )
+        ]

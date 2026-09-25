@@ -1,25 +1,25 @@
 module Decoders.Filesystem exposing (..)
 
 import Dict exposing (Dict)
+import Game.Servers.Filesystem.Models as Filesystem
+import Game.Servers.Filesystem.Shared as Filesystem
 import Json.Decode
     exposing
         ( Decoder
-        , map
         , andThen
-        , succeed
-        , fail
-        , oneOf
-        , field
-        , list
         , dict
-        , int
+        , fail
+        , field
         , float
+        , int
+        , list
+        , map
+        , oneOf
         , string
+        , succeed
         )
-import Json.Decode.Pipeline exposing (decode, required, custom)
+import Json.Decode.Pipeline exposing (custom, decode, required)
 import Utils.Json.Decode exposing (commonError)
-import Game.Servers.Filesystem.Models as Filesystem
-import Game.Servers.Filesystem.Shared as Filesystem
 
 
 {-| A parser that merges the response with the model, parses:
@@ -149,8 +149,8 @@ model =
                 name =
                     Filesystem.pathBase path
             in
-                Filesystem.insertFolder parent name
-                    >> insertFiles files
+            Filesystem.insertFolder parent name
+                >> insertFiles files
 
         -- insert folders and its files
         insertContents =
@@ -160,7 +160,7 @@ model =
         mapEntries =
             flip map <| dict <| list fileEntry
     in
-        withDefault >> insertContents >> mapEntries
+    withDefault >> insertContents >> mapEntries
 
 
 entry : Decoder Filesystem.Entry
@@ -245,7 +245,7 @@ fileType =
                 error ->
                     fail <| commonError "type" error
     in
-        andThen decodeModules decodeField
+    andThen decodeModules decodeField
 
 
 path : Decoder Filesystem.Path
@@ -263,8 +263,8 @@ simpleModule =
         constructor version =
             { version = version }
     in
-        decode constructor
-            |> version
+    decode constructor
+        |> version
 
 
 version : Decoder (Float -> b) -> Decoder b

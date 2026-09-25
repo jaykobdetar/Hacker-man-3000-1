@@ -1,24 +1,24 @@
 module Apps.Browser.Update exposing (update)
 
-import Dict
-import Utils.React as React exposing (React)
-import Game.Account.Finances.Requests.Login as BankLoginRequest
-import Game.Account.Finances.Requests.Transfer as BankTransferRequest
-import Game.Servers.Models as Servers
-import Game.Servers.Shared exposing (StorageId)
-import Game.Servers.Filesystem.Shared as Filesystem
-import Game.Servers.Requests.Browse as BrowseRequest exposing (browseRequest)
-import Game.Meta.Types.Desktop.Apps exposing (Reference, Requester)
-import Game.Meta.Types.Context exposing (Context(..))
-import Game.Meta.Types.Network as Network
-import Apps.Browser.Pages.Webserver.Update as Webserver
+import Apps.Browser.Config exposing (..)
+import Apps.Browser.Messages exposing (..)
+import Apps.Browser.Models exposing (..)
 import Apps.Browser.Pages.Bank.Messages as Bank
 import Apps.Browser.Pages.Bank.Update as Bank
 import Apps.Browser.Pages.DownloadCenter.Update as DownloadCenter
-import Apps.Browser.Messages exposing (..)
-import Apps.Browser.Config exposing (..)
-import Apps.Browser.Models exposing (..)
+import Apps.Browser.Pages.Webserver.Update as Webserver
 import Apps.Browser.Shared exposing (..)
+import Dict
+import Game.Account.Finances.Requests.Login as BankLoginRequest
+import Game.Account.Finances.Requests.Transfer as BankTransferRequest
+import Game.Meta.Types.Context exposing (Context(..))
+import Game.Meta.Types.Desktop.Apps exposing (Reference, Requester)
+import Game.Meta.Types.Network as Network
+import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Models as Servers
+import Game.Servers.Requests.Browse as BrowseRequest exposing (browseRequest)
+import Game.Servers.Shared exposing (StorageId)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -93,12 +93,12 @@ onLaunchApp config (OpenAtUrl url) model =
                 |> Dict.keys
                 |> List.head
     in
-        case maybeId of
-            Just id ->
-                ( goTab id model, React.none )
+    case maybeId of
+        Just id ->
+            ( goTab id model, React.none )
 
-            Nothing ->
-                onNewTabIn config url model
+        Nothing ->
+            onNewTabIn config url model
 
 
 onNewTabIn : Config msg -> URL -> Model -> UpdateResponse msg
@@ -124,7 +124,7 @@ onNewTabIn config url model =
         model_ =
             setNowTab tab_ goTabModel
     in
-        ( model_, react )
+    ( model_, react )
 
 
 onReqDownload :
@@ -191,12 +191,12 @@ updateSomeTabMsg config tabId msg model =
             getTab tabId model.tabs
 
         setThisTab tab_ =
-            { model | tabs = (setTab tabId tab_ model.tabs) }
+            { model | tabs = setTab tabId tab_ model.tabs }
 
         ( model_, react ) =
             processTabMsg config tabId msg tab model
     in
-        Tuple.mapFirst setThisTab ( model_, react )
+    Tuple.mapFirst setThisTab ( model_, react )
 
 
 onEveryTabMsg : Config msg -> TabMsg -> Model -> UpdateResponse msg
@@ -228,7 +228,7 @@ reduceTabMsg config msg model tabId tab ( tabs, react0 ) =
                 config.batchMsg
                 [ react0, react1 ]
     in
-        ( tabs_, react )
+    ( tabs_, react )
 
 
 processTabMsg :
@@ -323,10 +323,11 @@ handleBrowse data tab =
         tab_ =
             if isLoadingThisRequest then
                 gotoPage url pageModel tab
+
             else
                 tab
     in
-        React.update tab_
+    React.update tab_
 
 
 handleLoginFailed : Tab -> TabUpdateResponse msg
@@ -375,7 +376,7 @@ onGoAddress config url reference tabId tab =
                 |> Cmd.map (HandleBrowse >> SomeTabMsg tabId >> config.toMsg)
                 |> React.cmd
     in
-        ( tab_, react )
+    ( tab_, react )
 
 
 onLogin :
@@ -415,7 +416,7 @@ onPageMsg config msg tab =
         tab_ =
             { tab | page = page_ }
     in
-        ( tab_, react )
+    ( tab_, react )
 
 
 updatePage :
@@ -430,21 +431,21 @@ updatePage config msg tab =
                 ( tab_, react ) =
                     Webserver.update (webserverConfig config) msg page
             in
-                ( WebserverModel tab_, react )
+            ( WebserverModel tab_, react )
 
         ( BankModel page, BankMsg msg ) ->
             let
                 ( tab_, react ) =
                     Bank.update (bankConfig config) msg page
             in
-                ( BankModel tab_, react )
+            ( BankModel tab_, react )
 
         ( DownloadCenterModel page, DownloadCenterMsg msg ) ->
             let
                 ( tab_, react ) =
                     DownloadCenter.update (downloadCenterConfig config) msg page
             in
-                ( DownloadCenterModel tab_, react )
+            ( DownloadCenterModel tab_, react )
 
         _ ->
             ( tab, React.none )
@@ -472,7 +473,7 @@ handleBankLogin config tabId tab data model =
                 Err _ ->
                     updatePage config (BankMsg Bank.HandleLoginError) page
     in
-        ( { tab | page = pageModel }, React.none )
+    ( { tab | page = pageModel }, React.none )
 
 
 handleBankTransfer :
@@ -495,4 +496,4 @@ handleBankTransfer config tabId tab data model =
                 Err _ ->
                     updatePage config (BankMsg Bank.HandleTransferError) page
     in
-        ( { tab | page = pageModel }, React.none )
+    ( { tab | page = pageModel }, React.none )

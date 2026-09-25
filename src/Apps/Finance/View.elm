@@ -1,17 +1,17 @@
 module Apps.Finance.View exposing (view)
 
-import Dict as Dict exposing (Dict)
-import Html exposing (..)
-import Html.CssHelpers
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.Elements.HorizontalTabs exposing (hzTabs)
-import Game.Account.Finances.Models as Finances
-import Game.Account.Finances.Shared exposing (toMoney)
 import Apps.Finance.Config exposing (..)
 import Apps.Finance.Messages exposing (Msg(..))
 import Apps.Finance.Models exposing (..)
 import Apps.Finance.Resources exposing (Classes(..), prefix)
+import Dict exposing (Dict)
+import Game.Account.Finances.Models as Finances
+import Game.Account.Finances.Shared exposing (toMoney)
+import Html exposing (..)
+import Html.CssHelpers
+import UI.Elements.HorizontalTabs exposing (hzTabs)
+import UI.Layouts.VerticalList exposing (verticalList)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
 
 
 { id, class, classList } =
@@ -50,8 +50,8 @@ view config model =
                     , text (toString bitcoinTotal)
                     ]
     in
-        verticalSticked (Just viewHeader) viewData Nothing
-            |> Html.map config.toMsg
+    verticalSticked (Just viewHeader) viewData Nothing
+        |> Html.map config.toMsg
 
 
 compareTabs : MainTab -> MainTab -> Bool
@@ -86,7 +86,7 @@ renderBitcoinAccount address account acc =
             [ text "Bitcoin Wallet: ", text account.address ]
 
         accountContent =
-            [ text <| "BTC : " ++ (toString account.balance) ]
+            [ text <| "BTC : " ++ toString account.balance ]
 
         content =
             div
@@ -95,7 +95,7 @@ renderBitcoinAccount address account acc =
                 , div [ class [ RightSide ] ] accountContent
                 ]
     in
-        content :: acc
+    content :: acc
 
 
 renderBitcoinAccounts : Finances.Model -> Model -> Html Msg
@@ -120,7 +120,7 @@ renderBankAccount id account acc =
             [ text account.name, text " ", text (toString accountNumber) ]
 
         accountContent =
-            [ text <| "USD : " ++ (toMoney account.balance) ]
+            [ text <| "USD : " ++ toMoney account.balance ]
 
         content =
             div
@@ -129,7 +129,7 @@ renderBankAccount id account acc =
                 , div [ class [ RightSide ] ] accountContent
                 ]
     in
-        content :: acc
+    content :: acc
 
 
 renderBankAccounts : Finances.Model -> Model -> Html Msg

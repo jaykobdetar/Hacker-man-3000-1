@@ -1,25 +1,25 @@
 module Apps.VirusPanel.View exposing (view)
 
-import Dict as Dict exposing (Dict)
-import Html exposing (..)
-import Html.Events exposing (..)
-import Html.Attributes exposing (..)
-import Html.Lazy exposing (..)
-import Html.CssHelpers
-import Utils.Maybe as Maybe
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.ToString exposing (timestampToFullData)
-import UI.Elements.HorizontalTabs exposing (hzTabs)
-import UI.Elements.Modal exposing (modalOk)
-import UI.Elements.Modal.Virus exposing (..)
-import Game.Account.Database.Models as Database exposing (VirusType(..))
-import Game.Account.Database.Shared exposing (..)
-import Game.Meta.Types.Network as Network exposing (NIP)
 import Apps.VirusPanel.Config exposing (..)
 import Apps.VirusPanel.Messages exposing (Msg(..))
 import Apps.VirusPanel.Models exposing (..)
 import Apps.VirusPanel.Resources exposing (Classes(..), prefix)
+import Dict exposing (Dict)
+import Game.Account.Database.Models as Database exposing (VirusType(..))
+import Game.Account.Database.Shared exposing (..)
+import Game.Meta.Types.Network as Network exposing (NIP)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (..)
+import Html.Lazy exposing (..)
+import UI.Elements.HorizontalTabs exposing (hzTabs)
+import UI.Elements.Modal exposing (modalOk)
+import UI.Elements.Modal.Virus exposing (..)
+import UI.Layouts.VerticalList exposing (verticalList)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
+import UI.ToString exposing (timestampToFullData)
+import Utils.Maybe as Maybe
 
 
 { id, class, classList } =
@@ -41,12 +41,12 @@ view config ({ selected } as model) =
                     lazy2 viewTabCollect config model
 
         msg =
-            (GoTab >> config.toMsg)
+            GoTab >> config.toMsg
 
         viewTabs =
             hzTabs (compareTabs selected) viewTabLabel msg tabs
     in
-        verticalSticked (Just [ viewTabs ]) [ viewData ] Nothing
+    verticalSticked (Just [ viewTabs ]) [ viewData ] Nothing
 
 
 tabs : List MainTab
@@ -108,20 +108,20 @@ viewServer ({ toMsg } as config) model ( nip, server ) =
                 |> Maybe.map (Database.getVirusName >> (++) "Running: " >> text)
                 |> Maybe.withDefault (text "")
     in
-        div [ class [ Server ] ]
-            [ div [ class [ ServerTop ] ]
-                [ text name
-                , button
-                    [ ForSetActiveVirus nip server
-                        |> Just
-                        |> SetModal
-                        |> toMsg
-                        |> onClick
-                    ]
-                    [ text "Change Active Virus" ]
+    div [ class [ Server ] ]
+        [ div [ class [ ServerTop ] ]
+            [ text name
+            , button
+                [ ForSetActiveVirus nip server
+                    |> Just
+                    |> SetModal
+                    |> toMsg
+                    |> onClick
                 ]
-            , activeVirus
+                [ text "Change Active Virus" ]
             ]
+        , activeVirus
+        ]
 
 
 
@@ -143,6 +143,7 @@ viewTabCollect ({ database, toMsg } as config) model =
         button_ =
             if List.isEmpty model.toCollectSelected then
                 [ div [ class [ CollectButtons ] ] [] ]
+
             else
                 [ div [ class [ CollectButtons ] ]
                     [ button
@@ -153,14 +154,14 @@ viewTabCollect ({ database, toMsg } as config) model =
                     ]
                 ]
     in
-        Database.getHackedServers database
-            |> Dict.toList
-            |> List.foldr (viewCollectVirus config model) []
-            |> verticalList [ class [ CollectingVirusList ] ]
-            |> flip (::) button_
-            |> (++) [ modalHandler config model ]
-            |> (::) (collectTopBar config model)
-            |> div [ class [ Super, TCollect ] ]
+    Database.getHackedServers database
+        |> Dict.toList
+        |> List.foldr (viewCollectVirus config model) []
+        |> verticalList [ class [ CollectingVirusList ] ]
+        |> flip (::) button_
+        |> (++) [ modalHandler config model ]
+        |> (::) (collectTopBar config model)
+        |> div [ class [ Super, TCollect ] ]
 
 
 collectTopBar : Config msg -> Model -> Html msg
@@ -169,10 +170,10 @@ collectTopBar ({ toMsg } as config) model =
         allSelected =
             checkAllSelected config.database model
     in
-        div [ class [ CollectTopBar ] ]
-            [ checkbox allSelected (toMsg CheckAll)
-            , span [] [ text " Select All" ]
-            ]
+    div [ class [ CollectTopBar ] ]
+        [ checkbox allSelected (toMsg CheckAll)
+        , span [] [ text " Select All" ]
+        ]
 
 
 viewCollectVirus :
@@ -198,22 +199,23 @@ viewCollectVirus ({ toMsg, database } as config) model ( nip, server ) acu =
         check_ =
             List.member nip model.toCollectSelected
     in
-        if thereIsActiveVirus then
-            div [ class [ CollectingVirus ] ]
-                [ checkbox check_ (toMsg <| Check nip)
-                , virusName database nip activeVirus
-                , br [] []
-                , virusTimestamp hackedServers nip
-                ]
-                :: acu
-        else
-            acu
+    if thereIsActiveVirus then
+        div [ class [ CollectingVirus ] ]
+            [ checkbox check_ (toMsg <| Check nip)
+            , virusName database nip activeVirus
+            , br [] []
+            , virusTimestamp hackedServers nip
+            ]
+            :: acu
+
+    else
+        acu
 
 
 virusName : Database.Model -> NIP -> Maybe Database.Virus -> Html msg
 virusName database nip activeVirus =
     activeVirus
-        |> Maybe.map (Database.getVirusName)
+        |> Maybe.map Database.getVirusName
         |> Maybe.withDefault "Unknown"
         |> flip (++) " on "
         |> flip (++) (Network.render nip)
@@ -234,11 +236,11 @@ virusTimestamp hackedServers nip =
                 Nothing ->
                     text ""
     in
-        Database.getHackedServer nip hackedServers
-            |> Maybe.andThen (Database.getVirusTime)
-            |> Maybe.map (timestampToFullData >> Just)
-            |> Maybe.withDefault Nothing
-            |> showTime
+    Database.getHackedServer nip hackedServers
+        |> Maybe.andThen Database.getVirusTime
+        |> Maybe.map (timestampToFullData >> Just)
+        |> Maybe.withDefault Nothing
+        |> showTime
 
 
 
@@ -279,16 +281,16 @@ modalCollecting ({ toMsg } as config) model =
         type_ =
             getCollectType config.database model.toCollectSelected
     in
-        case type_ of
-            Just type_ ->
-                modalCollect config
-                    type_
-                    (Select >> toMsg)
-                    ( toMsg Collect, toMsg (SetModal Nothing) )
-                    model
+    case type_ of
+        Just type_ ->
+            modalCollect config
+                type_
+                (Select >> toMsg)
+                ( toMsg Collect, toMsg (SetModal Nothing) )
+                model
 
-            Nothing ->
-                text ""
+        Nothing ->
+            text ""
 
 
 modalError : Config msg -> CollectWithBankError -> Html msg

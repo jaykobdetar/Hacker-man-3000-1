@@ -1,6 +1,6 @@
 module UI.Elements.CustomSelect exposing (customSelect)
 
-import Html exposing (Html, Attribute, node, text, div)
+import Html exposing (Attribute, Html, div, node, text)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 import Utils.Html.Attributes exposing (boolAttr)
 import Utils.Html.Events exposing (onClickMe)
@@ -33,12 +33,12 @@ customSelect attrs ( mouseEnter, mouseLeave ) msg open render opened active list
                        , boolAttr openAttrTag opened
                        ]
     in
-        case render True active of
-            Just activeNode ->
-                customNode [ activeNode, selector options ]
+    case render True active of
+        Just activeNode ->
+            customNode [ activeNode, selector options ]
 
-            Nothing ->
-                customNode [ selector options ]
+        Nothing ->
+            customNode [ selector options ]
 
 
 customOption :

@@ -1,16 +1,15 @@
-module Apps.Browser.Widgets.HackingToolkit.View
-    exposing
-        ( Config
-        , hackingToolkit
-        )
+module Apps.Browser.Widgets.HackingToolkit.View exposing
+    ( Config
+    , hackingToolkit
+    )
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
-import Html.CssHelpers
 import Apps.Browser.Resources exposing (Classes(..), prefix)
 import Apps.Browser.Widgets.HackingToolkit.Model exposing (..)
 import Game.Meta.Types.Network exposing (NIP)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (onClick, onInput)
 
 
 type alias Config msg =
@@ -39,6 +38,7 @@ hackingToolkit config model =
                 , anyMapBtn config model
                 ]
             ]
+
         else
             [ node "portal" [] [ text "Already logged!" ]
             , node "actions"
@@ -66,23 +66,23 @@ loginForm config { target, password } =
                 _ ->
                     ""
     in
-        node "portal"
-            []
-            [ div []
-                [ input
-                    [ placeholder "Password"
-                    , value inputText
-                    , onInput config.onInput
-                    ]
-                    []
-                , button
-                    [ inputText
-                        |> config.onLogin target
-                        |> onClick
-                    ]
-                    [ text "Go" ]
+    node "portal"
+        []
+        [ div []
+            [ input
+                [ placeholder "Password"
+                , value inputText
+                , onInput config.onInput
                 ]
+                []
+            , button
+                [ inputText
+                    |> config.onLogin target
+                    |> onClick
+                ]
+                [ text "Go" ]
             ]
+        ]
 
 
 toggleBtn : Config msg -> Html msg

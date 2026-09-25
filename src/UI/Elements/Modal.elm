@@ -1,24 +1,24 @@
-module UI.Elements.Modal
-    exposing
-        ( modal
-        , modalPickStorage
-        , modalOk
-        , modalOkCancel
-        , modalNode
-        , modalFrame
-        , modalFrameOnly
-        , overlayNode
-        , select
-        , buttons
-        , okCancelButtons
-        , selectedAttrTag
-        )
+module UI.Elements.Modal exposing
+    ( buttons
+    , modal
+    , modalFrame
+    , modalFrameOnly
+    , modalNode
+    , modalOk
+    , modalOkCancel
+    , modalPickStorage
+    , okCancelButtons
+    , overlayNode
+    , select
+    , selectedAttrTag
+    )
 
 import Dict exposing (Dict)
-import Html exposing (Html, Attribute, node, div, button, text, h3, span, br)
+import Game.Servers.Models exposing (Storages)
+import Html exposing (Attribute, Html, br, button, div, h3, node, span, text)
 import Html.Events exposing (onClick)
 import UI.Elements.CustomSelect exposing (customSelect)
-import Game.Servers.Models exposing (Storages)
+
 
 
 -- example usage: `modal "Are you sure?" []`
@@ -39,12 +39,12 @@ modalPickStorage storages pickResponse =
                 |> List.reverse
 
         cancel =
-            (Just <| pickResponse Nothing)
+            Just <| pickResponse Nothing
     in
-        modal (Just "Pick a storage")
-            "Select where you want to save oswaldo:"
-            btns
-            cancel
+    modal (Just "Pick a storage")
+        "Select where you want to save oswaldo:"
+        btns
+        cancel
 
 
 modalOk : Maybe String -> String -> msg -> Html msg
@@ -68,8 +68,8 @@ modal title content buttons fallback =
                         [ text content ]
                         :: buttons
             in
-                node btnsNode [] <|
-                    List.foldr reducer [] buttons
+            node btnsNode [] <|
+                List.foldr reducer [] buttons
 
         msg =
             [ span [] [ text content ] ]
@@ -94,7 +94,7 @@ modal title content buttons fallback =
         root =
             node modalNode [] [ overlay fallback, content_ ]
     in
-        root
+    root
 
 
 
@@ -129,7 +129,7 @@ modalFrame title body buttons =
         root =
             node modalNode [] [ overlay Nothing, content_ ]
     in
-        root
+    root
 
 
 modalFrameOnly :
@@ -157,7 +157,7 @@ modalFrameOnly title message =
         root =
             node modalNode [] [ overlay Nothing, content_ ]
     in
-        root
+    root
 
 
 buttons :
@@ -171,7 +171,7 @@ buttons buttons =
                 [ text content ]
                 :: buttons
     in
-        List.foldr reducer [] buttons
+    List.foldr reducer [] buttons
 
 
 select :
@@ -190,7 +190,7 @@ select list selected selectMsg =
                 |> List.foldr reducer []
                 |> Html.select []
     in
-        select_
+    select_
 
 
 okCancelButtons : msg -> msg -> List (Html msg)
@@ -206,7 +206,7 @@ overlay fallback =
                 |> Maybe.map (onClick >> List.singleton)
                 |> Maybe.withDefault []
     in
-        node overlayNode attr []
+    node overlayNode attr []
 
 
 modalNode : String

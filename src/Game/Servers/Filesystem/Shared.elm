@@ -1,49 +1,48 @@
-module Game.Servers.Filesystem.Shared
-    exposing
-        ( Id
-        , File
-        , Path
-        , Name
-        , Extension
-        , Version
-        , Size
-        , Entry(..)
-        , FileEntry
-        , Type(..)
-        , CrackerModules
-        , FirewallModules
-        , ExploitModules
-        , HasherModules
-        , LogForgerModules
-        , LogRecoverModules
-        , EncryptorModules
-        , DecryptorModules
-        , AnyMapModules
-        , SpywareModules
-        , toPath
-        , joinPath
-        , pathBase
-        , parentPath
-        , appendPath
-        , concatPath
-        , getName
-        , setName
-        , getExtension
-        , getPath
-        , setPath
-        , getFullpath
-        , getSize
-        , getType
-        , getMeanVersion
-        , getModuleVersion
-        , getEntryName
-        , isValidFilename
-        , isFolderEntry
-        , hasModules
-        , toId
-        , toFile
-        , toFileEntry
-        )
+module Game.Servers.Filesystem.Shared exposing
+    ( AnyMapModules
+    , CrackerModules
+    , DecryptorModules
+    , EncryptorModules
+    , Entry(..)
+    , ExploitModules
+    , Extension
+    , File
+    , FileEntry
+    , FirewallModules
+    , HasherModules
+    , Id
+    , LogForgerModules
+    , LogRecoverModules
+    , Name
+    , Path
+    , Size
+    , SpywareModules
+    , Type(..)
+    , Version
+    , appendPath
+    , concatPath
+    , getEntryName
+    , getExtension
+    , getFullpath
+    , getMeanVersion
+    , getModuleVersion
+    , getName
+    , getPath
+    , getSize
+    , getType
+    , hasModules
+    , isFolderEntry
+    , isValidFilename
+    , joinPath
+    , parentPath
+    , pathBase
+    , setName
+    , setPath
+    , toFile
+    , toFileEntry
+    , toId
+    , toPath
+    )
 
 import Utils.List as List
 
@@ -205,7 +204,7 @@ joinPath path =
             String.join "/" path
 
         _ ->
-            "/" ++ (String.join "/" path)
+            "/" ++ String.join "/" path
 
 
 pathBase : Path -> Name
@@ -317,8 +316,10 @@ isValidFilename filename =
     -- TODO: Add special characters & entire name validation
     if String.length filename > 0 then
         False
+
     else if String.length filename < 255 then
         False
+
     else
         True
 

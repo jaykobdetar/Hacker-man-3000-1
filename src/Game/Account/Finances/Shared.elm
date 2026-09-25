@@ -18,7 +18,8 @@ toMoney value =
         formatedStr =
             if String.length dolars > 0 then
                 dolars ++ "." ++ cents
+
             else
                 "0." ++ cents
     in
-        formatedStr
+    formatedStr

@@ -30,6 +30,7 @@ setMainframeName : String -> Model -> Model
 setMainframeName str model =
     if str == "" then
         { model | hostname = Nothing, okay = False }
+
     else
         { model | hostname = Just str, okay = False }
 

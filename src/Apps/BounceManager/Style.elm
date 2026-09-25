@@ -1,18 +1,18 @@
 module Apps.BounceManager.Style exposing (..)
 
+import Apps.BounceManager.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Colors as Colors
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (transition, Easing(..))
+import UI.Colors as Colors
 import UI.Common
     exposing
-        ( internalPadding
+        ( flexContainerHorz
         , flexContainerVert
-        , flexContainerHorz
+        , internalPadding
         )
-import UI.Colors as Colors
 import UI.Icons as Icons
-import Apps.BounceManager.Resources exposing (Classes(..), prefix)
+import Utils.Css exposing (Easing(..), transition)
 
 
 ico : Style
@@ -83,7 +83,7 @@ bounceManage =
             , class ManageCreate
                 [ width (px 150)
                 , height (px 32)
-                , alignSelf (flexEnd)
+                , alignSelf flexEnd
                 , marginBottom (px 8)
                 , marginRight (px 8)
                 ]

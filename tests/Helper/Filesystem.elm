@@ -14,9 +14,9 @@ mkdirp path model =
             , ( path, folder ) :: list
             )
     in
-        path
-            |> List.drop 1
-            |> List.foldl reducer ( [ "" ], [] )
-            |> Tuple.second
-            |> List.reverse
-            |> List.foldl (uncurry insertFolder) model
+    path
+        |> List.drop 1
+        |> List.foldl reducer ( [ "" ], [] )
+        |> Tuple.second
+        |> List.reverse
+        |> List.foldl (uncurry insertFolder) model

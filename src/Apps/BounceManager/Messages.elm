@@ -1,10 +1,10 @@
 module Apps.BounceManager.Messages exposing (Msg(..))
 
+import Apps.BounceManager.Models exposing (..)
+import Apps.BounceManager.Shared exposing (..)
 import Game.Account.Bounces.Models as Bounces
 import Game.Account.Bounces.Shared as Bounces
 import Game.Meta.Types.Network exposing (NIP)
-import Apps.BounceManager.Models exposing (..)
-import Apps.BounceManager.Shared exposing (..)
 
 
 type Msg

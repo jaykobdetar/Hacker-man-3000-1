@@ -24,7 +24,6 @@
         "elm-lang/window": "1.0.1 <= v < 2.0.0",
         "evancz/url-parser": "2.0.1 <= v < 3.0.0",
         "jinjor/elm-contextmenu": "1.0.3 <= v < 2.0.0",
-        "kress95/random-pcg-extra": "1.0.1 <= v < 2.0.0",
         "lynn/elm-arithmetic": "2.0.3 <= v < 3.0.0",
         "mgold/elm-random-pcg": "4.0.2 <= v < 5.0.0",
         "rtfeldman/node-test-runner": "3.0.0 <= v < 4.0.0",

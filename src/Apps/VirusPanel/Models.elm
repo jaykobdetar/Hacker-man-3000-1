@@ -1,10 +1,10 @@
 module Apps.VirusPanel.Models exposing (..)
 
 import Dict exposing (Dict)
-import Game.Meta.Types.Network exposing (NIP)
-import Game.Account.Finances.Models as Finances
 import Game.Account.Database.Models as Database
 import Game.Account.Database.Shared exposing (..)
+import Game.Account.Finances.Models as Finances
+import Game.Meta.Types.Network exposing (NIP)
 
 
 type MainTab
@@ -224,32 +224,32 @@ getCollectType database selectedServers =
                         |> Maybe.andThen Database.getActiveVirus
                         |> Maybe.map Database.getVirusType
             in
-                case virusType of
-                    Just Database.Spyware ->
-                        ( True, wallet )
+            case virusType of
+                Just Database.Spyware ->
+                    ( True, wallet )
 
-                    Just Database.Adware ->
-                        ( True, wallet )
+                Just Database.Adware ->
+                    ( True, wallet )
 
-                    Just Database.BTCMiner ->
-                        ( bank, True )
+                Just Database.BTCMiner ->
+                    ( bank, True )
 
-                    Nothing ->
-                        acu
+                Nothing ->
+                    acu
     in
-        case List.foldl reducer ( False, False ) selectedServers of
-            ( True, True ) ->
-                Just BothTypes
+    case List.foldl reducer ( False, False ) selectedServers of
+        ( True, True ) ->
+            Just BothTypes
 
-            ( False, True ) ->
-                Just BitcoinVirus
+        ( False, True ) ->
+            Just BitcoinVirus
 
-            ( True, False ) ->
-                Just MoneyVirus
+        ( True, False ) ->
+            Just MoneyVirus
 
-            _ ->
-                -- This should NEVER happen
-                Nothing
+        _ ->
+            -- This should NEVER happen
+            Nothing
 
 
 checkAllSelected : Database.Model -> Model -> Bool
@@ -269,4 +269,4 @@ checkAllSelected database ({ toCollectSelected } as model) =
                 |> Dict.filter filterer
                 |> Dict.keys
     in
-        (List.sort toCollectSelected) == runningVirus
+    List.sort toCollectSelected == runningVirus

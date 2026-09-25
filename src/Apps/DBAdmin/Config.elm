@@ -1,9 +1,9 @@
 module Apps.DBAdmin.Config exposing (..)
 
-import ContextMenu
-import Html exposing (Attribute)
-import Game.Account.Database.Models as Database
 import Apps.DBAdmin.Messages exposing (..)
+import ContextMenu
+import Game.Account.Database.Models as Database
+import Html exposing (Attribute)
 
 
 type alias Config msg =

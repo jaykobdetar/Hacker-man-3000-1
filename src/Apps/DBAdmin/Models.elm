@@ -46,16 +46,16 @@ title : Model -> String
 title model =
     let
         filter =
-            (.filterText) <| getTab model
+            .filterText <| getTab model
 
         posfix =
             Nothing
 
         --TODO
     in
-        posfix
-            |> Maybe.map ((++) name)
-            |> Maybe.withDefault name
+    posfix
+        |> Maybe.map ((++) name)
+        |> Maybe.withDefault name
 
 
 icon : String
@@ -100,7 +100,7 @@ initialTab =
 
 isEntryExpanded : String -> Model -> Bool
 isEntryExpanded itemId model =
-    List.member itemId <| (.expanded) <| getTab model
+    List.member itemId <| .expanded <| getTab model
 
 
 isEntryEditing : String -> Model -> Bool

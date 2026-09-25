@@ -1,19 +1,19 @@
 module Events.Account.Handlers.StoryEmailReplySent exposing (Data, handler)
 
+import Decoders.Storyline exposing (replies, reply, stepWithActions)
+import Events.Shared exposing (Handler)
+import Game.Storyline.Shared exposing (ContactId, Quest, Reply, Step)
+import Game.Storyline.StepActions.Shared exposing (Action)
 import Json.Decode
     exposing
         ( Decoder
-        , decodeValue
         , andThen
+        , decodeValue
         , float
         , string
         )
-import Json.Decode.Pipeline exposing (decode, required, optional)
+import Json.Decode.Pipeline exposing (decode, optional, required)
 import Time exposing (Time)
-import Events.Shared exposing (Handler)
-import Decoders.Storyline exposing (replies, reply, stepWithActions)
-import Game.Storyline.Shared exposing (Reply, Quest, Step, ContactId)
-import Game.Storyline.StepActions.Shared exposing (Action)
 
 
 type alias Data =

@@ -1,15 +1,15 @@
 module OS.WindowManager.Dock.Style exposing (..)
 
 import Css exposing (..)
+import Css.Elements exposing (li, ul)
 import Css.Namespace exposing (namespace)
-import Css.Elements exposing (ul, li)
-import Utils.Css as Css exposing (Easing(..), pseudoContent, withAttribute, transition)
-import UI.Common exposing (flexContainerHorz, globalShadow, emptyContent)
-import UI.Gradients as Gradients
-import UI.Icons as Icons
-import Utils.Html.Attributes exposing (appAttrTag)
 import OS.Resources as OS
 import OS.WindowManager.Dock.Resources exposing (..)
+import UI.Common exposing (emptyContent, flexContainerHorz, globalShadow)
+import UI.Gradients as Gradients
+import UI.Icons as Icons
+import Utils.Css as Css exposing (Easing(..), pseudoContent, transition, withAttribute)
+import Utils.Html.Attributes exposing (appAttrTag)
 
 
 addIco : String -> Style -> Style
@@ -43,8 +43,8 @@ css =
                         toBottom
                         (stop2 (hex "e2e2e2") (pct 0))
                         (stop2 (hex "dbdbdb") (pct 50))
-                        [ (stop2 (hex "d1d1d1") (pct 51))
-                        , (stop <| hex "fefefe")
+                        [ stop2 (hex "d1d1d1") (pct 51)
+                        , stop <| hex "fefefe"
                         ]
                 , display block
                 , zIndex (int 1)
@@ -143,8 +143,8 @@ itemIco =
                 toBottom
                 (stop2 (hex "f3c5bd") (pct 0))
                 (stop2 (hex "e86c57") (pct 50))
-                [ (stop2 (hex "ff6600") (pct 51))
-                , (stop <| hex "c72200")
+                [ stop2 (hex "ff6600") (pct 51)
+                , stop <| hex "c72200"
                 ]
         , globalShadow
         , before

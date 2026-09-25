@@ -1,7 +1,7 @@
 module Apps.TaskManager.Models exposing (..)
 
-import Game.Shared exposing (ID)
 import Game.Servers.Processes.Models as Processes
+import Game.Shared exposing (ID)
 
 
 type alias Entries =

@@ -1,9 +1,9 @@
 module Game.Servers.Tunnels.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Game.Servers.Tunnels.Config exposing (..)
 import Game.Servers.Tunnels.Messages exposing (..)
 import Game.Servers.Tunnels.Models exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

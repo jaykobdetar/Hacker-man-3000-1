@@ -1,11 +1,11 @@
 module Setup.Requests.SetServer exposing (Data, setServerRequest)
 
+import Game.Servers.Shared as Servers
 import Json.Decode as Decode exposing (Value)
 import Json.Encode as Encode
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Requests.Types exposing (ResponseType, FlagsSource, Code(..))
-import Game.Servers.Shared as Servers
+import Requests.Types exposing (Code(..), FlagsSource, ResponseType)
 import Setup.Settings exposing (..)
 
 
@@ -21,9 +21,9 @@ setServerRequest settings cid flagsSrc =
                 |> List.map encodeSettings
                 |> Encode.object
     in
-        flagsSrc
-            |> Requests.request (Topics.serverConfigSet cid) payload
-            |> Cmd.map (uncurry <| receiver settings)
+    flagsSrc
+        |> Requests.request (Topics.serverConfigSet cid) payload
+        |> Cmd.map (uncurry <| receiver settings)
 
 
 

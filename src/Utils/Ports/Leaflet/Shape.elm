@@ -1,30 +1,29 @@
-module Utils.Ports.Leaflet.Shape
-    exposing
-        ( Shape
-        , Color
-        , Size
-        , Opacity
-        , Lines
-        , Latitude
-        , Longitude
-        , Coordinates
-        , polyline
-        , antPolyline
-        , circle
-        , stroke
-        , color
-        , weight
-        , opacity
-        , fill
-        , fillColor
-        , fillOpacity
-        , lines
-        , radius
-        , position
-        , rgb
-        , coords
-        , encode
-        )
+module Utils.Ports.Leaflet.Shape exposing
+    ( Color
+    , Coordinates
+    , Latitude
+    , Lines
+    , Longitude
+    , Opacity
+    , Shape
+    , Size
+    , antPolyline
+    , circle
+    , color
+    , coords
+    , encode
+    , fill
+    , fillColor
+    , fillOpacity
+    , lines
+    , opacity
+    , polyline
+    , position
+    , radius
+    , rgb
+    , stroke
+    , weight
+    )
 
 import Json.Encode as Encode exposing (Value)
 
@@ -352,13 +351,13 @@ encodeShape : Shape -> List ( String, Value )
 encodeShape shape =
     case shape of
         PolylineShape path polyline ->
-            (encodePath path) ++ (encodePolyline polyline)
+            encodePath path ++ encodePolyline polyline
 
         AntPolylineShape path antPolyline ->
-            (encodePath path) ++ (encodeAntPolyline antPolyline)
+            encodePath path ++ encodeAntPolyline antPolyline
 
         CircleShape path circle ->
-            (encodePath path) ++ (encodeCircle circle)
+            encodePath path ++ encodeCircle circle
 
 
 {-| Encodes a `Path` into a `List (String, Value)`, useful to use with
@@ -383,11 +382,11 @@ encodeColor : Color -> Value
 encodeColor ( r, g, b ) =
     Encode.string <|
         "rgb("
-            ++ (toString r)
+            ++ toString r
             ++ ", "
-            ++ (toString g)
+            ++ toString g
             ++ ", "
-            ++ (toString b)
+            ++ toString b
             ++ ")"
 
 
@@ -448,4 +447,4 @@ encodeCircle circle =
 -}
 maybe : String -> (a -> Value) -> Maybe a -> Maybe ( String, Value )
 maybe key encode value =
-    Maybe.map (encode >> ((,) key)) value
+    Maybe.map (encode >> (,) key) value

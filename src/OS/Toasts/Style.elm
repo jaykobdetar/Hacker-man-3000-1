@@ -4,9 +4,9 @@ import Css exposing (..)
 import Css.Colors as Colors
 import Css.Elements exposing (div, h6)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (..)
 import OS.Toasts.Resources exposing (..)
 import UI.Colors as Colors
+import Utils.Css exposing (..)
 
 
 css : Stylesheet

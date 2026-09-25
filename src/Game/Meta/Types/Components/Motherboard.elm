@@ -1,11 +1,11 @@
 module Game.Meta.Types.Components.Motherboard exposing (..)
 
 import Dict exposing (Dict)
+import Game.Meta.Types.Components as Components exposing (Components)
+import Game.Meta.Types.Components.Type as Components
+import Game.Meta.Types.Network.Connections as Connections exposing (Connections)
 import Json.Encode as Encode exposing (Value)
 import Utils.Maybe as Maybe
-import Game.Meta.Types.Components.Type as Components
-import Game.Meta.Types.Components as Components exposing (Components)
-import Game.Meta.Types.Network.Connections as Connections exposing (Connections)
 
 
 type alias Motherboard =
@@ -59,7 +59,7 @@ linkComponent id component motherboard =
                 slots =
                     Dict.insert id slot_ motherboard.slots
             in
-                { motherboard | slots = slots }
+            { motherboard | slots = slots }
 
         Nothing ->
             motherboard
@@ -74,22 +74,22 @@ unlinkComponent id motherboard =
         maybeComponent =
             Maybe.andThen .component maybeSlot
     in
-        case Maybe.uncurry maybeSlot maybeComponent of
-            Just ( slot, component ) ->
-                let
-                    slot_ =
-                        { slot | component = Nothing }
+    case Maybe.uncurry maybeSlot maybeComponent of
+        Just ( slot, component ) ->
+            let
+                slot_ =
+                    { slot | component = Nothing }
 
-                    slots =
-                        Dict.insert id slot_ motherboard.slots
+                slots =
+                    Dict.insert id slot_ motherboard.slots
 
-                    ncs =
-                        Dict.remove component motherboard.ncs
-                in
-                    { motherboard | slots = slots, ncs = ncs }
+                ncs =
+                    Dict.remove component motherboard.ncs
+            in
+            { motherboard | slots = slots, ncs = ncs }
 
-            Nothing ->
-                motherboard
+        Nothing ->
+            motherboard
 
 
 getNC : Components.Id -> Motherboard -> Maybe Connections.Id
@@ -171,7 +171,7 @@ encodeSlots =
                 Nothing ->
                     ( id, Encode.null ) :: list
     in
-        Dict.foldl reducer [] >> Encode.object
+    Dict.foldl reducer [] >> Encode.object
 
 
 encodeNCs : NetConnections -> Value
@@ -186,4 +186,4 @@ encodeNCs =
         reducer component network list =
             ( component, encode network ) :: list
     in
-        Dict.foldl reducer [] >> Encode.object
+    Dict.foldl reducer [] >> Encode.object

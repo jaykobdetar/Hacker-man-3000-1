@@ -98,6 +98,7 @@ catchDataWhenFiltering : List BackFlix.Id -> BackFlix.Id -> Maybe BackFlix.Id
 catchDataWhenFiltering filterCache log =
     if List.member log filterCache then
         Just log
+
     else
         Nothing
 
@@ -110,7 +111,8 @@ applyFilter model =
                 catchDataWhenFiltering model.filterCache id
                     |> Maybe.map (always True)
                     |> Maybe.withDefault False
+
             else
                 True
     in
-        BackFlix.filter filterer
+    BackFlix.filter filterer

@@ -1,10 +1,10 @@
 module Apps.Explorer.Models exposing (..)
 
 import Game.Meta.Types.Network exposing (NIP)
-import Game.Servers.Shared as Servers
-import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Filesystem.Models as Filesystem
 import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Models as Servers exposing (Server)
+import Game.Servers.Shared as Servers
 
 
 type EditingStatus
@@ -42,13 +42,14 @@ title { path } =
         prefix str =
             if str /= location then
                 "[...]" ++ str
+
             else
                 str
     in
-        location
-            |> String.right 10
-            |> prefix
-            |> (++) (name ++ " - ")
+    location
+        |> String.right 10
+        |> prefix
+        |> (++) (name ++ " - ")
 
 
 icon : String
@@ -114,6 +115,7 @@ changePath :
 changePath path fs model =
     if Filesystem.isFolder path fs then
         setPath path model
+
     else
         model
 

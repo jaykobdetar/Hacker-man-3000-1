@@ -1,15 +1,14 @@
-module UI.Elements.HorizontalTabs
-    exposing
-        ( hzTabs
-        , hzCustomTabs
-        , hzPlainTabs
-        , panel
-        , tab
-        , panelSelector
-        , tabSelector
-        )
+module UI.Elements.HorizontalTabs exposing
+    ( hzCustomTabs
+    , hzPlainTabs
+    , hzTabs
+    , panel
+    , panelSelector
+    , tab
+    , tabSelector
+    )
 
-import Html exposing (Html, Attribute, node, text)
+import Html exposing (Attribute, Html, node, text)
 import Html.Events exposing (onClick)
 import Utils.Html.Attributes exposing (boolAttr)
 
@@ -29,7 +28,7 @@ hzTabs check render handler list =
         mapper item =
             renderItem (check item) render handler item
     in
-        renderContainer mapper list
+    renderContainer mapper list
 
 
 hzCustomTabs :
@@ -42,7 +41,7 @@ hzCustomTabs check handler list =
         mapper ( render, item ) =
             renderItem (check item) render handler item
     in
-        renderContainer mapper list
+    renderContainer mapper list
 
 
 hzPlainTabs :
@@ -99,13 +98,13 @@ renderItem active render handler item =
         ( attrs, childs ) =
             render active item
     in
-        childs
-            |> (tab <|
-                    [ onClick (handler item)
-                    , boolAttr selectedAttrTag active
-                    ]
-                        ++ attrs
-               )
+    childs
+        |> (tab <|
+                [ onClick (handler item)
+                , boolAttr selectedAttrTag active
+                ]
+                    ++ attrs
+           )
 
 
 renderContainer : (a -> Html msg) -> List a -> Html msg

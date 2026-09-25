@@ -1,11 +1,11 @@
 module Apps.BackFlix.Style exposing (..)
 
+import Apps.BackFlix.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
+import Css.Colors as Colors
 import Css.Namespace exposing (namespace)
 import UI.Common exposing (flexContainerHorz)
 import UI.Icons as Icons
-import Css.Colors as Colors
-import Apps.BackFlix.Resources exposing (Classes(..), prefix)
 
 
 ico : Style

@@ -1,9 +1,9 @@
 module Apps.TaskManager.Style exposing (..)
 
+import Apps.TaskManager.Resources exposing (Classes(..), prefix)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
 import UI.Common exposing (flexContainerHorz, flexContainerVert, internalPadding)
-import Apps.TaskManager.Resources exposing (Classes(..), prefix)
 
 
 css : Stylesheet

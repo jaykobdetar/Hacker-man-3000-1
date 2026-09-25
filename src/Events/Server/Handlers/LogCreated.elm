@@ -1,8 +1,8 @@
 module Events.Server.Handlers.LogCreated exposing (..)
 
-import Json.Decode exposing (decodeValue)
-import Events.Shared exposing (Handler)
 import Decoders.Logs
+import Events.Shared exposing (Handler)
+import Json.Decode exposing (decodeValue)
 
 
 type alias Data =

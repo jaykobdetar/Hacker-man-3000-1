@@ -1,8 +1,9 @@
 module Utils.Html.Attributes exposing (..)
 
+import Game.Meta.Types.Context exposing (Context(..))
 import Html exposing (Attribute)
 import Html.Attributes exposing (attribute)
-import Game.Meta.Types.Context exposing (Context(..))
+
 
 
 -- ONLY PUT HERE ATTRIBUTES THAT REQUIRES MAPPING OR PIPES
@@ -35,10 +36,11 @@ boolAttr attr boolean =
         value =
             if boolean then
                 "Y"
+
             else
                 "N"
     in
-        attribute attr value
+    attribute attr value
 
 
 

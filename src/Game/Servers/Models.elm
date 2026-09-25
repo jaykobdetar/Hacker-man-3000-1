@@ -1,18 +1,18 @@
 module Game.Servers.Models exposing (..)
 
 import Dict exposing (Dict)
-import Set exposing (Set)
-import Utils.Maybe as Maybe
 import Game.Account.Bounces.Shared as Bounces
+import Game.Meta.Types.Context exposing (Context(..))
 import Game.Meta.Types.Network as Network exposing (NIP)
 import Game.Servers.Filesystem.Models as Filesystem
-import Game.Servers.Logs.Models as Logs
-import Game.Servers.Processes.Models as Processes
-import Game.Servers.Tunnels.Models as Tunnels
 import Game.Servers.Hardware.Models as Hardware
+import Game.Servers.Logs.Models as Logs
 import Game.Servers.Notifications.Models as Notifications
-import Game.Meta.Types.Context exposing (Context(..))
+import Game.Servers.Processes.Models as Processes
 import Game.Servers.Shared exposing (..)
+import Game.Servers.Tunnels.Models as Tunnels
+import Set exposing (Set)
+import Utils.Maybe as Maybe
 
 
 type alias Model =
@@ -125,10 +125,10 @@ insertGateway id activeNIP nips endpoints model =
                 model.gatewayOfEndpoints
                 endpoints
     in
-        { model
-            | gateways = gateways
-            , gatewayOfEndpoints = gatewayOfEndpoints
-        }
+    { model
+        | gateways = gateways
+        , gatewayOfEndpoints = gatewayOfEndpoints
+    }
 
 
 removeGateway : CId -> Model -> Model
@@ -137,16 +137,16 @@ removeGateway cid model =
         sid =
             toSessionId cid
     in
-        case Dict.get sid model.gateways of
-            Just cache ->
-                let
-                    gateways =
-                        Dict.remove sid model.gateways
-                in
-                    { model | gateways = gateways }
+    case Dict.get sid model.gateways of
+        Just cache ->
+            let
+                gateways =
+                    Dict.remove sid model.gateways
+            in
+            { model | gateways = gateways }
 
-            Nothing ->
-                model
+        Nothing ->
+            model
 
 
 getGatewayCache : CId -> Model -> Maybe GatewayCache
@@ -213,7 +213,7 @@ insert cid server model0 =
         model_ =
             { model1 | servers = servers }
     in
-        model_
+    model_
 
 
 remove : CId -> Model -> Model
@@ -232,12 +232,12 @@ remove cid model0 =
                         gatewayOfEndpoints =
                             Dict.remove nip model1.gatewayOfEndpoints
                     in
-                        { model1 | gatewayOfEndpoints = gatewayOfEndpoints }
+                    { model1 | gatewayOfEndpoints = gatewayOfEndpoints }
 
                 GatewayCId _ ->
                     model1
     in
-        { model2 | servers = servers }
+    { model2 | servers = servers }
 
 
 keys : Model -> List CId
@@ -373,7 +373,7 @@ setEndpointCId cid ({ ownership } as server) =
                 ownership ->
                     ownership
     in
-        { server | ownership = ownership_ }
+    { server | ownership = ownership_ }
 
 
 addEndpointCId : CId -> Server -> Server
@@ -391,7 +391,7 @@ addEndpointCId cid ({ ownership } as server) =
                 _ ->
                     ownership
     in
-        { server | ownership = ownership_ }
+    { server | ownership = ownership_ }
 
 
 removeEndpointCId : CId -> Server -> Server
@@ -407,6 +407,7 @@ removeEndpointCId cid ({ ownership } as server) =
                             , endpoint =
                                 if data.endpoint == Just cid then
                                     Nothing
+
                                 else
                                     data.endpoint
                         }
@@ -414,7 +415,7 @@ removeEndpointCId cid ({ ownership } as server) =
                 _ ->
                     ownership
     in
-        { server | ownership = ownership_ }
+    { server | ownership = ownership_ }
 
 
 setActiveNIP : NIP -> Server -> Server
@@ -442,19 +443,19 @@ getBounce server =
 
 getActiveBounce : Server -> Model -> Maybe Bounces.ID
 getActiveBounce server model =
-    case (getEndpointCId server) of
+    case getEndpointCId server of
         Nothing ->
             getBounce server
 
         Just cid ->
             model
                 |> get cid
-                |> Maybe.andThen (getBounce)
+                |> Maybe.andThen getBounce
 
 
 setActiveBounce : Server -> Maybe Bounces.ID -> Server
 setActiveBounce server bounceId =
-    case (getEndpointCId server) of
+    case getEndpointCId server of
         Nothing ->
             { server | bounce = bounceId }
 
@@ -530,12 +531,12 @@ getContextServer context servers ( gatewayCId, gateway ) =
         maybeEndpoint =
             Maybe.andThen (flip get servers) endpointCId
     in
-        case context of
-            Gateway ->
-                Just ( gatewayCId, gateway )
+    case context of
+        Gateway ->
+            Just ( gatewayCId, gateway )
 
-            Endpoint ->
-                Maybe.uncurry endpointCId maybeEndpoint
+        Endpoint ->
+            Maybe.uncurry endpointCId maybeEndpoint
 
 
 getType : Server -> ServerType
@@ -549,6 +550,7 @@ getLabel cid model =
         Just server ->
             if isGateway server then
                 Just <| getName server
+
             else
                 Just <|
                     getName server

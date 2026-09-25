@@ -1,24 +1,24 @@
 module Game.Servers.Processes.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Random.Pcg as Random
-import Events.Server.Handlers.ProcessCompleted as ProcessConclusion
 import Events.Server.Handlers.ProcessBruteforceFailed as BruteforceFailed
+import Events.Server.Handlers.ProcessCompleted as ProcessConclusion
 import Events.Server.Handlers.ProcessesRecalcado as ProcessesChanged
 import Game.Meta.Types.Network as Network exposing (NIP)
 import Game.Servers.Filesystem.Shared as Filesystem
-import Game.Servers.Shared exposing (CId)
-import Game.Servers.Processes.Requests.Bruteforce as Bruteforce exposing (bruteforceRequest)
-import Game.Servers.Processes.Requests.Download as Download
-    exposing
-        ( publicDownloadRequest
-        , privateDownloadRequest
-        )
-import Game.Servers.Processes.Requests.Upload as Upload exposing (uploadRequest)
 import Game.Servers.Processes.Config exposing (..)
 import Game.Servers.Processes.Messages exposing (..)
 import Game.Servers.Processes.Models exposing (..)
+import Game.Servers.Processes.Requests.Bruteforce as Bruteforce exposing (bruteforceRequest)
+import Game.Servers.Processes.Requests.Download as Download
+    exposing
+        ( privateDownloadRequest
+        , publicDownloadRequest
+        )
+import Game.Servers.Processes.Requests.Upload as Upload exposing (uploadRequest)
 import Game.Servers.Processes.Shared exposing (..)
+import Game.Servers.Shared exposing (CId)
+import Random.Pcg as Random
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -122,7 +122,7 @@ handleStartDownload config transferType origin storageId file model =
                 |> Cmd.map toMsg
                 |> React.cmd
     in
-        ( model_, cmd )
+    ( model_, cmd )
 
 
 handleStartUpload :
@@ -162,7 +162,7 @@ handleStartUpload config target storageId file model =
                 |> Cmd.map toMsg
                 |> React.cmd
     in
-        ( model_, cmd )
+    ( model_, cmd )
 
 
 handleStartBruteforce :
@@ -207,7 +207,7 @@ handleStartBruteforce config target model =
                 |> Cmd.map toMsg
                 |> React.cmd
     in
-        ( model_, cmd )
+    ( model_, cmd )
 
 
 handleBruteforceFailed : BruteforceFailed.Data -> Model -> UpdateResponse msg
@@ -219,7 +219,7 @@ handleBruteforceFailed data model =
                     (whenStarted (conclude (Just False)) process)
                 |> flip (,) React.none
     in
-        updateOrSync update data.processId model
+    updateOrSync update data.processId model
 
 
 handleProcessConclusion : ProcessConclusion.Data -> Model -> UpdateResponse msg
@@ -230,7 +230,7 @@ handleProcessConclusion id model =
                 |> insert id (whenStarted (conclude (Just True)) process)
                 |> flip (,) React.none
     in
-        updateOrSync update id model
+    updateOrSync update id model
 
 
 handleProcessesChanged :
@@ -252,7 +252,7 @@ handlePause config id model =
                 |> insert id (whenStarted pause process)
                 |> flip (,) React.none
     in
-        updateOrSync update id model
+    updateOrSync update id model
 
 
 handleResume : Config msg -> ID -> Model -> UpdateResponse msg
@@ -263,7 +263,7 @@ handleResume config id model =
                 |> insert id (whenStarted resume process)
                 |> flip (,) React.none
     in
-        updateOrSync update id model
+    updateOrSync update id model
 
 
 handleRemove : Config msg -> ID -> Model -> UpdateResponse msg

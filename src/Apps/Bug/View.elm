@@ -1,12 +1,12 @@
 module Apps.Bug.View exposing (view)
 
-import Html exposing (..)
-import Html.CssHelpers
-import Html.Events exposing (onClick)
 import Apps.Bug.Config exposing (..)
 import Apps.Bug.Messages exposing (Msg(..))
 import Apps.Bug.Models exposing (..)
 import Apps.Bug.Resources exposing (..)
+import Html exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (onClick)
 
 
 { id, class, classList } =

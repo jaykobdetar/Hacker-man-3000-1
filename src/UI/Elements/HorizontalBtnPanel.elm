@@ -1,6 +1,6 @@
 module UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
 
-import Html exposing (Html, Attribute, node, span, text)
+import Html exposing (Attribute, Html, node, span, text)
 import Html.Events exposing (onClick)
 
 
@@ -18,4 +18,4 @@ horizontalBtnPanel btns =
                 |> List.intersperse
                     (text " ")
     in
-        node "horizontalBtnPanel" [] data
+    node "horizontalBtnPanel" [] data

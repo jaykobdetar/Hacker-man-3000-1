@@ -1,9 +1,9 @@
 module Apps.Finance.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Apps.Finance.Config exposing (..)
-import Apps.Finance.Models exposing (Model, MainTab)
 import Apps.Finance.Messages as Finance exposing (Msg(..))
+import Apps.Finance.Models exposing (MainTab, Model)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -27,4 +27,4 @@ onGoTabs config tab model =
         model_ =
             { model | selected = tab }
     in
-        ( model_, React.none )
+    ( model_, React.none )

@@ -1,18 +1,18 @@
 module Apps.Browser.Messages exposing (..)
 
+import Apps.Browser.Models exposing (..)
+import Apps.Browser.Pages.Bank.Messages as Bank
+import Apps.Browser.Pages.DownloadCenter.Messages as DownloadCenter
+import Apps.Browser.Pages.Webserver.Messages as Webserver
+import Apps.Browser.Shared exposing (..)
+import Events.Account.Handlers.ServerPasswordAcquired as PasswordAcquired
 import Game.Account.Finances.Requests.Login as LoginRequest
 import Game.Account.Finances.Requests.Transfer as TransferRequest
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Meta.Types.Network as Network exposing (NIP)
-import Game.Servers.Shared exposing (StorageId)
 import Game.Servers.Filesystem.Shared as Filesystem
 import Game.Servers.Requests.Browse as BrowseRequest
-import Events.Account.Handlers.ServerPasswordAcquired as PasswordAcquired
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
-import Apps.Browser.Pages.Webserver.Messages as Webserver
-import Apps.Browser.Pages.DownloadCenter.Messages as DownloadCenter
-import Apps.Browser.Pages.Bank.Messages as Bank
-import Apps.Browser.Models exposing (..)
-import Apps.Browser.Shared exposing (..)
+import Game.Servers.Shared exposing (StorageId)
 
 
 type Msg

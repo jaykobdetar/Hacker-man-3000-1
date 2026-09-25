@@ -1,8 +1,8 @@
 module Utils.Css exposing (..)
 
+import Css exposing (..)
 import Html
 import Html.Attributes as Attributes exposing (style)
-import Css exposing (..)
 
 
 pseudoContent : String -> Style
@@ -73,12 +73,12 @@ easingToString bool =
             "ease-in-out"
 
         CubicBezier a b c d ->
-            "cubic-bezier(" ++ (toString a) ++ "," ++ (toString b) ++ "," ++ (toString c) ++ "," ++ (toString d) ++ ")"
+            "cubic-bezier(" ++ toString a ++ "," ++ toString b ++ "," ++ toString c ++ "," ++ toString d ++ ")"
 
 
 transition : Float -> String -> Easing -> Style
 transition time propertyName easing =
-    property "transition" ((toString time) ++ "s " ++ (propertyName) ++ " " ++ (easingToString easing))
+    property "transition" (toString time ++ "s " ++ propertyName ++ " " ++ easingToString easing)
 
 
 conditionToString : Condition -> String
@@ -99,10 +99,10 @@ withAttribute cond =
     pseudoClass <|
         case cond of
             NOT _ ->
-                (conditionToString cond)
+                conditionToString cond
 
             _ ->
-                "not(iMpOsSiBlE)" ++ (conditionToString cond)
+                "not(iMpOsSiBlE)" ++ conditionToString cond
 
 
 selectableText : Style

@@ -1,17 +1,17 @@
 module Events.Account.Handlers.TutorialFinished exposing (Data, handler)
 
+import Events.Shared exposing (Handler)
 import Json.Decode
     exposing
         ( Decoder
-        , decodeValue
-        , map
         , andThen
+        , bool
+        , decodeValue
         , field
         , list
-        , bool
+        , map
         )
-import Json.Decode.Pipeline exposing (decode, required, optional)
-import Events.Shared exposing (Handler)
+import Json.Decode.Pipeline exposing (decode, optional, required)
 
 
 type alias Data =

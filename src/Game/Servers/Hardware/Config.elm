@@ -2,8 +2,8 @@ module Game.Servers.Hardware.Config exposing (..)
 
 import Core.Flags as Core
 import Game.Inventory.Shared as Inventory
-import Game.Servers.Shared as Servers exposing (CId)
 import Game.Servers.Hardware.Messages exposing (..)
+import Game.Servers.Shared as Servers exposing (CId)
 
 
 type alias Config msg =

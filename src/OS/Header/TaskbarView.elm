@@ -1,16 +1,16 @@
 module OS.Header.TaskbarView exposing (view)
 
 import Dict
+import Game.Meta.Types.Notifications as Notifications
+import Game.Servers.Notifications.OnClick as ServersNotifications
+import Game.Servers.Notifications.Shared as ServersNotifications
 import Html exposing (..)
 import Html.CssHelpers
-import Game.Servers.Notifications.Shared as ServersNotifications
-import Game.Servers.Notifications.OnClick as ServersNotifications
-import Game.Meta.Types.Notifications as Notifications
-import OS.Header.Config exposing (..)
-import OS.Header.Models exposing (..)
-import OS.Header.Messages exposing (..)
-import OS.Header.NotificationsView as Notifications
 import OS.Header.AccountView as Account
+import OS.Header.Config exposing (..)
+import OS.Header.Messages exposing (..)
+import OS.Header.Models exposing (..)
+import OS.Header.NotificationsView as Notifications
 import OS.Header.Resources exposing (..)
 
 
@@ -30,14 +30,14 @@ view config { openMenu } =
         ( accountView, accountBubble ) =
             account config openMenu
     in
-        div [ class [ Taskbar ] ]
-            [ chatView
-            , chatBubble
-            , serverView
-            , serverBubble
-            , accountView
-            , accountBubble
-            ]
+    div [ class [ Taskbar ] ]
+        [ chatView
+        , chatBubble
+        , serverView
+        , serverBubble
+        , accountView
+        , accountBubble
+        ]
 
 
 
@@ -66,7 +66,7 @@ chat config openMenu =
                 |> Notifications.countUnreaded
                 |> bubble
     in
-        ( view, bubble_ )
+    ( view, bubble_ )
 
 
 servers : Config msg -> OpenMenu -> ( Html msg, Html msg )
@@ -91,7 +91,7 @@ servers config openMenu =
                 |> Notifications.countUnreaded
                 |> bubble
     in
-        ( view, bubble_ )
+    ( view, bubble_ )
 
 
 account : Config msg -> OpenMenu -> ( Html msg, Html msg )
@@ -105,7 +105,7 @@ account config openMenu =
                 |> Notifications.countUnreaded
                 |> bubble
     in
-        ( view, bubble_ )
+    ( view, bubble_ )
 
 
 bubble : Int -> Html msg
@@ -116,5 +116,6 @@ bubble num =
     <|
         if num <= 0 then
             [ class [ Empty ] ]
+
         else
             []

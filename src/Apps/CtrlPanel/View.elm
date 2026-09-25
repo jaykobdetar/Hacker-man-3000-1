@@ -1,10 +1,10 @@
 module Apps.CtrlPanel.View exposing (view)
 
-import Html exposing (..)
-import Html.CssHelpers
 import Apps.CtrlPanel.Config exposing (..)
 import Apps.CtrlPanel.Models exposing (..)
 import Apps.CtrlPanel.Resources exposing (..)
+import Html exposing (..)
+import Html.CssHelpers
 
 
 { id, class, classList } =

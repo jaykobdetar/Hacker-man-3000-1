@@ -1,8 +1,8 @@
 module OS.Toasts.Messages exposing (Msg(..))
 
-import Game.Servers.Shared exposing (CId)
 import Game.Account.Notifications.Shared as AccountNotifications
 import Game.Servers.Notifications.Shared as ServersNotifications
+import Game.Servers.Shared exposing (CId)
 
 
 type Msg

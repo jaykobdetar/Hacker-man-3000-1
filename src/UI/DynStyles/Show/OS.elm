@@ -1,12 +1,12 @@
 module UI.DynStyles.Show.OS exposing (..)
 
+import Apps.Shared as Apps
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
-import Utils.Css as Css exposing (withAttribute)
-import Utils.Html.Attributes exposing (appAttrTag)
-import Apps.Shared as Apps
 import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import OS.WindowManager.Dock.Resources as Dock
+import Utils.Css as Css exposing (withAttribute)
+import Utils.Html.Attributes exposing (appAttrTag)
 
 
 showDockIcon : DesktopApp -> Stylesheet

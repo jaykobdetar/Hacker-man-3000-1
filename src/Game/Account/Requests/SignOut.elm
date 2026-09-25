@@ -1,10 +1,10 @@
 module Game.Account.Requests.SignOut exposing (signOutRequest)
 
+import Game.Account.Models exposing (..)
 import Json.Encode as Encode exposing (Value)
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..))
-import Game.Account.Models exposing (..)
+import Requests.Types exposing (Code(..), FlagsSource)
 
 
 type alias Data =

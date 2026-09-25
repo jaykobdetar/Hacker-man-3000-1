@@ -1,32 +1,33 @@
 module Gen.Servers exposing (..)
 
 import Dict exposing (Dict)
-import Set
+import Fuzz exposing (Fuzzer)
+import Game.Meta.Types.Network exposing (IP)
+import Game.Servers.Hardware.Models as Hardware
+import Game.Servers.Models exposing (..)
+import Game.Servers.Notifications.Models as Notifications
+import Game.Servers.Shared exposing (..)
+import Game.Servers.Tunnels.Models as Tunnels
 import Gen.Filesystem
-import Gen.Logs
-import Gen.Processes
 import Gen.Hardware
+import Gen.Logs
+import Gen.Network exposing (..)
+import Gen.Processes
+import Gen.Utils exposing (..)
 import Random.Pcg
     exposing
         ( Generator
+        , andThen
+        , choices
         , constant
         , int
         , list
-        , choices
         , map
         , map2
-        , andThen
         )
 import Random.Pcg.Extra exposing (andMap)
-import Fuzz exposing (Fuzzer)
-import Game.Meta.Types.Network exposing (IP)
-import Game.Servers.Models exposing (..)
-import Game.Servers.Shared exposing (..)
-import Game.Servers.Tunnels.Models as Tunnels
-import Game.Servers.Notifications.Models as Notifications
-import Game.Servers.Hardware.Models as Hardware
-import Gen.Network exposing (..)
-import Gen.Utils exposing (..)
+import Set
+
 
 
 --------------------------------------------------------------------------------
@@ -162,13 +163,13 @@ genGenericServer genOwnserhip genHardware =
                 hardware
             }
     in
-        genOwnserhip
-            |> map buildServerRecord
-            |> andMap genNip
-            |> andMap Gen.Filesystem.genModel
-            |> andMap Gen.Logs.genModel
-            |> andMap Gen.Processes.genModel
-            |> andMap genHardware
+    genOwnserhip
+        |> map buildServerRecord
+        |> andMap genNip
+        |> andMap Gen.Filesystem.genModel
+        |> andMap Gen.Logs.genModel
+        |> andMap Gen.Processes.genModel
+        |> andMap genHardware
 
 
 genServerList : Generator (List Server)

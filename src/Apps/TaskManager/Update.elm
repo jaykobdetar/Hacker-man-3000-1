@@ -1,11 +1,11 @@
 module Apps.TaskManager.Update exposing (update)
 
+import Apps.TaskManager.Config exposing (..)
+import Apps.TaskManager.Messages as TaskManager exposing (Msg(..))
+import Apps.TaskManager.Models exposing (Model)
+import Game.Servers.Processes.Models as Processes
 import Time exposing (Time)
 import Utils.React as React exposing (React)
-import Game.Servers.Processes.Models as Processes
-import Apps.TaskManager.Config exposing (..)
-import Apps.TaskManager.Models exposing (Model)
-import Apps.TaskManager.Messages as TaskManager exposing (Msg(..))
 
 
 type alias UpdateResponse cmd =
@@ -31,7 +31,7 @@ onTick config now model =
                 config
                 model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 updateTasks : Config msg -> Model -> Model
@@ -52,22 +52,22 @@ updateTasks config old =
                 |> List.foldr reduce ( 0.0, 0.0, 0.0, 0.0 )
 
         historyCPU =
-            (increaseHistory cpu old.historyCPU)
+            increaseHistory cpu old.historyCPU
 
         historyMem =
-            (increaseHistory mem old.historyMem)
+            increaseHistory mem old.historyMem
 
         historyDown =
-            (increaseHistory down old.historyDown)
+            increaseHistory down old.historyDown
 
         historyUp =
-            (increaseHistory up old.historyUp)
+            increaseHistory up old.historyUp
     in
-        Model
-            historyCPU
-            historyMem
-            historyDown
-            historyUp
+    Model
+        historyCPU
+        historyMem
+        historyDown
+        historyUp
 
 
 taskUsageSum :
@@ -75,13 +75,13 @@ taskUsageSum :
     -> ( Float, Float, Float, Float )
     -> ( Float, Float, Float, Float )
 taskUsageSum { cpu, mem, down, up } ( acuCpu, acuMem, acuDown, acuUp ) =
-    ( acuCpu + (Processes.getPercentUsage cpu)
-    , acuMem + (Processes.getPercentUsage mem)
-    , acuDown + (Processes.getPercentUsage down)
-    , acuUp + (Processes.getPercentUsage up)
+    ( acuCpu + Processes.getPercentUsage cpu
+    , acuMem + Processes.getPercentUsage mem
+    , acuDown + Processes.getPercentUsage down
+    , acuUp + Processes.getPercentUsage up
     )
 
 
 increaseHistory : a -> List a -> List a
 increaseHistory new old =
-    new :: (List.take 19 old)
+    new :: List.take 19 old

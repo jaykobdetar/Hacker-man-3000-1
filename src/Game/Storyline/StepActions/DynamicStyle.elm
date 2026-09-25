@@ -3,8 +3,8 @@ module Game.Storyline.StepActions.DynamicStyle exposing (dynCss)
 import Css exposing (Stylesheet, stylesheet)
 import Game.Storyline.Models exposing (Model, getActions)
 import Game.Storyline.StepActions.Shared exposing (Action(..))
-import UI.DynStyles.Highlight.OS exposing (..)
 import UI.DynStyles.Highlight.Explorer exposing (..)
+import UI.DynStyles.Highlight.OS exposing (..)
 
 
 dynCss : Model -> List Stylesheet

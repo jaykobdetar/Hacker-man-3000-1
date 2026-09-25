@@ -1,9 +1,9 @@
 module UI.DynStyles.Highlight.Explorer exposing (..)
 
+import Apps.Explorer.Resources as Explorer
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
 import Utils.Css as Css exposing (withAttribute)
-import Apps.Explorer.Resources as Explorer
 
 
 highlighFileId : String -> Stylesheet

@@ -1,11 +1,12 @@
 module Gen.Logs exposing (..)
 
-import Time exposing (Time)
 import Fuzz exposing (Fuzzer)
+import Game.Servers.Logs.Models as Logs exposing (..)
+import Gen.Utils exposing (..)
 import Random.Pcg as Random exposing (Generator)
 import Random.Pcg.Extra exposing (andMap)
-import Gen.Utils exposing (..)
-import Game.Servers.Logs.Models as Logs exposing (..)
+import Time exposing (Time)
+
 
 
 --------------------------------------------------------------------------------
@@ -136,4 +137,4 @@ genData =
                 Encrypted ->
                     Debug.crash "Wat?"
     in
-        Random.map toData <| Random.choices formats
+    Random.map toData <| Random.choices formats

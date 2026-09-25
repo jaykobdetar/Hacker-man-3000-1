@@ -1,16 +1,16 @@
 module Apps.Browser.Models exposing (..)
 
-import Dict exposing (Dict)
-import Utils.List as List
-import Game.Meta.Types.Desktop.Apps exposing (Reference)
-import Game.Meta.Types.Network exposing (NIP)
-import Game.Servers.Filesystem.Shared as Filesystem
-import Game.Meta.Types.Network.Site as Site exposing (Site)
-import Apps.Browser.Shared exposing (..)
+import Apps.Browser.Pages.Bank.Models as PageBank
+import Apps.Browser.Pages.DownloadCenter.Models as DownloadCenter
 import Apps.Browser.Pages.NotFound.Models as PageNotFound
 import Apps.Browser.Pages.Webserver.Models as PageWebserver
-import Apps.Browser.Pages.DownloadCenter.Models as DownloadCenter
-import Apps.Browser.Pages.Bank.Models as PageBank
+import Apps.Browser.Shared exposing (..)
+import Dict exposing (Dict)
+import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Meta.Types.Network.Site as Site exposing (Site)
+import Game.Servers.Filesystem.Shared as Filesystem
+import Utils.List as List
 
 
 type alias Model =
@@ -81,16 +81,18 @@ title model =
             getTitle (getPage app)
 
         posfix =
-            if (String.length pgTitle) > 12 then
-                Just (": \"" ++ (String.left 10 pgTitle) ++ "[...]\"")
-            else if (String.length pgTitle) > 0 then
+            if String.length pgTitle > 12 then
+                Just (": \"" ++ String.left 10 pgTitle ++ "[...]\"")
+
+            else if String.length pgTitle > 0 then
                 Just (": \"" ++ pgTitle ++ "\"")
+
             else
                 Nothing
     in
-        posfix
-            |> Maybe.map ((++) name)
-            |> Maybe.withDefault name
+    posfix
+        |> Maybe.map ((++) name)
+        |> Maybe.withDefault name
 
 
 icon : String
@@ -164,19 +166,21 @@ gotoPage url page tab =
         let
             previousPages =
                 -- Loading pages should not be added to history
-                if (isLoading tab.page) then
+                if isLoading tab.page then
                     getPreviousPages tab
+
                 else
                     ( tab.lastURL, tab.page )
-                        :: (getPreviousPages tab)
+                        :: getPreviousPages tab
         in
-            { tab
-                | addressBar = url
-                , lastURL = url
-                , page = page
-                , previousPages = previousPages
-                , nextPages = []
-            }
+        { tab
+            | addressBar = url
+            , lastURL = url
+            , page = page
+            , previousPages = previousPages
+            , nextPages = []
+        }
+
     else
         tab
 
@@ -236,21 +240,21 @@ reorderHistory getFromList getToList tab =
         oldURL =
             getURL tab
     in
-        from
-            |> List.head
-            |> Maybe.map
-                (\newPage ->
-                    let
-                        from_ =
-                            from
-                                |> List.tail
-                                |> Maybe.withDefault ([])
+    from
+        |> List.head
+        |> Maybe.map
+            (\newPage ->
+                let
+                    from_ =
+                        from
+                            |> List.tail
+                            |> Maybe.withDefault []
 
-                        to_ =
-                            ( oldURL, oldPage ) :: to
-                    in
-                        ( newPage, from_, to_ )
-                )
+                    to_ =
+                        ( oldURL, oldPage ) :: to
+                in
+                ( newPage, from_, to_ )
+            )
 
 
 getTab : Int -> Tabs -> Tab
@@ -276,13 +280,14 @@ setNowTab tab model =
         newTabs =
             setTab model.nowTab tab model.tabs
     in
-        { model | tabs = newTabs }
+    { model | tabs = newTabs }
 
 
 goTab : Int -> Model -> Model
 goTab nTab model =
     if nTab == model.nowTab then
         model
+
     else if List.member nTab model.rightTabs then
         let
             ( wL, newRight ) =
@@ -296,11 +301,12 @@ goTab nTab model =
             newLeft =
                 model.leftTabs ++ (model.nowTab :: wL)
         in
-            { model
-                | leftTabs = newLeft
-                , rightTabs = newRight
-                , nowTab = nTab
-            }
+        { model
+            | leftTabs = newLeft
+            , rightTabs = newRight
+            , nowTab = nTab
+        }
+
     else
         let
             ( newLeft, wR ) =
@@ -314,11 +320,11 @@ goTab nTab model =
             newRight =
                 wR ++ (model.nowTab :: model.rightTabs)
         in
-            { model
-                | leftTabs = newLeft
-                , rightTabs = newRight
-                , nowTab = nTab
-            }
+        { model
+            | leftTabs = newLeft
+            , rightTabs = newRight
+            , nowTab = nTab
+        }
 
 
 addTab : Model -> Model
@@ -333,7 +339,7 @@ addTab model =
         rightTabs =
             newN :: model.rightTabs
     in
-        { model | tabs = tabs, lastTab = newN, rightTabs = rightTabs }
+    { model | tabs = tabs, lastTab = newN, rightTabs = rightTabs }
 
 
 deleteTab : Int -> Model -> Model
@@ -356,6 +362,7 @@ deleteTab nTab model =
 
             head :: tail ->
                 { model | nowTab = head, rightTabs = tail }
+
     else if List.member nTab model.leftTabs then
         let
             ( wL, wR ) =
@@ -366,7 +373,8 @@ deleteTab nTab model =
                     )
                     model.leftTabs
         in
-            { model | leftTabs = wL ++ wR }
+        { model | leftTabs = wL ++ wR }
+
     else
         let
             ( wL, wR ) =
@@ -377,7 +385,7 @@ deleteTab nTab model =
                     )
                     model.rightTabs
         in
-            { model | rightTabs = wL ++ wR }
+        { model | rightTabs = wL ++ wR }
 
 
 leaveModal : Tab -> Tab

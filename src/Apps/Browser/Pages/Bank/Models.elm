@@ -1,15 +1,14 @@
-module Apps.Browser.Pages.Bank.Models
-    exposing
-        ( Model
-        , initialModel
-        , getTitle
-        , State(..)
-        )
+module Apps.Browser.Pages.Bank.Models exposing
+    ( Model
+    , State(..)
+    , getTitle
+    , initialModel
+    )
 
-import Game.Meta.Types.Network.Site as Site
-import Game.Meta.Types.Network exposing (NIP)
 import Game.Account.Finances.Models exposing (AccountNumber)
 import Game.Account.Finances.Shared exposing (BankAccountData)
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Meta.Types.Network.Site as Site
 
 
 type alias Model =

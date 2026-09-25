@@ -1,10 +1,10 @@
 module Core.Style exposing (..)
 
+import Core.Resources exposing (appId, prefix)
 import Css exposing (..)
-import Css.Elements exposing (typeSelector, body, li, main_, header, footer, nav)
+import Css.Elements exposing (body, footer, header, li, main_, nav, typeSelector)
 import Css.Namespace exposing (namespace)
 import Utils.Css exposing (unselectable)
-import Core.Resources exposing (prefix, appId)
 
 
 css : Stylesheet

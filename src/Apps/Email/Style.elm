@@ -1,12 +1,12 @@
 module Apps.Email.Style exposing (..)
 
-import Css exposing (..)
-import Css.Namespace exposing (namespace)
-import Css.Elements exposing (ul, li, div, span)
-import Utils.Css exposing (..)
-import UI.Common exposing (..)
-import UI.Colors as Colors
 import Apps.Email.Resources exposing (Classes(..), prefix)
+import Css exposing (..)
+import Css.Elements exposing (div, li, span, ul)
+import Css.Namespace exposing (namespace)
+import UI.Colors as Colors
+import UI.Common exposing (..)
+import Utils.Css exposing (..)
 
 
 css : Stylesheet

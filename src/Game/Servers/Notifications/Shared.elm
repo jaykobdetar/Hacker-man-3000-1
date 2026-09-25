@@ -34,40 +34,36 @@ render content =
 
         DownloadStarted origin storage fileEntry ->
             ( "New download started"
-            , ((Filesystem.getName <| Filesystem.toFile fileEntry)
+            , (Filesystem.getName <| Filesystem.toFile fileEntry)
                 ++ " download started!"
-              )
             )
 
         DownloadConcluded origin storage fileEntry ->
             ( "New download concluded"
-            , ((Filesystem.getName <| Filesystem.toFile fileEntry)
+            , (Filesystem.getName <| Filesystem.toFile fileEntry)
                 ++ " download concluded!"
-              )
             )
 
         UploadStarted origin storage fileEntry ->
             ( "New upload started"
-            , ((Filesystem.getName <| Filesystem.toFile fileEntry)
+            , (Filesystem.getName <| Filesystem.toFile fileEntry)
                 ++ " upload started!"
-              )
             )
 
         UploadConcluded origin storage fileEntry ->
             ( "New upload concluded"
-            , ((Filesystem.getName <| Filesystem.toFile fileEntry)
+            , (Filesystem.getName <| Filesystem.toFile fileEntry)
                 ++ " upload concluded!"
-              )
             )
 
         BruteforceStarted target ->
             ( "Bruteforce started"
-            , "Trying to crack " ++ (Network.render target)
+            , "Trying to crack " ++ Network.render target
             )
 
         BruteforceConcluded target ->
             ( "Bruteforce concluded"
-            , "Finished cracking " ++ (Network.render target)
+            , "Finished cracking " ++ Network.render target
             )
 
 

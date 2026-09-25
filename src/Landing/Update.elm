@@ -1,11 +1,11 @@
 module Landing.Update exposing (update)
 
-import Utils.React as React exposing (React)
 import Landing.Config exposing (..)
+import Landing.Login.Update as Login
 import Landing.Messages exposing (..)
 import Landing.Models exposing (Model)
 import Landing.SignUp.Update as SignUp
-import Landing.Login.Update as Login
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -23,7 +23,7 @@ update config msg model =
                 model_ =
                     { model | signUp = signUp }
             in
-                ( model_, react )
+            ( model_, react )
 
         LoginMsg msg ->
             let
@@ -33,7 +33,7 @@ update config msg model =
                 model_ =
                     { model | login = login }
             in
-                ( model_, react )
+            ( model_, react )
 
         _ ->
             ( model, React.none )

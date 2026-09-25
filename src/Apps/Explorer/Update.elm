@@ -1,12 +1,12 @@
 module Apps.Explorer.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.Servers.Models as Servers
+import Apps.Explorer.Config exposing (..)
+import Apps.Explorer.Messages exposing (Msg(..))
+import Apps.Explorer.Models exposing (..)
 import Game.Servers.Filesystem.Models as Filesystem
 import Game.Servers.Filesystem.Shared as Filesystem
-import Apps.Explorer.Config exposing (..)
-import Apps.Explorer.Models exposing (..)
-import Apps.Explorer.Messages exposing (Msg(..))
+import Game.Servers.Models as Servers
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -25,12 +25,12 @@ update ({ activeServer } as config) msg model =
                 |> flip Servers.getStorage activeServerData
                 |> Maybe.map Servers.getFilesystem
     in
-        case maybeFs of
-            Just fs ->
-                realUpdate config fs msg model
+    case maybeFs of
+        Just fs ->
+            realUpdate config fs msg model
 
-            Nothing ->
-                ( model, React.none )
+        Nothing ->
+            ( model, React.none )
 
 
 realUpdate : Config msg -> Filesystem.Model -> Msg -> Model -> UpdateResponse msg
@@ -70,7 +70,7 @@ onGoPath config newPath fs model =
         model_ =
             changePath newPath fs model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onGoStorage : String -> Model -> UpdateResponse msg
@@ -79,7 +79,7 @@ onGoStorage newStorageId model =
         model_ =
             { model | storageId = Just newStorageId, path = [ "" ] }
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onUpdateEditing : EditingStatus -> Model -> UpdateResponse msg
@@ -88,7 +88,7 @@ onUpdateEditing newState model =
         model_ =
             setEditing newState model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onEnterRename :
@@ -111,7 +111,7 @@ onEnterRename config id fs model =
         model_ =
             setEditing editing_ model
     in
-        ( model_, React.none )
+    ( model_, React.none )
 
 
 onApplyEdit : Config msg -> Filesystem.Model -> Model -> UpdateResponse msg
@@ -131,12 +131,14 @@ onApplyEdit config fs model =
                 CreatingFile fName ->
                     if Filesystem.isValidFilename fName then
                         React.none
+
                     else
                         React.msg <| onNewTextFile model.path fName storageId
 
                 CreatingPath fName ->
                     if Filesystem.isValidFilename fName then
                         React.none
+
                     else
                         React.msg <| onNewDir model.path fName storageId
 
@@ -146,6 +148,7 @@ onApplyEdit config fs model =
                 Renaming fID fName ->
                     if Filesystem.isValidFilename fName then
                         React.none
+
                     else
                         React.msg <| onRenameFile fID fName storageId
 
@@ -156,4 +159,4 @@ onApplyEdit config fs model =
         model_ =
             setEditing NotEditing model
     in
-        ( model_, react )
+    ( model_, react )

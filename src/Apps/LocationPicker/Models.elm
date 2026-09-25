@@ -1,7 +1,7 @@
 module Apps.LocationPicker.Models exposing (..)
 
-import Utils.Ports.Leaflet as Leaflet exposing (Coordinates)
 import Utils.Ports.Geolocation as Geolocation
+import Utils.Ports.Leaflet as Leaflet exposing (Coordinates)
 
 
 type alias Model =

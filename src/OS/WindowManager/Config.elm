@@ -1,12 +1,5 @@
 module OS.WindowManager.Config exposing (..)
 
-import Time exposing (Time)
-import Html exposing (Attribute)
-import ContextMenu
-import Draggable
-import Draggable.Events as Draggable
-import Utils.Core exposing (..)
-import Core.Flags exposing (Flags)
 import Apps.BackFlix.Config as BackFlix
 import Apps.BounceManager.Config as BounceManager
 import Apps.Browser.Config as Browser
@@ -24,38 +17,45 @@ import Apps.Hebamp.Config as Hebamp
 import Apps.LanViewer.Config as LanViewer
 import Apps.LocationPicker.Config as LocationPicker
 import Apps.LogViewer.Config as LogViewer
+import Apps.Params as AppParams
 import Apps.ServersGears.Config as ServersGears
 import Apps.TaskManager.Config as TaskManager
 import Apps.VirusPanel.Config as VirusPanel
-import Apps.Params as AppParams
-import Game.Models as Game
-import Game.Messages as Game
-import Game.Account.Messages as Account
-import Game.Account.Models as Account
+import ContextMenu
+import Core.Flags exposing (Flags)
+import Draggable
+import Draggable.Events as Draggable
 import Game.Account.Bounces.Messages as Bounces
 import Game.Account.Database.Messages as Database
 import Game.Account.Database.Models as Database
 import Game.Account.Finances.Messages as Finances
+import Game.Account.Messages as Account
+import Game.Account.Models as Account
 import Game.Account.Notifications.Shared as AccountNotifications
 import Game.Account.Requests.ActionPerformed as ActionPerformed
+import Game.Messages as Game
 import Game.Meta.Models as Meta
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Meta.Types.Context exposing (Context(..))
-import Game.Servers.Messages as Servers
-import Game.Servers.Models as Servers exposing (Server)
-import Game.Servers.Shared as Servers exposing (CId, StorageId)
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
+import Game.Models as Game
 import Game.Servers.Filesystem.Messages as Filesystem
 import Game.Servers.Hardware.Messages as Hardware
 import Game.Servers.Hardware.Models as Hardware
 import Game.Servers.Logs.Messages as Logs
+import Game.Servers.Messages as Servers
+import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Processes.Messages as Processes
-import Game.Storyline.Models as Storyline
+import Game.Servers.Shared as Servers exposing (CId, StorageId)
 import Game.Storyline.Messages as Storyline
+import Game.Storyline.Models as Storyline
 import Game.Web.Messages as Web
+import Html exposing (Attribute)
+import OS.WindowManager.Dock.Config as Dock
 import OS.WindowManager.Messages exposing (..)
 import OS.WindowManager.Shared exposing (..)
-import OS.WindowManager.Dock.Config as Dock
 import OS.WindowManager.Sidebar.Config as Sidebar
+import Time exposing (Time)
+import Utils.Core exposing (..)
 
 
 type alias Config msg =
@@ -98,18 +98,18 @@ dockConfig config =
         cid =
             Tuple.first config.activeServer
     in
-        { onNewApp = \app -> config.toMsg <| NewApp app Nothing Nothing cid
-        , onClickIcon = ClickIcon >> config.toMsg
-        , onMinimizeAll = MinimizeAll >> config.toMsg
-        , onCloseAll = CloseAll >> config.toMsg
-        , onMinimizeWindow = Minimize >> config.toMsg
-        , onRestoreWindow = Just >> UpdateFocus >> config.toMsg
-        , onCloseWindow = Close >> config.toMsg
-        , accountDock = Account.getDock <| accountFromConfig config
-        , endpointCId = endpointCIdFromConfig config
-        , servers = Game.getServers config.game
-        , story = storyFromConfig config
-        }
+    { onNewApp = \app -> config.toMsg <| NewApp app Nothing Nothing cid
+    , onClickIcon = ClickIcon >> config.toMsg
+    , onMinimizeAll = MinimizeAll >> config.toMsg
+    , onCloseAll = CloseAll >> config.toMsg
+    , onMinimizeWindow = Minimize >> config.toMsg
+    , onRestoreWindow = Just >> UpdateFocus >> config.toMsg
+    , onCloseWindow = Close >> config.toMsg
+    , accountDock = Account.getDock <| accountFromConfig config
+    , endpointCId = endpointCIdFromConfig config
+    , servers = Game.getServers config.game
+    , story = storyFromConfig config
+    }
 
 
 backFlixConfig : AppId -> Config msg -> BackFlix.Config msg
@@ -126,14 +126,15 @@ sidebarConfig isFreeplay config =
         story_ =
             if isFreeplay then
                 Nothing
+
             else
                 Just <| storyFromConfig config
     in
-        { toMsg = SidebarMsg >> config.toMsg
-        , batchMsg = config.batchMsg
-        , menuAttr = config.menuAttr
-        , story = story_
-        }
+    { toMsg = SidebarMsg >> config.toMsg
+    , batchMsg = config.batchMsg
+    , menuAttr = config.menuAttr
+    , story = story_
+    }
 
 
 bounceManagerConfig : AppId -> Config msg -> BounceManager.Config msg
@@ -142,17 +143,17 @@ bounceManagerConfig appId config =
         account =
             accountFromConfig config
     in
-        { flags = config.flags
-        , toMsg = BounceManagerMsg >> AppMsg appId >> config.toMsg
-        , batchMsg = config.batchMsg
-        , awaitEvent = config.awaitEvent
-        , reference = appId
-        , onWaitForBounce = Bounces.HandleWaitForBounce >>> bounces config
-        , onRequestBounceReload = Bounces.HandleRequestReload >>> bounces config
-        , bounces = Account.getBounces account
-        , database = Account.getDatabase account
-        , accountId = Account.getId account
-        }
+    { flags = config.flags
+    , toMsg = BounceManagerMsg >> AppMsg appId >> config.toMsg
+    , batchMsg = config.batchMsg
+    , awaitEvent = config.awaitEvent
+    , reference = appId
+    , onWaitForBounce = Bounces.HandleWaitForBounce >>> bounces config
+    , onRequestBounceReload = Bounces.HandleRequestReload >>> bounces config
+    , bounces = Account.getBounces account
+    , database = Account.getDatabase account
+    , accountId = Account.getId account
+    }
 
 
 browserConfig :
@@ -178,29 +179,29 @@ browserConfig appId activeServer ( gCId, gServer ) config =
         onBankAccountTransfer =
             Finances.HandleBankAccountTransfer >>> finances config
     in
-        { flags = config.flags
-        , toMsg = BrowserMsg >> AppMsg appId >> config.toMsg
-        , batchMsg = config.batchMsg
-        , reference = appId
-        , activeServer = activeServer
-        , activeGateway = config.activeGateway
-        , hackedServers =
-            config
-                |> accountFromConfig
-                |> Account.getDatabase
-                |> Database.getHackedServers
-        , onNewApp = NewApp >>>>> config.toMsg
-        , onOpenApp = OpenApp >>> config.toMsg
-        , onSetContext = Account.HandleSetContext >> account config
-        , onLogin = Web.Login gCId >>>>> web config
-        , onLogout = flip (server config) Servers.HandleLogout
-        , onSetEndpoint = Account.HandleSetEndpoint >> account config
-        , onNewPublicDownload = onNewPublicDownload
-        , onNewBruteforceProcess = onNewBruteforceProcess
-        , onBankAccountLogin = onBankAccountLogin
-        , onBankAccountTransfer = onBankAccountTransfer
-        , menuAttr = config.menuAttr
-        }
+    { flags = config.flags
+    , toMsg = BrowserMsg >> AppMsg appId >> config.toMsg
+    , batchMsg = config.batchMsg
+    , reference = appId
+    , activeServer = activeServer
+    , activeGateway = config.activeGateway
+    , hackedServers =
+        config
+            |> accountFromConfig
+            |> Account.getDatabase
+            |> Database.getHackedServers
+    , onNewApp = NewApp >>>>> config.toMsg
+    , onOpenApp = OpenApp >>> config.toMsg
+    , onSetContext = Account.HandleSetContext >> account config
+    , onLogin = Web.Login gCId >>>>> web config
+    , onLogout = flip (server config) Servers.HandleLogout
+    , onSetEndpoint = Account.HandleSetEndpoint >> account config
+    , onNewPublicDownload = onNewPublicDownload
+    , onNewBruteforceProcess = onNewBruteforceProcess
+    , onBankAccountLogin = onBankAccountLogin
+    , onBankAccountTransfer = onBankAccountTransfer
+    , menuAttr = config.menuAttr
+    }
 
 
 bugConfig : AppId -> Config msg -> Bug.Config msg
@@ -269,22 +270,22 @@ explorerConfig appId ( cid, server ) config =
             flip Servers.getStorage server
                 >> Maybe.map Servers.getFilesystem
     in
-        { toMsg = ExplorerMsg >> AppMsg appId >> config.toMsg
-        , batchMsg = config.batchMsg
-        , activeServer = ( cid, server )
-        , activeGateway = config.activeGateway
-        , endpointCId = endpointCIdFromConfig config
-        , endpointMainStorage = endpointMainStorageId config
-        , getFilesystem = getFilesystem
-        , onNewTextFile = Filesystem.HandleNewTextFile >>> filesystem config cid
-        , onNewDir = Filesystem.HandleNewDir >>> filesystem config cid
-        , onMoveFile = Filesystem.HandleMove >>> filesystem config cid
-        , onRenameFile = Filesystem.HandleRename >>> filesystem config cid
-        , onDeleteFile = Filesystem.HandleDelete >> filesystem config cid
-        , onUploadFile = onUploadFile
-        , onDownloadFile = onDownloadFile
-        , menuAttr = config.menuAttr
-        }
+    { toMsg = ExplorerMsg >> AppMsg appId >> config.toMsg
+    , batchMsg = config.batchMsg
+    , activeServer = ( cid, server )
+    , activeGateway = config.activeGateway
+    , endpointCId = endpointCIdFromConfig config
+    , endpointMainStorage = endpointMainStorageId config
+    , getFilesystem = getFilesystem
+    , onNewTextFile = Filesystem.HandleNewTextFile >>> filesystem config cid
+    , onNewDir = Filesystem.HandleNewDir >>> filesystem config cid
+    , onMoveFile = Filesystem.HandleMove >>> filesystem config cid
+    , onRenameFile = Filesystem.HandleRename >>> filesystem config cid
+    , onDeleteFile = Filesystem.HandleDelete >> filesystem config cid
+    , onUploadFile = onUploadFile
+    , onDownloadFile = onDownloadFile
+    , menuAttr = config.menuAttr
+    }
 
 
 financeConfig : AppId -> Config msg -> Finance.Config msg
@@ -395,17 +396,17 @@ virusPanelConfig appId activeGateway config =
         account =
             accountFromConfig config
     in
-        { toMsg = VirusPanelMsg >> AppMsg appId >> config.toMsg
-        , batchMsg = config.batchMsg
-        , awaitEvent = config.awaitEvent
-        , flags = config.flags
-        , database = Account.getDatabase account
-        , processes = Servers.getProcesses server
-        , finances = Account.getFinances account
-        , bounces = Account.getBounces account
-        , activeGatewayCId = cid
-        , accountId = Account.getId account
-        }
+    { toMsg = VirusPanelMsg >> AppMsg appId >> config.toMsg
+    , batchMsg = config.batchMsg
+    , awaitEvent = config.awaitEvent
+    , flags = config.flags
+    , database = Account.getDatabase account
+    , processes = Servers.getProcesses server
+    , finances = Account.getFinances account
+    , bounces = Account.getBounces account
+    , activeGatewayCId = cid
+    , accountId = Account.getId account
+    }
 
 
 
@@ -502,11 +503,11 @@ endpointMainStorageId { activeGateway, game } =
         servers =
             Game.getServers game
     in
-        activeGateway
-            |> Tuple.second
-            |> Servers.getEndpointCId
-            |> Maybe.andThen (flip Servers.get servers)
-            |> Maybe.map (Servers.getMainStorageId)
+    activeGateway
+        |> Tuple.second
+        |> Servers.getEndpointCId
+        |> Maybe.andThen (flip Servers.get servers)
+        |> Maybe.map Servers.getMainStorageId
 
 
 accountFromConfig : Config msg -> Account.Model

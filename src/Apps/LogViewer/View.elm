@@ -1,24 +1,24 @@
 module Apps.LogViewer.View exposing (view)
 
-import Dict exposing (Dict)
-import ContextMenu
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Html.CssHelpers
-import Utils.Html exposing (spacer)
-import UI.ToString exposing (timestampToFullData)
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.Elements.FilterHeader exposing (filterHeader)
-import UI.Inlines.Networking as Inlines exposing (user, addr, file)
-import UI.Elements.Toogable exposing (toogableEntry)
-import UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
-import Game.Servers.Logs.Models as Logs exposing (Format(..))
 import Apps.LogViewer.Config exposing (..)
 import Apps.LogViewer.Messages exposing (Msg(..))
 import Apps.LogViewer.Models exposing (..)
 import Apps.LogViewer.Resources exposing (Classes(..), prefix)
+import ContextMenu
+import Dict exposing (Dict)
+import Game.Servers.Logs.Models as Logs exposing (Format(..))
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (..)
+import UI.Elements.FilterHeader exposing (filterHeader)
+import UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
+import UI.Elements.Toogable exposing (toogableEntry)
+import UI.Inlines.Networking as Inlines exposing (addr, file, user)
+import UI.Layouts.VerticalList exposing (verticalList)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
+import UI.ToString exposing (timestampToFullData)
+import Utils.Html exposing (spacer)
 
 
 { id, class, classList } =
@@ -52,11 +52,11 @@ view config model =
                 |> renderEntries config model
                 |> verticalList []
     in
-        verticalSticked
-            (Just [ filterHeaderLayout ])
-            [ mainEntries
-            ]
-            Nothing
+    verticalSticked
+        (Just [ filterHeaderLayout ])
+        [ mainEntries
+        ]
+        Nothing
 
 
 
@@ -95,12 +95,12 @@ renderEntry config model id log =
             , renderBottom config id log model
             ]
     in
-        toogableEntry
-            (not editingState)
-            [ menu config id log model ]
-            (config.toMsg <| ToogleExpand id)
-            expandedState
-            data
+    toogableEntry
+        (not editingState)
+        [ menu config id log model ]
+        (config.toMsg <| ToogleExpand id)
+        expandedState
+        data
 
 
 isEntryExpanded : Logs.ID -> Model -> Bool
@@ -139,7 +139,7 @@ renderContent config log =
                 Logs.Encrypted ->
                     [ span [] [ text encrypted ] ]
     in
-        div [] rendered
+    div [] rendered
 
 
 renderMiniContent : Config msg -> Logs.Log -> Html msg
@@ -195,30 +195,33 @@ renderBottomActions :
 renderBottomActions ({ toMsg } as config) id log model =
     let
         btns =
-            if (isEntryEditing id model) then
+            if isEntryEditing id model then
                 btnsEditing config id
-            else if (isEntryExpanded id model) then
+
+            else if isEntryExpanded id model then
                 case log.content of
                     Logs.NormalContent _ ->
                         btnsNormal config id
 
                     Logs.Encrypted ->
                         btnsCryptographed config id
+
             else
                 []
     in
-        horizontalBtnPanel btns
+    horizontalBtnPanel btns
 
 
 renderData : Config msg -> Logs.ID -> Logs.Log -> Model -> Html msg
 renderData config id log model =
-    case (Dict.get id model.editing) of
+    case Dict.get id model.editing of
         Just x ->
             renderEditing config id x
 
         Nothing ->
-            if (isEntryExpanded id model) then
+            if isEntryExpanded id model then
                 renderContent config log
+
             else
                 renderMiniContent config log
 
@@ -227,20 +230,23 @@ renderBottom : Config msg -> Logs.ID -> Logs.Log -> Model -> Html msg
 renderBottom config id log model =
     let
         actions =
-            if (isEntryEditing id model) then
+            if isEntryEditing id model then
                 renderBottomActions config id log model
-            else if (isEntryExpanded id model) then
+
+            else if isEntryExpanded id model then
                 renderBottomActions config id log model
+
             else
                 text ""
     in
-        div [ class [ EBottom ] ] [ actions ]
+    div [ class [ EBottom ] ] [ actions ]
 
 
 menu : Config msg -> Logs.ID -> Logs.Log -> Model -> Attribute msg
 menu config id log model =
-    if (isEntryEditing id model) then
+    if isEntryEditing id model then
         menuEditingEntry config id
+
     else
         case log.content of
             Logs.NormalContent _ ->

@@ -2,11 +2,11 @@ module Landing.Style exposing (..)
 
 import Css exposing (..)
 import Css.Colors as Colors
-import Css.Elements exposing (input, button, label)
+import Css.Elements exposing (button, input, label)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (Easing(Linear), transition)
-import UI.Colors as Colors
 import Landing.Resources exposing (..)
+import UI.Colors as Colors
+import Utils.Css exposing (Easing(Linear), transition)
 
 
 css : Stylesheet
@@ -29,7 +29,7 @@ css =
             , left (px 0)
             , width (vw 100)
             , height (vh 100)
-            , backgroundImage <| url "//raw.githubusercontent.com/elementary/wallpapers/master/Photo%20by%20SpaceX.jpg"
+            , backgroundImage <| url "https://raw.githubusercontent.com/elementary/wallpapers/master/Photo%20by%20SpaceX.jpg"
             , backgroundSize cover
             , fontFamily sansSerif
             , fontFamilies [ "Open Sans" ]

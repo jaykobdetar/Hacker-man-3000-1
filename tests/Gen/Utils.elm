@@ -1,11 +1,11 @@
 module Gen.Utils exposing (..)
 
-import Shrink
+import Fuzz exposing (Fuzzer)
+import Random.Pcg as Random exposing (Generator, choices, constant, map)
 import Random.Pcg.Char as RandomChar exposing (english)
 import Random.Pcg.Extra as RandomExtra exposing (rangeLengthList)
 import Random.Pcg.String as RandomString exposing (rangeLengthString)
-import Fuzz exposing (Fuzzer)
-import Random.Pcg as Random exposing (Generator, constant, map, choices)
+import Shrink
 
 
 unique : Generator String

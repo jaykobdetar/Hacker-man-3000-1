@@ -1,10 +1,10 @@
-module UI.Inlines.Networking exposing (user, addr, file)
+module UI.Inlines.Networking exposing (addr, file, user)
 
-import Html exposing (Html, Attribute, text, node)
+import Game.Meta.Types.Network exposing (IP)
+import Game.Shared exposing (ServerUser, isLocalHost, isRoot)
+import Html exposing (Attribute, Html, node, text)
 import Html.Events exposing (onClick)
 import Utils.Html.Attributes exposing (boolAttr)
-import Game.Meta.Types.Network exposing (IP)
-import Game.Shared exposing (ServerUser, isRoot, isLocalHost)
 
 
 addr : (IP -> msg) -> IP -> Html msg

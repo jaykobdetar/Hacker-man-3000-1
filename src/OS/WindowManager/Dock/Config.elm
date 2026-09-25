@@ -1,7 +1,7 @@
 module OS.WindowManager.Dock.Config exposing (..)
 
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Account.Dock.Models as Dock
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Models as Servers
 import Game.Servers.Shared exposing (CId)
 import Game.Storyline.Models as Story

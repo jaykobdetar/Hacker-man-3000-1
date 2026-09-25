@@ -1,11 +1,11 @@
 module Game.Account.Notifications.Update exposing (update)
 
-import Utils.React as React exposing (React)
-import Game.Meta.Types.Notifications exposing (..)
 import Game.Account.Notifications.Config exposing (..)
 import Game.Account.Notifications.Messages exposing (..)
 import Game.Account.Notifications.Models exposing (..)
 import Game.Account.Notifications.Shared exposing (..)
+import Game.Meta.Types.Notifications exposing (..)
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =

@@ -1,23 +1,23 @@
 module Apps.DBAdmin.Tabs.Servers.View exposing (view)
 
-import ContextMenu
-import Dict
-import Html exposing (..)
-import Html.Attributes exposing (value, selected, placeholder)
-import Html.Events exposing (..)
-import Html.CssHelpers
-import UI.Layouts.VerticalList exposing (verticalList)
-import UI.Elements.FilterHeader exposing (filterHeader)
-import UI.Elements.Toogable exposing (toogableEntry)
-import UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
-import Utils.Html exposing (spacer)
-import Game.Account.Database.Models as Database
-import Game.Meta.Types.Network as Network exposing (NIP)
 import Apps.DBAdmin.Config exposing (..)
 import Apps.DBAdmin.Messages exposing (Msg(..))
 import Apps.DBAdmin.Models exposing (..)
 import Apps.DBAdmin.Resources exposing (Classes(..), prefix)
 import Apps.DBAdmin.Tabs.Servers.Helpers exposing (..)
+import ContextMenu
+import Dict
+import Game.Account.Database.Models as Database
+import Game.Meta.Types.Network as Network exposing (NIP)
+import Html exposing (..)
+import Html.Attributes exposing (placeholder, selected, value)
+import Html.CssHelpers
+import Html.Events exposing (..)
+import UI.Elements.FilterHeader exposing (filterHeader)
+import UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
+import UI.Elements.Toogable exposing (toogableEntry)
+import UI.Layouts.VerticalList exposing (verticalList)
+import Utils.Html exposing (spacer)
 
 
 { id, class, classList } =
@@ -55,19 +55,19 @@ renderData ( nip, item ) =
         alias =
             Database.getHackedServerAlias item
     in
-        div []
-            [ text "ip: "
-            , text <| Network.render nip
-            , br [] []
-            , text " psw: "
-            , span [ class [ Password ] ] [ text item.password ]
-            , br [] []
-            , text " nick: "
-            , text <| Maybe.withDefault "[Unlabeled]" alias
-            , br [] []
-            , text " notes: "
-            , item.notes |> Maybe.withDefault "S/N" |> text
-            ]
+    div []
+        [ text "ip: "
+        , text <| Network.render nip
+        , br [] []
+        , text " psw: "
+        , span [ class [ Password ] ] [ text item.password ]
+        , br [] []
+        , text " nick: "
+        , text <| Maybe.withDefault "[Unlabeled]" alias
+        , br [] []
+        , text " notes: "
+        , item.notes |> Maybe.withDefault "S/N" |> text
+        ]
 
 
 renderMiniData : ( NIP, Database.HackedServer ) -> Html msg
@@ -76,9 +76,9 @@ renderMiniData ( nip, item ) =
         alias =
             Database.getHackedServerAlias item
     in
-        div []
-            [ text <| Maybe.withDefault (Tuple.second nip) alias
-            ]
+    div []
+        [ text <| Maybe.withDefault (Tuple.second nip) alias
+        ]
 
 
 renderEditing :
@@ -139,14 +139,16 @@ renderBottomActions : Config msg -> Model -> ( NIP, Database.HackedServer ) -> H
 renderBottomActions config app (( nip, _ ) as entry) =
     let
         btns =
-            if (isEntryEditing app entry) then
+            if isEntryEditing app entry then
                 btnsEditing config nip
-            else if (isEntryExpanded app entry) then
+
+            else if isEntryExpanded app entry then
                 btnsNormal config nip
+
             else
                 []
     in
-        horizontalBtnPanel btns
+    horizontalBtnPanel btns
 
 
 renderAnyData :
@@ -155,13 +157,14 @@ renderAnyData :
     -> ( NIP, Database.HackedServer )
     -> Html msg
 renderAnyData config app (( nip, _ ) as entry) =
-    case (Dict.get (Network.toString nip) app.serversEditing) of
+    case Dict.get (Network.toString nip) app.serversEditing of
         Just x ->
             renderEditing config entry x
 
         Nothing ->
-            if (isEntryExpanded app entry) then
+            if isEntryExpanded app entry then
                 renderData entry
+
             else
                 renderMiniData entry
 
@@ -170,14 +173,15 @@ renderBottom : Config msg -> Model -> ( NIP, Database.HackedServer ) -> Html msg
 renderBottom config app entry =
     let
         data =
-            if (isEntryEditing app entry || isEntryExpanded app entry) then
+            if isEntryEditing app entry || isEntryExpanded app entry then
                 [ renderBottomActions config app entry ]
+
             else
                 []
     in
-        div
-            [ class [ EBottom ] ]
-            data
+    div
+        [ class [ EBottom ] ]
+        data
 
 
 renderEntry :
@@ -208,12 +212,12 @@ renderEntry config app (( nip, _ ) as entry) =
         attrs =
             [ config.menuAttr [ [ ( ContextMenu.item "Open in Browser", config.openBrowser <| Network.getIp nip ) ] ] ]
     in
-        toogableEntry
-            (not editingState)
-            attrs
-            (config.toMsg <| ToogleExpand TabServers <| Network.toString nip)
-            expandedState
-            data
+    toogableEntry
+        (not editingState)
+        attrs
+        (config.toMsg <| ToogleExpand TabServers <| Network.toString nip)
+        expandedState
+        data
 
 
 renderEntryList :
@@ -237,8 +241,8 @@ view ({ database, toMsg } as config) model =
                 "Search..."
                 (UpdateTextFilter TabServers >> toMsg)
     in
-        database.servers
-            |> applyFilter model
-            |> renderEntryList config model
-            |> (::) header
-            |> verticalList []
+    database.servers
+        |> applyFilter model
+        |> renderEntryList config model
+        |> (::) header
+        |> verticalList []

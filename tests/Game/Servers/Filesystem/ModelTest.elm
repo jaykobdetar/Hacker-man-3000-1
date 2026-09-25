@@ -1,13 +1,13 @@
 module Game.Servers.Filesystem.ModelTest exposing (all, operationsTests)
 
 import Expect
-import Gen.Filesystem as Gen
-import Fuzz exposing (unit, tuple, tuple3, tuple4)
-import Helper.Filesystem as Helper exposing (mkdirp)
-import Test exposing (Test, describe)
-import TestUtils exposing (fuzz, batch)
+import Fuzz exposing (tuple, tuple3, tuple4, unit)
 import Game.Servers.Filesystem.Models exposing (..)
 import Game.Servers.Filesystem.Shared exposing (..)
+import Gen.Filesystem as Gen
+import Helper.Filesystem as Helper exposing (mkdirp)
+import Test exposing (Test, describe)
+import TestUtils exposing (batch, fuzz)
 
 
 all : Test
@@ -59,9 +59,9 @@ insertFileTests =
                         |> toFile
                         |> setPath [ "", "non-existing", "path" ]
             in
-                initialModel
-                    |> insertFile id file
-                    |> Expect.notEqual initialModel
+            initialModel
+                |> insertFile id file
+                |> Expect.notEqual initialModel
     , fuzz Gen.fileEntry "can add files into existing folders" <|
         \fileEntry ->
             let
@@ -73,10 +73,10 @@ insertFileTests =
                         |> toFile
                         |> setPath [ "" ]
             in
-                initialModel
-                    |> insertFile id file
-                    |> isFile (getFullpath file)
-                    |> Expect.equal True
+            initialModel
+                |> insertFile id file
+                |> isFile (getFullpath file)
+                |> Expect.equal True
     , fuzz
         (tuple3 ( Gen.model, Gen.fileEntry, Gen.fileEntry ))
         "multiple files can exist on the same folder"
@@ -113,10 +113,10 @@ insertFileTests =
                         >> flip isFile model_
                         >> Expect.equal True
             in
-                batch
-                    [ fileExists file1
-                    , fileExists file2
-                    ]
+            batch
+                [ fileExists file1
+                , fileExists file2
+                ]
     ]
 
 
@@ -151,10 +151,10 @@ insertFolderTests =
                         >> flip isFolder model_
                         >> Expect.equal True
             in
-                batch
-                    [ expectIsDirectory folder1
-                    , expectIsDirectory folder2
-                    ]
+            batch
+                [ expectIsDirectory folder1
+                , expectIsDirectory folder2
+                ]
     ]
 
 
@@ -192,9 +192,9 @@ moveFileTests =
                         |> insertFile id file
                         |> mkdirp path_
             in
-                model_
-                    |> isFile (getFullpath file)
-                    |> Expect.equal True
+            model_
+                |> isFile (getFullpath file)
+                |> Expect.equal True
     , fuzz (tuple3 ( Gen.model, Gen.fileEntry, Gen.folder ))
         "can move file to non-existing path"
       <|
@@ -211,10 +211,10 @@ moveFileTests =
                         |> toFile
                         |> setPath path_
             in
-                model
-                    |> insertFile id file
-                    |> isFile (getFullpath file)
-                    |> Expect.equal True
+            model
+                |> insertFile id file
+                |> isFile (getFullpath file)
+                |> Expect.equal True
     ]
 
 
@@ -252,9 +252,9 @@ deleteFileTests =
                         |> insertFile id file
                         |> deleteFile id
             in
-                model_
-                    |> getFile id
-                    |> Expect.equal Nothing
+            model_
+                |> getFile id
+                |> Expect.equal Nothing
     ]
 
 
@@ -275,9 +275,9 @@ deleteFolderTests =
                 model_ =
                     insertFile id file model
             in
-                model_
-                    |> deleteFolder (getPath file)
-                    |> Expect.equal model_
+            model_
+                |> deleteFolder (getPath file)
+                |> Expect.equal model_
     , fuzz (tuple ( Gen.model, Gen.folder )) "folder path no longer exists" <|
         \( model, ( path, name ) ) ->
             let
@@ -289,9 +289,9 @@ deleteFolderTests =
                         |> insertFolder path name
                         |> deleteFolder path_
             in
-                model_
-                    |> isFolder path_
-                    |> Expect.equal False
+            model_
+                |> isFolder path_
+                |> Expect.equal False
     ]
 
 
@@ -343,12 +343,12 @@ scanPathTests =
                     , FolderEntry [ "" ] "folder1"
                     ]
             in
-                batch
-                    [ Expect.equal expectFiles <|
-                        List.filter (isFolderEntry >> not) entries
-                    , Expect.equal expectFolders <|
-                        List.filter isFolderEntry entries
-                    ]
+            batch
+                [ Expect.equal expectFiles <|
+                    List.filter (isFolderEntry >> not) entries
+                , Expect.equal expectFolders <|
+                    List.filter isFolderEntry entries
+                ]
     , fuzz unit "scan won't include files from unrelated paths" <|
         \() ->
             let
@@ -376,12 +376,12 @@ scanPathTests =
                 expectFolders =
                     [ FolderEntry [ "", "folder1" ] "folder2" ]
             in
-                batch
-                    [ Expect.equal expectFiles <|
-                        List.filter (isFolderEntry >> not) entries
-                    , Expect.equal expectFolders <|
-                        List.filter isFolderEntry entries
-                    ]
+            batch
+                [ Expect.equal expectFiles <|
+                    List.filter (isFolderEntry >> not) entries
+                , Expect.equal expectFolders <|
+                    List.filter isFolderEntry entries
+                ]
     , fuzz unit "scan include files from detached paths" <|
         \() ->
             let
@@ -400,12 +400,12 @@ scanPathTests =
                 expectFolders =
                     [ FolderEntry [ "", "folder1" ] "folder2" ]
             in
-                batch
-                    [ Expect.equal expectFiles <|
-                        List.filter (isFolderEntry >> not) entries
-                    , Expect.equal expectFolders <|
-                        List.filter isFolderEntry entries
-                    ]
+            batch
+                [ Expect.equal expectFiles <|
+                    List.filter (isFolderEntry >> not) entries
+                , Expect.equal expectFolders <|
+                    List.filter isFolderEntry entries
+                ]
     ]
 
 
@@ -438,12 +438,12 @@ listPathTests =
                     [ FolderEntry [ "" ] "folder1"
                     ]
             in
-                batch
-                    [ Expect.equal expectFiles <|
-                        List.filter (isFolderEntry >> not) entries
-                    , Expect.equal expectFolders <|
-                        List.filter isFolderEntry entries
-                    ]
+            batch
+                [ Expect.equal expectFiles <|
+                    List.filter (isFolderEntry >> not) entries
+                , Expect.equal expectFolders <|
+                    List.filter isFolderEntry entries
+                ]
     , fuzz unit "list won't include files from unrelated paths" <|
         \() ->
             let
@@ -470,12 +470,12 @@ listPathTests =
                 expectFolders =
                     [ FolderEntry [ "", "folder1" ] "folder2" ]
             in
-                batch
-                    [ Expect.equal expectFiles <|
-                        List.filter (isFolderEntry >> not) entries
-                    , Expect.equal expectFolders <|
-                        List.filter isFolderEntry entries
-                    ]
+            batch
+                [ Expect.equal expectFiles <|
+                    List.filter (isFolderEntry >> not) entries
+                , Expect.equal expectFolders <|
+                    List.filter isFolderEntry entries
+                ]
     , fuzz unit "list includes detached folders" <|
         \() ->
             let
@@ -495,9 +495,9 @@ listPathTests =
                 expectFolders =
                     [ FolderEntry [ "", "folder1" ] "folder2" ]
             in
-                batch
-                    [ Expect.equal True noFiles
-                    , Expect.equal expectFolders <|
-                        List.filter isFolderEntry entries
-                    ]
+            batch
+                [ Expect.equal True noFiles
+                , Expect.equal expectFolders <|
+                    List.filter isFolderEntry entries
+                ]
     ]

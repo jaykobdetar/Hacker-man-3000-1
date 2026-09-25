@@ -53,7 +53,7 @@ initialModel contact me =
 
 getActiveContact : Model -> String
 getActiveContact =
-    (.activeContact)
+    .activeContact
 
 
 setActiveContact : String -> Model -> Model

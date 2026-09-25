@@ -1,9 +1,9 @@
 module Game.BackFlix.Models exposing (..)
 
-import Dict exposing (Dict)
-import Time exposing (Time)
-import Json.Decode exposing (Value)
 import Core.Error as Error
+import Dict exposing (Dict)
+import Json.Decode exposing (Value)
+import Time exposing (Time)
 
 
 type alias Model =
@@ -47,9 +47,9 @@ insert : Log -> Model -> Model
 insert log model =
     let
         log_id =
-            (findId ( log.timestamp, 0 ) model)
+            findId ( log.timestamp, 0 ) model
     in
-        Dict.insert log_id log model
+    Dict.insert log_id log model
 
 
 

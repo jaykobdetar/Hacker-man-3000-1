@@ -1,11 +1,11 @@
 module Apps.Explorer.Style exposing (..)
 
+import Apps.Explorer.Resources exposing (..)
 import Css exposing (..)
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (transition, easingToString, Easing(..), pseudoContent, selectableText)
-import UI.Common exposing (flexContainerVert, flexContainerHorz, internalPadding, internalPaddingSz)
+import UI.Common exposing (flexContainerHorz, flexContainerVert, internalPadding, internalPaddingSz)
 import UI.Icons as Icons
-import Apps.Explorer.Resources exposing (..)
+import Utils.Css exposing (Easing(..), easingToString, pseudoContent, selectableText, transition)
 
 
 css : Stylesheet

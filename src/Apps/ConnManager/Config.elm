@@ -1,7 +1,7 @@
 module Apps.ConnManager.Config exposing (..)
 
-import Game.Servers.Models as Servers
 import Apps.ConnManager.Messages exposing (..)
+import Game.Servers.Models as Servers
 
 
 type alias Config msg =

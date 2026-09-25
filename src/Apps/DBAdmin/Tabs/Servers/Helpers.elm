@@ -1,9 +1,9 @@
 module Apps.DBAdmin.Tabs.Servers.Helpers exposing (..)
 
+import Apps.DBAdmin.Models exposing (..)
 import Dict exposing (Dict)
 import Game.Account.Database.Models as Database
 import Game.Meta.Types.Network as Network exposing (NIP)
-import Apps.DBAdmin.Models exposing (..)
 
 
 catchDataWhenFiltering : List String -> NIP -> Database.HackedServer -> Bool
@@ -13,10 +13,11 @@ catchDataWhenFiltering filterCache nip value =
 
 applyFilter : Model -> Database.HackedServers -> Database.HackedServers
 applyFilter model itens =
-    if ((String.length model.servers.filterText) > 0) then
+    if String.length model.servers.filterText > 0 then
         Dict.filter
             (catchDataWhenFiltering model.servers.filterCache)
             itens
+
     else
         itens
 
@@ -30,13 +31,14 @@ toggleExpand itemId model =
         servers_ =
             { servers
                 | expanded =
-                    if (isEntryExpanded itemId model) then
+                    if isEntryExpanded itemId model then
                         List.filter ((/=) itemId) servers.expanded
+
                     else
                         itemId :: servers.expanded
             }
     in
-        { model | servers = servers_ }
+    { model | servers = servers_ }
 
 
 enterEditing : String -> Database.Model -> Model -> Model
@@ -65,10 +67,10 @@ enterEditing itemId database model =
                             edit_ =
                                 EditingTexts ( start alias, start item.notes )
                         in
-                            updateEditing (Network.toString nip) edit_ model
+                        updateEditing (Network.toString nip) edit_ model
                     )
     in
-        Maybe.withDefault model model_
+    Maybe.withDefault model model_
 
 
 updateEditing : String -> EditingServers -> Model -> Model
@@ -77,7 +79,7 @@ updateEditing itemId value model =
         editing_ =
             Dict.insert itemId value model.serversEditing
     in
-        { model | serversEditing = editing_ }
+    { model | serversEditing = editing_ }
 
 
 leaveEditing : String -> Model -> Model
@@ -86,7 +88,7 @@ leaveEditing itemId model =
         editing_ =
             Dict.filter (\k _ -> k /= itemId) model.serversEditing
     in
-        { model | serversEditing = editing_ }
+    { model | serversEditing = editing_ }
 
 
 updateTextFilter : String -> Database.Model -> Model -> Model
@@ -118,4 +120,4 @@ updateTextFilter newFilter database model =
                 , filterCache = newFilterCache
             }
     in
-        { model | servers = servers_ }
+    { model | servers = servers_ }

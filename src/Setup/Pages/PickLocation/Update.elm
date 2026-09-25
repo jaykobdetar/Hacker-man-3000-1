@@ -1,12 +1,12 @@
 module Setup.Pages.PickLocation.Update exposing (update)
 
 import Json.Decode as Decode exposing (Value)
-import Utils.React as React exposing (React)
-import Utils.Ports.Leaflet as Leaflet
-import Utils.Ports.Geolocation as Geolocation
 import Setup.Pages.PickLocation.Config exposing (..)
-import Setup.Pages.PickLocation.Models exposing (..)
 import Setup.Pages.PickLocation.Messages exposing (..)
+import Setup.Pages.PickLocation.Models exposing (..)
+import Utils.Ports.Geolocation as Geolocation
+import Utils.Ports.Leaflet as Leaflet
+import Utils.React as React exposing (React)
 
 
 type alias UpdateResponse msg =
@@ -25,12 +25,14 @@ update config msg model =
         LeafletMsg id msg ->
             if id == mapId then
                 onLeafletMsg config msg model
+
             else
                 ( model, React.none )
 
         GeolocationMsg id msg ->
             if id == geoInstance then
                 onGeolocationMsg config msg model
+
             else
                 ( model, React.none )
 

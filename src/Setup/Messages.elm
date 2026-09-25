@@ -1,12 +1,12 @@
 module Setup.Messages exposing (..)
 
-import Json.Encode exposing (Value)
 import Game.Servers.Shared as Servers
-import Setup.Settings exposing (Settings, SettingTopic)
+import Json.Encode exposing (Value)
+import Setup.Pages.Mainframe.Messages as Mainframe
+import Setup.Pages.PickLocation.Messages as PickLocation
 import Setup.Requests.SetServer as SetServerRequest
 import Setup.Requests.Setup as SetupRequest
-import Setup.Pages.PickLocation.Messages as PickLocation
-import Setup.Pages.Mainframe.Messages as Mainframe
+import Setup.Settings exposing (SettingTopic, Settings)
 
 
 type Msg

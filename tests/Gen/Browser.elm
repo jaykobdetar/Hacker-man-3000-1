@@ -1,23 +1,24 @@
 module Gen.Browser exposing (..)
 
+import Apps.Browser.Models exposing (..)
+import Apps.Browser.Shared exposing (..)
 import Fuzz exposing (Fuzzer)
-import Gen.Utils exposing (fuzzer, unique, stringRange, listRange)
+import Game.Meta.Types.Network.Site as Site
+import Gen.Utils exposing (fuzzer, listRange, stringRange, unique)
 import Random.Pcg
     exposing
         ( Generator
+        , andThen
+        , choices
         , constant
         , int
         , list
-        , pair
-        , choices
         , map
         , map2
-        , andThen
+        , pair
         )
 import Random.Pcg.Extra exposing (andMap)
-import Apps.Browser.Models exposing (..)
-import Apps.Browser.Shared exposing (..)
-import Game.Meta.Types.Network.Site as Site
+
 
 
 --------------------------------------------------------------------------------
@@ -107,9 +108,9 @@ genPage =
                         }
                     }
             in
-                initialPage site
+            initialPage site
     in
-        map generate unique
+    map generate unique
 
 
 genPageURL : Generator URL
@@ -124,7 +125,7 @@ genEmptyPage =
 
 genPageList : Generator (List Page)
 genPageList =
-    andThen ((flip list) genPage) (int 2 10)
+    andThen (flip list genPage) (int 2 10)
 
 
 genEmptyHistory : Generator BrowserHistory
@@ -134,7 +135,7 @@ genEmptyHistory =
 
 genNonEmptyHistory : Generator BrowserHistory
 genNonEmptyHistory =
-    andThen ((flip list) (pair genPageURL genPage)) (int 2 10)
+    andThen (flip list (pair genPageURL genPage)) (int 2 10)
 
 
 genHistory : Generator BrowserHistory
@@ -160,11 +161,11 @@ genNonEmptyTab =
                 , modal = Nothing
                 }
     in
-        genNonEmptyHistory
-            |> map mapper
-            |> andMap genNonEmptyHistory
-            |> andMap genPageURL
-            |> andMap genPage
+    genNonEmptyHistory
+        |> map mapper
+        |> andMap genNonEmptyHistory
+        |> andMap genPageURL
+        |> andMap genPage
 
 
 genTab : Generator Tab

@@ -3,9 +3,9 @@ module OS.WindowManager.Sidebar.Style exposing (..)
 import Css exposing (..)
 import Css.Colors as Colors
 import Css.Namespace exposing (namespace)
-import Utils.Css exposing (transition, Easing(..))
 import OS.WindowManager.Sidebar.Resources exposing (..)
 import UI.Colors as Colors
+import Utils.Css exposing (Easing(..), transition)
 
 
 css : Stylesheet

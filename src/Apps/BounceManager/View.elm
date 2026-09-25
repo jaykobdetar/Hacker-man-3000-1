@@ -1,26 +1,26 @@
 module Apps.BounceManager.View exposing (view)
 
-import Dict
-import Html exposing (..)
-import Html.Events exposing (..)
-import Html.Attributes exposing (..)
-import Html.Lazy exposing (..)
-import Html.CssHelpers
-import Utils.Html.Events exposing (onClickWithPrevDef, onClickWithStopProp)
-import Game.Account.Database.Models as Database exposing (HackedServers)
-import Game.Account.Bounces.Models as Bounces exposing (Bounce)
-import Game.Account.Bounces.Shared as Bounces
-import Game.Meta.Types.Network as Network
-import UI.Layouts.VerticalSticked exposing (verticalSticked)
-import UI.Layouts.VerticalList exposing (..)
-import UI.Elements.HorizontalTabs exposing (hzTabs)
-import UI.Elements.Modal exposing (modalOk, modalOkCancel, modalFrameOnly)
-import UI.Elements.Toogable exposing (toogableEntry)
-import UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
 import Apps.BounceManager.Config exposing (..)
 import Apps.BounceManager.Messages exposing (..)
 import Apps.BounceManager.Models exposing (..)
 import Apps.BounceManager.Resources exposing (Classes(..), prefix)
+import Dict
+import Game.Account.Bounces.Models as Bounces exposing (Bounce)
+import Game.Account.Bounces.Shared as Bounces
+import Game.Account.Database.Models as Database exposing (HackedServers)
+import Game.Meta.Types.Network as Network
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.CssHelpers
+import Html.Events exposing (..)
+import Html.Lazy exposing (..)
+import UI.Elements.HorizontalBtnPanel exposing (horizontalBtnPanel)
+import UI.Elements.HorizontalTabs exposing (hzTabs)
+import UI.Elements.Modal exposing (modalFrameOnly, modalOk, modalOkCancel)
+import UI.Elements.Toogable exposing (toogableEntry)
+import UI.Layouts.VerticalList exposing (..)
+import UI.Layouts.VerticalSticked exposing (verticalSticked)
+import Utils.Html.Events exposing (onClickWithPrevDef, onClickWithStopProp)
 
 
 { id, class, classList } =
@@ -44,7 +44,7 @@ view config ({ selected } as model) =
         viewTabs =
             hzTabs (compareTabs selected) viewTabLabel (GoTab >> config.toMsg) tabs_
     in
-        verticalSticked (Just [ viewTabs ]) [ viewData ] Nothing
+    verticalSticked (Just [ viewTabs ]) [ viewData ] Nothing
 
 
 tabs : Maybe ( Maybe Bounces.ID, Bounce ) -> List MainTab
@@ -83,6 +83,7 @@ viewTabManage ({ toMsg, bounces } as config) model =
                 ]
                 [ text "Click here to create a new bounce" ]
             ]
+
     else
         bounces
             |> Bounces.getBounces
@@ -120,6 +121,7 @@ viewTabBuild ({ database, bounces, toMsg } as config) ( id, bounce ) model =
                         |> onClickWithStopProp
                     ]
                     [ text "Save" ]
+
             else
                 text ""
 
@@ -131,25 +133,25 @@ viewTabBuild ({ database, bounces, toMsg } as config) ( id, bounce ) model =
                 model.bounceNameBuffer
                 |> flip (::) [ renderNameButtons config model ]
     in
-        div [ class [ Super, Builder ] ]
-            [ renderNameField config model name_
-            , div [ class [ Building ] ]
-                [ lazy2 modalHandler config model
-                , lazy2 renderLeftBox config model
-                , lazy2 renderRightBox config model
-                ]
-            , div [ class [ Buttons ] ]
-                [ button
-                    [ ForReset ( id, bounce )
-                        |> Just
-                        |> SetModal
-                        |> toMsg
-                        |> onClickWithStopProp
-                    ]
-                    [ text "Reset" ]
-                , saveButton
-                ]
+    div [ class [ Super, Builder ] ]
+        [ renderNameField config model name_
+        , div [ class [ Building ] ]
+            [ lazy2 modalHandler config model
+            , lazy2 renderLeftBox config model
+            , lazy2 renderRightBox config model
             ]
+        , div [ class [ Buttons ] ]
+            [ button
+                [ ForReset ( id, bounce )
+                    |> Just
+                    |> SetModal
+                    |> toMsg
+                    |> onClickWithStopProp
+                ]
+                [ text "Reset" ]
+            , saveButton
+            ]
+        ]
 
 
 renderNameField : Config msg -> Model -> List (Html msg) -> Html msg
@@ -161,6 +163,7 @@ renderNameField { toMsg } model content =
             , onSubmit (toMsg <| ApplyNameChangings)
             ]
             content
+
     else
         div
             [ class [ Name ]
@@ -189,46 +192,46 @@ modalHandler ({ toMsg, batchMsg } as config) model =
                         Nothing ->
                             "Untitled Bounce"
     in
-        case model.modal of
-            Just (ForReset ( id, bounce )) ->
-                modalOkCancel (Just "Bounce Manager")
-                    "Do you really want to reset this bounce?"
-                    (batchMsg
-                        [ toMsg <| Reset ( id, bounce )
-                        , toMsg <| SetModal Nothing
-                        ]
-                    )
-                    (toMsg <| SetModal Nothing)
+    case model.modal of
+        Just (ForReset ( id, bounce )) ->
+            modalOkCancel (Just "Bounce Manager")
+                "Do you really want to reset this bounce?"
+                (batchMsg
+                    [ toMsg <| Reset ( id, bounce )
+                    , toMsg <| SetModal Nothing
+                    ]
+                )
+                (toMsg <| SetModal Nothing)
 
-            Just (ForSave ( id, bounce )) ->
-                modalOkCancel (Just "Bounce Manager")
-                    ("Do you really want to save " ++ name)
-                    (toMsg <| Save ( id, bounce ))
-                    (toMsg <| SetModal Nothing)
+        Just (ForSave ( id, bounce )) ->
+            modalOkCancel (Just "Bounce Manager")
+                ("Do you really want to save " ++ name)
+                (toMsg <| Save ( id, bounce ))
+                (toMsg <| SetModal Nothing)
 
-            Just (ForEditWithoutSave id) ->
-                modalOkCancel (Just "Are you sure?")
-                    ("Continue without save " ++ name)
-                    (batchMsg
-                        [ toMsg <| Edit id
-                        , toMsg <| SetModal Nothing
-                        ]
-                    )
-                    (toMsg <| SetModal Nothing)
+        Just (ForEditWithoutSave id) ->
+            modalOkCancel (Just "Are you sure?")
+                ("Continue without save " ++ name)
+                (batchMsg
+                    [ toMsg <| Edit id
+                    , toMsg <| SetModal Nothing
+                    ]
+                )
+                (toMsg <| SetModal Nothing)
 
-            Just (ForError error) ->
-                renderErrorModal config error
+        Just (ForError error) ->
+            renderErrorModal config error
 
-            Just ForSaveSucessful ->
-                modalOk (Just "Bounce Manager")
-                    ("Save Sucessfully!")
-                    (toMsg <| SetModal Nothing)
+        Just ForSaveSucessful ->
+            modalOk (Just "Bounce Manager")
+                "Save Sucessfully!"
+                (toMsg <| SetModal Nothing)
 
-            Just ForSpinner ->
-                modalFrameOnly (Just "Bounce Manager") "Now Saving..."
+        Just ForSpinner ->
+            modalFrameOnly (Just "Bounce Manager") "Now Saving..."
 
-            Nothing ->
-                text ""
+        Nothing ->
+            text ""
 
 
 renderErrorModal : Config msg -> Error -> Html msg
@@ -258,9 +261,9 @@ renderCreateErrorModal { toMsg, batchMsg } error =
                 Bounces.CreateUnknown ->
                     "Unknown Error"
     in
-        modalOk (Just "Error")
-            msg
-            (toMsg <| SetModal Nothing)
+    modalOk (Just "Error")
+        msg
+        (toMsg <| SetModal Nothing)
 
 
 renderUpdateErrorModal : Config msg -> Bounces.UpdateError -> Html msg
@@ -277,9 +280,9 @@ renderUpdateErrorModal { toMsg, batchMsg } error =
                 Bounces.UpdateUnknown ->
                     "Unknown Error"
     in
-        modalOk (Just "Error")
-            msg
-            (toMsg <| SetModal Nothing)
+    modalOk (Just "Error")
+        msg
+        (toMsg <| SetModal Nothing)
 
 
 renderRemoveErrorModal : Config msg -> Bounces.RemoveError -> Html msg
@@ -293,9 +296,9 @@ renderRemoveErrorModal { toMsg, batchMsg } error =
                 Bounces.RemoveUnknown ->
                     "Unknown Error"
     in
-        modalOk (Just "Error")
-            msg
-            (toMsg <| SetModal Nothing)
+    modalOk (Just "Error")
+        msg
+        (toMsg <| SetModal Nothing)
 
 
 renderLeftBox : Config msg -> Model -> Html msg
@@ -385,7 +388,7 @@ renderAvailableServer ({ toMsg } as config) model nip server ( acc, c ) =
         servers =
             div attr_ [ label, br [] [], ip ]
     in
-        ( servers :: acc, c + 1 )
+    ( servers :: acc, c + 1 )
 
 
 renderEntries :
@@ -397,11 +400,11 @@ renderEntries ({ database } as config) model =
         hackedServers =
             Database.getHackedServers database
     in
-        model.path
-            |> List.foldr (renderEntry config hackedServers model) ( [], 0 )
-            |> Tuple.first
-            |> ul [ class [ BounceMap ] ]
-            |> List.singleton
+    model.path
+        |> List.foldr (renderEntry config hackedServers model) ( [], 0 )
+        |> Tuple.first
+        |> ul [ class [ BounceMap ] ]
+        |> List.singleton
 
 
 renderEntry :
@@ -423,7 +426,7 @@ renderEntry config hackedServers model nip ( acc, c ) =
                 |> (::) (slot config c model)
                 |> (++) (List.singleton entry_)
     in
-        ( acu, c + 1 )
+    ( acu, c + 1 )
 
 
 
@@ -439,18 +442,18 @@ slot ({ toMsg } as config) c model =
         bounceSlot selectCondition nip =
             li (attr selectCondition nip) []
     in
-        case model.selection of
-            Just (SelectingSlot num) ->
-                bounceSlot (num == c) Nothing
+    case model.selection of
+        Just (SelectingSlot num) ->
+            bounceSlot (num == c) Nothing
 
-            Just (SelectingEntry num) ->
-                bounceSlot False Nothing
+        Just (SelectingEntry num) ->
+            bounceSlot False Nothing
 
-            Just (SelectingServer nip) ->
-                bounceSlot False (Just nip)
+        Just (SelectingServer nip) ->
+            bounceSlot False (Just nip)
 
-            Nothing ->
-                bounceSlot False Nothing
+        Nothing ->
+            bounceSlot False Nothing
 
 
 
@@ -484,25 +487,25 @@ entry ({ toMsg, database } as config) hackedServers nip c model =
             , renderMoveMenu config nip c model
             ]
     in
-        case model.selection of
-            Just (SelectingEntry nip_) ->
-                bounceNode (nip_ == nip) False
+    case model.selection of
+        Just (SelectingEntry nip_) ->
+            bounceNode (nip_ == nip) False
 
-            Just (SelectingSlot num) ->
-                bounceNode False False
+        Just (SelectingSlot num) ->
+            bounceNode False False
 
-            Just (SelectingServer nip_) ->
-                bounceNode False False
+        Just (SelectingServer nip_) ->
+            bounceNode False False
 
-            Nothing ->
-                bounceNode False False
+        Nothing ->
+            bounceNode False False
 
 
 renderMoveMenu : Config msg -> Network.NIP -> Int -> Model -> Html msg
 renderMoveMenu { toMsg } nip pos model =
     let
         canMoveUp =
-            pos < ((List.length model.path) - 1)
+            pos < (List.length model.path - 1)
 
         canMoveDown =
             pos > 0
@@ -510,12 +513,14 @@ renderMoveMenu { toMsg } nip pos model =
         moveUpBtn =
             if canMoveUp then
                 button [ onClickWithStopProp <| toMsg <| MoveNode nip (pos + 1) ] [ text "/\\" ]
+
             else
                 text ""
 
         moveDownBtn =
             if canMoveDown then
                 button [ onClickWithStopProp <| toMsg <| MoveNode nip (pos - 1) ] [ text "\\/" ]
+
             else
                 text ""
 
@@ -528,16 +533,17 @@ renderMoveMenu { toMsg } nip pos model =
             , removeBtn
             ]
     in
-        case model.selection of
-            Just (SelectingEntry nip_) ->
-                if (nip_ == nip) then
-                    --Hora do Show P****!!!!
-                    span [ class [ MoveMenu, Show ] ] buttons
-                else
-                    span [ class [ MoveMenu ] ] buttons
+    case model.selection of
+        Just (SelectingEntry nip_) ->
+            if nip_ == nip then
+                --Hora do Show P****!!!!
+                span [ class [ MoveMenu, Show ] ] buttons
 
-            _ ->
+            else
                 span [ class [ MoveMenu ] ] buttons
+
+        _ ->
+            span [ class [ MoveMenu ] ] buttons
 
 
 viewBouncePath : List Network.NIP -> Html msg
@@ -557,6 +563,7 @@ viewBounce ({ toMsg } as config) model ( id, bounce ) =
                     [ class [ BottomButtons ]
                     ]
                     [ horizontalBtnPanel (btnsNormal config id model) ]
+
             else
                 text ""
 
@@ -578,7 +585,7 @@ viewBounce ({ toMsg } as config) model ( id, bounce ) =
         toggleMsg =
             toMsg <| ToggleExpand id
     in
-        toogableEntry True [ class [ BounceEntry ] ] toggleMsg expanded data
+    toogableEntry True [ class [ BounceEntry ] ] toggleMsg expanded data
 
 
 btnsNormal :
@@ -591,6 +598,7 @@ btnsNormal { toMsg } bounceId model =
         onEditMsg =
             if model.anyChange then
                 toMsg <| SetModal <| Just (ForEditWithoutSave bounceId)
+
             else
                 toMsg <| Edit bounceId
 
@@ -602,7 +610,7 @@ btnsNormal { toMsg } bounceId model =
             , ( class [ BtnDelete, BottomButton ], onDeleteMsg )
             ]
     in
-        buttons
+    buttons
 
 
 renderEditing : Config msg -> String -> Html msg
@@ -628,6 +636,7 @@ renderName config renaming bounceInfo bounceNameBuffer =
                 bounceNameBuffer
                     |> Maybe.withDefault bounce.name
                     |> renderEditing config
+
             else
                 bounceNameBuffer
                     |> Maybe.withDefault bounce.name
@@ -646,32 +655,34 @@ renderNameButtons { toMsg } model =
                     Nothing
 
                 TabBuild bounceInfo ->
-                    (Tuple.first bounceInfo)
+                    Tuple.first bounceInfo
     in
-        if model.renaming then
-            div [ class [ Buttons ] ]
-                [ button
-                    [ onClickWithStopProp <| toMsg ApplyNameChangings ]
-                    [ text "Apply" ]
-                , button
-                    [ onClickWithStopProp <| toMsg ToggleNameEdit ]
-                    [ text "Cancel" ]
-                ]
-        else
-            div [ class [ Buttons ] ]
-                [ button
-                    [ onClickWithStopProp <| toMsg ToggleNameEdit ]
-                    [ text "Edit" ]
-                , button
-                    [ onClickWithStopProp <| toMsg <| Delete bounceId ]
-                    [ text "Delete" ]
-                ]
+    if model.renaming then
+        div [ class [ Buttons ] ]
+            [ button
+                [ onClickWithStopProp <| toMsg ApplyNameChangings ]
+                [ text "Apply" ]
+            , button
+                [ onClickWithStopProp <| toMsg ToggleNameEdit ]
+                [ text "Cancel" ]
+            ]
+
+    else
+        div [ class [ Buttons ] ]
+            [ button
+                [ onClickWithStopProp <| toMsg ToggleNameEdit ]
+                [ text "Edit" ]
+            , button
+                [ onClickWithStopProp <| toMsg <| Delete bounceId ]
+                [ text "Delete" ]
+            ]
 
 
 selected : Bool -> List Classes -> List Classes
 selected condition list =
     if condition then
         Selected :: list
+
     else
         list
 
@@ -680,6 +691,7 @@ highlight : Bool -> List Classes -> List Classes
 highlight condition list =
     if condition then
         Highlight :: list
+
     else
         list
 
@@ -710,6 +722,7 @@ selectServer { toMsg } condition nip pos list =
             |> toMsg
             |> onClickWithStopProp
             |> flip (::) list
+
     else
         SelectServer nip
             |> toMsg
@@ -753,8 +766,8 @@ selectSlot { toMsg } pos list =
 attribute_ : Classes -> Bool -> Bool -> List (Attribute msg)
 attribute_ class_ selectCondition highlightCondition =
     List.singleton class_
-        |> (selected selectCondition)
-        |> (highlight highlightCondition)
+        |> selected selectCondition
+        |> highlight highlightCondition
         |> class
         |> List.singleton
 
@@ -772,6 +785,7 @@ attrServer config selectCondition highlightCondition nip pos1 pos2 path =
     if List.isEmpty path then
         attribute_ HackedServer selectCondition highlightCondition
             |> actionServer config nip pos1
+
     else
         attribute_ HackedServer selectCondition highlightCondition
             |> selectServer config highlightCondition nip pos2

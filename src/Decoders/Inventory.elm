@@ -1,11 +1,11 @@
 module Decoders.Inventory exposing (..)
 
-import Json.Decode as Decode exposing (Decoder)
-import Json.Decode.Pipeline exposing (decode, required, hardcoded)
-import Game.Meta.Types.Components.Specs exposing (Specs)
-import Game.Inventory.Models exposing (..)
 import Decoders.Components
 import Decoders.Network
+import Game.Inventory.Models exposing (..)
+import Game.Meta.Types.Components.Specs exposing (Specs)
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Pipeline exposing (decode, hardcoded, required)
 
 
 inventory : Specs -> Decoder Model

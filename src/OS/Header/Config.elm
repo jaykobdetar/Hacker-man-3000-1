@@ -1,19 +1,19 @@
 module OS.Header.Config exposing (..)
 
-import ContextMenu
-import Html exposing (Attribute)
-import Game.Account.Bounces.Shared as Bounces
-import Game.Account.Bounces.Models as Bounces
-import Game.Account.Notifications.Models as AccountNotifications
-import Game.Account.Notifications.Config as AccountNotifications
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp(..))
-import Game.Meta.Types.Context exposing (..)
-import Game.Meta.Types.Network exposing (NIP)
-import Game.Servers.Shared exposing (CId)
-import Game.Servers.Notifications.Models as ServerNotifications
-import Game.Servers.Notifications.Config as ServerNotifications
-import OS.Header.Messages exposing (Msg)
 import Apps.Params as AppParams exposing (AppParams)
+import ContextMenu
+import Game.Account.Bounces.Models as Bounces
+import Game.Account.Bounces.Shared as Bounces
+import Game.Account.Notifications.Config as AccountNotifications
+import Game.Account.Notifications.Models as AccountNotifications
+import Game.Meta.Types.Context exposing (..)
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp(..))
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Servers.Notifications.Config as ServerNotifications
+import Game.Servers.Notifications.Models as ServerNotifications
+import Game.Servers.Shared exposing (CId)
+import Html exposing (Attribute)
+import OS.Header.Messages exposing (Msg)
 
 
 type alias Config msg =

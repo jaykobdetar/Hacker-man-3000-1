@@ -2,15 +2,15 @@ module OS.Style exposing (..)
 
 import Css exposing (..)
 import Css.Colors as Colors
-import Css.Elements exposing (typeSelector, ul, li, div, h6)
+import Css.Elements exposing (div, h6, li, typeSelector, ul)
 import Css.Namespace exposing (namespace)
-import Utils.Css as Css exposing (..)
-import OS.Resources exposing (..)
 import OS.Console.Resources as Console
+import OS.Resources exposing (..)
 import UI.Colors as Colors
-import UI.Common exposing (flexContainerVert, flexContainerHorz, globalShadow)
+import UI.Common exposing (flexContainerHorz, flexContainerVert, globalShadow)
 import UI.Icons as Icons
 import UI.Style exposing (clickableBox)
+import Utils.Css as Css exposing (..)
 
 
 css : Stylesheet
@@ -44,7 +44,7 @@ dashboard =
         , flexContainerVert
         , position relative
         , zIndex (int 0)
-        , backgroundImage <| url "//raw.githubusercontent.com/elementary/wallpapers/master/Photo%20by%20SpaceX.jpg"
+        , backgroundImage <| url "https://raw.githubusercontent.com/elementary/wallpapers/master/Photo%20by%20SpaceX.jpg"
         , backgroundSize cover
         , backgroundPosition center
         , fontFamily sansSerif

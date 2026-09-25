@@ -1,25 +1,25 @@
 module OS.View exposing (view)
 
 import ContextMenu
-import Html as Html exposing (Html, div, text)
+import Core.Flags as Flags
+import Html exposing (Html, div, text)
 import Html.Attributes as Attributes exposing (attribute)
+import Html.CssHelpers
 import Html.Events exposing (onClick)
 import Html.Lazy exposing (lazy)
-import Html.CssHelpers
-import Utils.Html.Attributes exposing (activeContextAttr)
-import Core.Flags as Flags
-import OS.Map.View as Map
-import OS.Header.View as Header
-import OS.Header.Messages as Header
-import OS.Header.Models as Header
-import OS.WindowManager.View as WindowManager
-import OS.Toasts.View as Toasts
+import OS.Config exposing (..)
 import OS.Console.View as Console
 import OS.DynamicStyle as DynamicStyle
-import OS.Resources as R
-import OS.Config exposing (..)
-import OS.Models exposing (..)
+import OS.Header.Messages as Header
+import OS.Header.Models as Header
+import OS.Header.View as Header
+import OS.Map.View as Map
 import OS.Messages exposing (..)
+import OS.Models exposing (..)
+import OS.Resources as R
+import OS.Toasts.View as Toasts
+import OS.WindowManager.View as WindowManager
+import Utils.Html.Attributes exposing (activeContextAttr)
 
 
 { id, class, classList } =
@@ -41,19 +41,19 @@ view config model =
                 False ->
                     R.multiplayerMode
     in
-        model
-            |> viewOS config
-            |> (::) (DynamicStyle.view config)
-            |> (::) config.menuView
-            |> div
-                [ id R.Dashboard
-                , attribute R.gameVersionAttrTag version
-                , attribute R.gameModeAttrTag gameMode
-                , activeContextAttr config.activeContext
-                , onClick <| config.toMsg <| HeaderMsg <| Header.CheckMenus
-                , config.menuAttr
-                    [ [ ( ContextMenu.item "Sign out", onSignOut config ) ] ]
-                ]
+    model
+        |> viewOS config
+        |> (::) (DynamicStyle.view config)
+        |> (::) config.menuView
+        |> div
+            [ id R.Dashboard
+            , attribute R.gameVersionAttrTag version
+            , attribute R.gameModeAttrTag gameMode
+            , activeContextAttr config.activeContext
+            , onClick <| config.toMsg <| HeaderMsg <| Header.CheckMenus
+            , config.menuAttr
+                [ [ ( ContextMenu.item "Sign out", onSignOut config ) ] ]
+            ]
 
 
 viewOS : Config msg -> Model -> List (Html msg)
@@ -99,5 +99,6 @@ viewMap : Config msg -> Model -> Html msg
 viewMap config model =
     if Flags.isHE2 config.flags then
         Map.view (mapConfig config) (getMap model)
+
     else
         text ""

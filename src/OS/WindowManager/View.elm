@@ -1,25 +1,11 @@
 module OS.WindowManager.View exposing (view)
 
-import Html exposing (..)
-import Html.Attributes as Attributes exposing (style, attribute, tabindex)
-import Html.Events exposing (onMouseDown)
-import Html.Keyed
-import Html.Lazy exposing (lazy2)
-import Html.CssHelpers
-import Css exposing (left, top, asPairs, px, int, zIndex)
-import ContextMenu
-import Draggable
-import Utils.Html.Attributes exposing (appAttr, boolAttr, activeContextAttr)
-import Utils.Html.Events exposing (onClickMe, onKeyDown)
-import Utils.Maybe as Maybe
-import Utils.Core exposing (..)
-import Apps.Shared as Apps
 import Apps.BackFlix.View as BackFlix
 import Apps.BounceManager.View as BounceManager
 import Apps.Browser.View as Browser
 import Apps.Bug.View as Bug
-import Apps.Calculator.View as Calculator
 import Apps.Calculator.Messages as Calculator
+import Apps.Calculator.View as Calculator
 import Apps.ConnManager.View as ConnManager
 import Apps.CtrlPanel.View as CtrlPanel
 import Apps.DBAdmin.View as Database
@@ -32,21 +18,35 @@ import Apps.LanViewer.View as LanViewer
 import Apps.LocationPicker.View as LocationPicker
 import Apps.LogViewer.View as LogViewer
 import Apps.ServersGears.View as ServersGears
+import Apps.Shared as Apps
 import Apps.TaskManager.View as TaskManager
 import Apps.VirusPanel.View as VirusPanel
+import ContextMenu
+import Css exposing (asPairs, int, left, px, top, zIndex)
+import Draggable
 import Game.Meta.Types.Context as Context exposing (Context(..))
 import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
 import Game.Servers.Models as Servers exposing (Server)
 import Game.Servers.Shared as Servers exposing (CId(..))
+import Html exposing (..)
+import Html.Attributes as Attributes exposing (attribute, style, tabindex)
+import Html.CssHelpers
+import Html.Events exposing (onMouseDown)
+import Html.Keyed
+import Html.Lazy exposing (lazy2)
 import OS.Resources as OS
 import OS.WindowManager.Config exposing (..)
+import OS.WindowManager.Dock.View as Dock
 import OS.WindowManager.Helpers exposing (..)
 import OS.WindowManager.Messages exposing (..)
 import OS.WindowManager.Models exposing (..)
 import OS.WindowManager.Resources as R
 import OS.WindowManager.Shared exposing (..)
-import OS.WindowManager.Dock.View as Dock
 import OS.WindowManager.Sidebar.View as Sidebar
+import Utils.Core exposing (..)
+import Utils.Html.Attributes exposing (activeContextAttr, appAttr, boolAttr)
+import Utils.Html.Events exposing (onClickMe, onKeyDown)
+import Utils.Maybe as Maybe
 
 
 view : Config msg -> Model -> Html msg
@@ -60,12 +60,12 @@ view config model =
         session =
             getSession (getSessionId config) model
     in
-        div [ osClass [ OS.Session ] ]
-            [ viewSession config model isFreeplay session
+    div [ osClass [ OS.Session ] ]
+        [ viewSession config model isFreeplay session
 
-            -- sadly, using lazy here will cause problems with window titles
-            , Dock.view (dockConfig config) model isFreeplay session
-            ]
+        -- sadly, using lazy here will cause problems with window titles
+        , Dock.view (dockConfig config) model isFreeplay session
+        ]
 
 
 
@@ -121,18 +121,19 @@ filterMapWindows config model isFreeplay windowId =
                 |> Maybe.map (Servers.isFreeplay >> (==) isFreeplay)
                 |> Maybe.withDefault False
     in
-        if shouldDraw then
-            case getWindow windowId model of
-                Just window ->
-                    Just <|
-                        ( windowId
-                        , viewWindow config model windowId window
-                        )
+    if shouldDraw then
+        case getWindow windowId model of
+            Just window ->
+                Just <|
+                    ( windowId
+                    , viewWindow config model windowId window
+                    )
 
-                Nothing ->
-                    Nothing
-        else
-            Nothing
+            Nothing ->
+                Nothing
+
+    else
+        Nothing
 
 
 
@@ -156,14 +157,14 @@ viewWindow config model windowId window =
                 |> Maybe.map isDecorated
                 |> Maybe.withDefault True
     in
-        case maybeApp of
-            Just app ->
-                app
-                    |> viewApp config model windowId appId
-                    |> windowWrapper config model app windowId window
+    case maybeApp of
+        Just app ->
+            app
+                |> viewApp config model windowId appId
+                |> windowWrapper config model app windowId window
 
-            Nothing ->
-                text ""
+        Nothing ->
+            text ""
 
 
 windowWrapper :
@@ -216,20 +217,21 @@ windowWrapper config model app windowId window html =
         content =
             div [ class [ R.WindowBody ], config.menuAttr [] ] [ html ]
     in
-        if hasDecorations then
-            div attrs
-                [ header config
-                    title
-                    icon
-                    resizable
-                    desktopApp
-                    windowId
-                    window
-                , content
-                ]
-        else
-            div attrs
-                [ content ]
+    if hasDecorations then
+        div attrs
+            [ header config
+                title
+                icon
+                resizable
+                desktopApp
+                windowId
+                window
+            , content
+            ]
+
+    else
+        div attrs
+            [ content ]
 
 
 header :
@@ -324,6 +326,7 @@ headerButtons config resizable windowId =
                     , onClickMe <| config.toMsg (ToggleMaximize windowId)
                     ]
                     []
+
             else
                 text ""
 
@@ -334,12 +337,12 @@ headerButtons config resizable windowId =
                 ]
                 []
     in
-        div [ class [ R.HeaderButtons ] ]
-            [ pin
-            , minimize
-            , maximize
-            , close
-            ]
+    div [ class [ R.HeaderButtons ] ]
+        [ pin
+        , minimize
+        , maximize
+        , close
+        ]
 
 
 headerMenu : Config msg -> WindowId -> Window -> Bool -> Attribute msg
@@ -356,10 +359,11 @@ headerMenu { menuAttr, toMsg } windowId window resizable =
                     ( ContextMenu.item "Maximize"
                     , toMsg <| ToggleMaximize windowId
                     )
+
             else
                 identity
     in
-        menuAttr [ moreResize generic ]
+    menuAttr [ moreResize generic ]
 
 
 windowClasses : Window -> Attribute msg
@@ -369,6 +373,7 @@ windowClasses window =
             [ R.Window
             , R.Maximizeme
             ]
+
     else
         class [ R.Window ]
 
@@ -398,10 +403,11 @@ windowPositionAndSize appSize hasDecorations window =
         attrs =
             if hasDecorations then
                 position ++ size
+
             else
                 position
     in
-        styles attrs
+    styles attrs
 
 
 decoratedAttr : Bool -> Html.Attribute msg
@@ -425,13 +431,13 @@ viewApp config model windowId appId app =
         activeServer =
             getAppActiveServer config app
     in
-        case Maybe.uncurry activeServer activeGateway of
-            Just ( active, gateway ) ->
-                viewAppDelegate config active gateway windowId appId app
+    case Maybe.uncurry activeServer activeGateway of
+        Just ( active, gateway ) ->
+            viewAppDelegate config active gateway windowId appId app
 
-            Nothing ->
-                -- this shouldn't happen really
-                text ""
+        Nothing ->
+            -- this shouldn't happen really
+            text ""
 
 
 viewAppDelegate :

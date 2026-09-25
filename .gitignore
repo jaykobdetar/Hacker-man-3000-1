@@ -3,11 +3,11 @@ elm-stuff/
 build/
 /vendor/
 /*.html
-stats/*.dat
-npm-debug.log
 release.tar.gz
-package-lock.json
-yarn.lock
+npm-debug.log
+
+# Elm 0.18 compiler installed by tools/install-elm.sh
+/tools/elm/
 
 # IntelliJ
 /.idea

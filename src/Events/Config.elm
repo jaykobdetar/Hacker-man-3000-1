@@ -1,8 +1,8 @@
 module Events.Config exposing (..)
 
 import Events.Account.Config as Account
-import Events.Server.Config as Server
 import Events.BackFlix.Config as BackFlix
+import Events.Server.Config as Server
 
 
 type alias Config msg =

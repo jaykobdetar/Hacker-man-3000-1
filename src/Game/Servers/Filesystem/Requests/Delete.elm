@@ -1,11 +1,11 @@
 module Game.Servers.Filesystem.Requests.Delete exposing (deleteRequest)
 
+import Game.Servers.Filesystem.Shared exposing (..)
+import Game.Servers.Shared exposing (CId)
 import Json.Encode as Encode exposing (Value)
 import Requests.Requests as Requests
 import Requests.Topics as Topics
-import Requests.Types exposing (FlagsSource, Code(..), ResponseType)
-import Game.Servers.Shared exposing (CId)
-import Game.Servers.Filesystem.Shared exposing (..)
+import Requests.Types exposing (Code(..), FlagsSource, ResponseType)
 
 
 deleteRequest : Id -> CId -> FlagsSource a -> Cmd ResponseType

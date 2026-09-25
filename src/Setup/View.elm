@@ -2,15 +2,15 @@ module Setup.View exposing (view)
 
 import Html exposing (..)
 import Html.CssHelpers
-import Setup.Models exposing (..)
-import Setup.Resources exposing (..)
 import Setup.Config exposing (..)
-import Setup.Pages.Welcome.View as Welcome
+import Setup.Models exposing (..)
+import Setup.Pages.CustomFinish.View as CustomFinish
 import Setup.Pages.CustomWelcome.View as CustomWelcome
 import Setup.Pages.Finish.View as Finish
-import Setup.Pages.CustomFinish.View as CustomFinish
-import Setup.Pages.PickLocation.View as PickLocation
 import Setup.Pages.Mainframe.View as Mainframe
+import Setup.Pages.PickLocation.View as PickLocation
+import Setup.Pages.Welcome.View as Welcome
+import Setup.Resources exposing (..)
 
 
 { id, class, classList } =
@@ -21,6 +21,7 @@ view : Config msg -> Model -> Html msg
 view config model =
     if isLoading model then
         loadingView
+
     else
         case model.page of
             Just page ->
@@ -59,10 +60,10 @@ leftBar current others =
         mapMarker =
             stepMarker currentPageName
     in
-        node leftBarNode
-            []
-            [ ul [] <| List.map mapMarker others
-            ]
+    node leftBarNode
+        []
+        [ ul [] <| List.map mapMarker others
+        ]
 
 
 viewPage : Config msg -> PageModel -> Html msg
@@ -97,7 +98,8 @@ stepMarker active other =
         isSelected =
             if active == other then
                 [ class [ Selected ] ]
+
             else
                 []
     in
-        li isSelected [ text other ]
+    li isSelected [ text other ]

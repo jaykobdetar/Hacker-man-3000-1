@@ -1,22 +1,22 @@
 module Apps.BounceManager.Update exposing (update)
 
+import Apps.BounceManager.Config exposing (..)
+import Apps.BounceManager.Messages as BounceManager exposing (Msg(..))
+import Apps.BounceManager.Models exposing (..)
 import Dict
-import Utils.React as React exposing (React)
+import Game.Account.Bounces.Models as Bounces
+import Game.Account.Bounces.Requests.Create exposing (createRequest)
+import Game.Account.Bounces.Requests.Remove exposing (removeRequest)
+import Game.Account.Bounces.Requests.Update exposing (updateRequest)
+import Game.Account.Bounces.Shared as Bounces
+import Game.Account.Database.Models as Database
+import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Game.Meta.Types.Network as Network
 import Utils.List exposing (..)
 import Utils.Maybe as Maybe
-import Utils.Result exposing (..)
 import Utils.Model.RandomUuid as Random
-import Game.Account.Bounces.Models as Bounces
-import Game.Account.Bounces.Shared as Bounces
-import Game.Account.Bounces.Requests.Create exposing (createRequest)
-import Game.Account.Bounces.Requests.Update exposing (updateRequest)
-import Game.Account.Bounces.Requests.Remove exposing (removeRequest)
-import Game.Account.Database.Models as Database
-import Game.Meta.Types.Network as Network
-import Apps.BounceManager.Config exposing (..)
-import Apps.BounceManager.Models exposing (..)
-import Apps.BounceManager.Messages as BounceManager exposing (Msg(..))
-import Game.Meta.Types.Desktop.Apps exposing (Reference)
+import Utils.React as React exposing (React)
+import Utils.Result exposing (..)
 
 
 type alias UpdateResponse msg =
@@ -116,6 +116,7 @@ handleReloadIfLoaded config id model =
         Just id_ ->
             if id == id_ then
                 onReloadBounce config id model
+
             else
                 React.update model
 
@@ -140,7 +141,7 @@ onCreateNewBounce config model =
                 |> Tuple.first
                 |> setPath []
     in
-        React.update model_
+    React.update model_
 
 
 onGoTab : Config msg -> MainTab -> Model -> UpdateResponse msg
@@ -154,14 +155,14 @@ onGoTab config tab model =
                         |> setSelectedBounce (Just ( maybeId, bounce ))
                         |> setNewPath config maybeId bounce
             in
-                React.update model_
+            React.update model_
 
         _ ->
             let
                 model_ =
                     { model | selected = tab }
             in
-                React.update model_
+            React.update model_
 
 
 setNewPath : Config msg -> Maybe String -> Bounces.Bounce -> Model -> Model
@@ -170,6 +171,7 @@ setNewPath { bounces } maybeId bounce model =
         Just path ->
             if path /= model.path then
                 setPath model.path model
+
             else
                 setPath path model
 
@@ -183,7 +185,7 @@ onUpdateEditing str model =
         model_ =
             { model | bounceNameBuffer = Just str }
     in
-        React.update model_
+    React.update model_
 
 
 onToggleNameEdit : Model -> UpdateResponse msg
@@ -195,7 +197,7 @@ onToggleNameEdit model =
                 , bounceNameBuffer = Nothing
             }
     in
-        React.update model_
+    React.update model_
 
 
 onApplyNameChangings : Model -> UpdateResponse msg
@@ -207,7 +209,7 @@ onApplyNameChangings model =
                 , anyChange = True
             }
     in
-        React.update model_
+    React.update model_
 
 
 onSelectServer : Network.NIP -> Model -> UpdateResponse msg
@@ -216,7 +218,7 @@ onSelectServer nip model =
         model_ =
             { model | selection = Just (SelectingServer nip) }
     in
-        React.update model_
+    React.update model_
 
 
 onSelectSlot : Int -> Model -> UpdateResponse msg
@@ -225,7 +227,7 @@ onSelectSlot num model =
         model_ =
             { model | selection = Just (SelectingSlot num) }
     in
-        React.update model_
+    React.update model_
 
 
 onSelectEntry : Network.NIP -> Model -> UpdateResponse msg
@@ -234,7 +236,7 @@ onSelectEntry nip model =
         model_ =
             { model | selection = Just (SelectingEntry nip) }
     in
-        React.update model_
+    React.update model_
 
 
 onClearSelection : Model -> UpdateResponse msg
@@ -243,7 +245,7 @@ onClearSelection model =
         model_ =
             { model | selection = Nothing }
     in
-        React.update model_
+    React.update model_
 
 
 onAddNode : Network.NIP -> Int -> Model -> UpdateResponse msg
@@ -255,7 +257,7 @@ onAddNode nip where_ model =
         model_ =
             { model | path = path, selection = Nothing, anyChange = True }
     in
-        React.update model_
+    React.update model_
 
 
 onMoveNode : Network.NIP -> Int -> Model -> UpdateResponse msg
@@ -263,25 +265,25 @@ onMoveNode nip where_ model =
     let
         path =
             nip
-                |> (\nip -> List.filter (((==) nip) >> not) model.path)
+                |> (\nip -> List.filter ((==) nip >> not) model.path)
                 |> insertAt where_ nip
 
         model_ =
             { model | path = path, selection = Nothing, anyChange = True }
     in
-        React.update model_
+    React.update model_
 
 
 onRemoveNode : Network.NIP -> Model -> UpdateResponse msg
 onRemoveNode nip model =
     let
         path_ =
-            List.filter (((==) nip) >> not) model.path
+            List.filter ((==) nip >> not) model.path
 
         model_ =
             { model | path = path_, selection = Nothing, anyChange = True }
     in
-        React.update model_
+    React.update model_
 
 
 onSave :
@@ -326,7 +328,7 @@ onSave ({ toMsg, accountId, bounces, database } as config) ( id, bounce ) model 
                 Nothing ->
                     getReactBounceCreate config createBounce id rId model0
     in
-        ( model0, react )
+    ( model0, react )
 
 
 onReset :
@@ -342,7 +344,7 @@ onReset ({ bounces } as config) ( id, bounce ) model =
         model_ =
             reset selected model
     in
-        React.update model_
+    React.update model_
 
 
 onDelete :
@@ -363,7 +365,7 @@ onDelete config bounceId model =
                 react =
                     doRemoveRequest config id
             in
-                ( model_, react )
+            ( model_, react )
 
         Nothing ->
             let
@@ -376,7 +378,7 @@ onDelete config bounceId model =
                         , anyChange = False
                     }
             in
-                React.update model_
+            React.update model_
 
 
 bounceExist : Config msg -> Maybe Bounces.ID -> Maybe MainTab
@@ -409,22 +411,23 @@ onEdit config bounceId model =
                 Nothing ->
                     model
     in
-        React.update model_
+    React.update model_
 
 
 onToggleExpand : Config msg -> Bounces.ID -> Model -> UpdateResponse msg
 onToggleExpand config bounceId model =
     let
         newExpanded =
-            if (List.member bounceId model.expanded) then
+            if List.member bounceId model.expanded then
                 List.filter ((==) bounceId >> not) model.expanded
+
             else
                 (::) bounceId model.expanded
 
         model_ =
             { model | expanded = newExpanded }
     in
-        React.update model_
+    React.update model_
 
 
 onSetModal : Config msg -> Maybe ModalAction -> Model -> UpdateResponse msg
@@ -438,7 +441,7 @@ onSetModal config modal model =
                 _ ->
                     { model | modal = modal }
     in
-        React.update model_
+    React.update model_
 
 
 onCreateRequest :
@@ -456,7 +459,7 @@ onCreateRequest config response model =
                 Just error ->
                     { model | modal = Just <| ForError (CreateError error) }
     in
-        React.update model_
+    React.update model_
 
 
 onUpdateRequest :
@@ -474,7 +477,7 @@ onUpdateRequest config response model =
                 Just error ->
                     { model | modal = Just <| ForError (UpdateError error) }
     in
-        React.update model_
+    React.update model_
 
 
 onRemoveRequest :
@@ -498,7 +501,7 @@ onRemoveRequest config response model =
                 Just error ->
                     { model | modal = Just <| ForError (RemoveError error) }
     in
-        React.update model_
+    React.update model_
 
 
 
@@ -570,7 +573,7 @@ onReloadBounce { bounces, reference } id model =
                 _ ->
                     model
     in
-        React.update model_
+    React.update model_
 
 
 
@@ -594,13 +597,13 @@ getReactBounceCreate ({ batchMsg } as config) request maybeId rId model =
                 |> config.onWaitForBounce rId
                 |> React.msg
     in
-        React.batch batchMsg
-            [ request maybeId rId
-            , genSetSpinnerMsg config
-            , waitForBounce
-            , subBounceCreationSucceed config rId onSuccess
-            , subBounceCreationFailed config rId
-            ]
+    React.batch batchMsg
+        [ request maybeId rId
+        , genSetSpinnerMsg config
+        , waitForBounce
+        , subBounceCreationSucceed config rId onSuccess
+        , subBounceCreationFailed config rId
+        ]
 
 
 getReactBounceUpdate :
@@ -617,15 +620,16 @@ getReactBounceUpdate config request id bounce newBounce rId model =
         onSuccess =
             config.onRequestBounceReload id config.reference
     in
-        if (bounce /= newBounce) then
-            React.batch config.batchMsg
-                [ request id rId
-                , genSetSpinnerMsg config
-                , subBounceUpdateSucceed config rId onSuccess
-                , subBounceUpdateFailed config rId
-                ]
-        else
-            React.none
+    if bounce /= newBounce then
+        React.batch config.batchMsg
+            [ request id rId
+            , genSetSpinnerMsg config
+            , subBounceUpdateSucceed config rId onSuccess
+            , subBounceUpdateFailed config rId
+            ]
+
+    else
+        React.none
 
 
 generatingBounceName : Bounces.Bounce -> Model -> String
@@ -665,7 +669,7 @@ subBounceUpdateSucceed config requestId msg =
 
 subBounceUpdateFailed : Config msg -> String -> React msg
 subBounceUpdateFailed config requestId =
-    ( "bounce_update_failed", (genFailMsg config False) )
+    ( "bounce_update_failed", genFailMsg config False )
         |> config.awaitEvent requestId
         |> React.msg
 
@@ -684,6 +688,7 @@ genFailMsg { toMsg } isCreate =
             |> Just
             |> SetModal
             |> toMsg
+
     else
         Bounces.UpdateFailed
             |> UpdateError

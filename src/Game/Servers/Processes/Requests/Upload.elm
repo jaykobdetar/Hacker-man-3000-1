@@ -1,28 +1,27 @@
-module Game.Servers.Processes.Requests.Upload
-    exposing
-        ( Data
-        , Errors(..)
-        , FileId
-        , StorageId
-        , uploadRequest
-        , errorToString
-        )
+module Game.Servers.Processes.Requests.Upload exposing
+    ( Data
+    , Errors(..)
+    , FileId
+    , StorageId
+    , errorToString
+    , uploadRequest
+    )
 
+import Game.Meta.Types.Network exposing (NIP)
+import Game.Servers.Shared exposing (CId)
 import Json.Decode as Decode
     exposing
         ( Decoder
         , Value
         , decodeValue
-        , succeed
         , fail
+        , succeed
         )
 import Json.Encode as Encode
-import Utils.Json.Decode exposing (commonError, message)
-import Game.Meta.Types.Network exposing (NIP)
 import Requests.Requests as Requests exposing (report)
 import Requests.Topics as Topics
 import Requests.Types exposing (Code(..), FlagsSource)
-import Game.Servers.Shared exposing (CId)
+import Utils.Json.Decode exposing (commonError, message)
 
 
 type alias Data =

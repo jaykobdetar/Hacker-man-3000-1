@@ -32,7 +32,7 @@ emptyContent =
 
 internalPaddingSz : Px
 internalPaddingSz =
-    (px 8)
+    px 8
 
 
 internalPadding : Style

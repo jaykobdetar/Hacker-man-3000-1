@@ -1,10 +1,10 @@
 module Game.Storyline.Models exposing (..)
 
 import Dict exposing (Dict)
-import Utils.List as List
-import Utils.Maybe as Maybe
 import Game.Storyline.Shared exposing (..)
 import Game.Storyline.StepActions.Shared exposing (Action)
+import Utils.List as List
+import Utils.Maybe as Maybe
 
 
 type alias Model =
@@ -45,17 +45,18 @@ fromContacts contacts =
                         (getStep contact)
                         (getLastReply contact)
             in
-                if (thisCp >= acu) then
-                    thisCp
-                else
-                    acu
+            if thisCp >= acu then
+                thisCp
+
+            else
+                acu
     in
-        { contacts = contacts
-        , highestCheckpoint =
-            Dict.foldl check
-                (checkpoint Nothing Nothing Nothing)
-                contacts
-        }
+    { contacts = contacts
+    , highestCheckpoint =
+        Dict.foldl check
+            (checkpoint Nothing Nothing Nothing)
+            contacts
+    }
 
 
 getCheckpoint : Model -> Checkpoint
@@ -70,8 +71,9 @@ setCheckpoint checkpoint model =
 
 passCheckpoint : Checkpoint -> Model -> Model
 passCheckpoint checkpoint model =
-    if (checkpoint > getCheckpoint model) then
+    if checkpoint > getCheckpoint model then
         { model | highestCheckpoint = checkpoint }
+
     else
         model
 
@@ -109,9 +111,9 @@ isAnyoneInStep step model =
         check _ contact acu =
             acu || (getStep contact == Just step)
     in
-        model
-            |> getContacts
-            |> Dict.foldr check False
+    model
+        |> getContacts
+        |> Dict.foldr check False
 
 
 getContact : ContactId -> Model -> Maybe Contact
@@ -145,12 +147,12 @@ initialAbout who =
 
 getPastEmails : Contact -> PastEmails
 getPastEmails =
-    (.pastEmails)
+    .pastEmails
 
 
 getAvailableReplies : Contact -> List Reply
 getAvailableReplies =
-    (.availableReplies)
+    .availableReplies
 
 
 getNick : Contact -> String

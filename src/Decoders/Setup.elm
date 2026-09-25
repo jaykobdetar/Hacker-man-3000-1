@@ -4,16 +4,16 @@ import Json.Decode as Decode
     exposing
         ( Decoder
         , Value
-        , map
         , andThen
-        , succeed
         , fail
-        , string
         , list
+        , map
+        , string
+        , succeed
         )
-import Utils.Json.Decode exposing (commonError)
-import Setup.Types as Setup exposing (Page(..))
 import Setup.Models as Setup
+import Setup.Types as Setup exposing (Page(..))
+import Utils.Json.Decode exposing (commonError)
 
 
 remainingPages : Decoder Setup.Pages

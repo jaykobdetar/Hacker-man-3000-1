@@ -1,15 +1,15 @@
 module Apps.Explorer.Config exposing (..)
 
+import Apps.Explorer.Messages exposing (..)
 import ContextMenu
-import Html exposing (Attribute)
-import Game.Servers.Models as Servers
-import Game.Servers.Shared exposing (CId, StorageId)
+import Game.Meta.Types.Network exposing (NIP)
 import Game.Servers.Filesystem.Models as Filesystem
 import Game.Servers.Filesystem.Shared as Filesystem
-import Game.Servers.Processes.Requests.Upload as Upload
+import Game.Servers.Models as Servers
 import Game.Servers.Processes.Requests.Download as Download
-import Game.Meta.Types.Network exposing (NIP)
-import Apps.Explorer.Messages exposing (..)
+import Game.Servers.Processes.Requests.Upload as Upload
+import Game.Servers.Shared exposing (CId, StorageId)
+import Html exposing (Attribute)
 
 
 type alias Config msg =

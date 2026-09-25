@@ -1,12 +1,13 @@
 module Main exposing (init, main)
 
-import Html
-import Core.Subscriptions exposing (subscriptions)
+import Core.Flags as Core
 import Core.Messages exposing (Msg)
 import Core.Models as Core exposing (Model)
+import Core.Subscriptions exposing (subscriptions)
 import Core.Update exposing (update)
 import Core.View exposing (view)
-import Core.Flags as Core
+import Html
+
 
 
 -- import TimeTravel.Navigation

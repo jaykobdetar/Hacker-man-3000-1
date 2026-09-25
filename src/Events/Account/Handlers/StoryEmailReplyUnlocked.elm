@@ -1,19 +1,19 @@
 module Events.Account.Handlers.StoryEmailReplyUnlocked exposing (Data, handler)
 
+import Decoders.Storyline exposing (replies, replyFromId)
+import Events.Shared exposing (Handler)
+import Game.Storyline.Shared exposing (Reply)
 import Json.Decode
     exposing
         ( Decoder
-        , decodeValue
-        , map
         , andThen
+        , decodeValue
         , field
         , list
+        , map
         , string
         )
-import Json.Decode.Pipeline exposing (decode, required, optional)
-import Events.Shared exposing (Handler)
-import Decoders.Storyline exposing (replyFromId, replies)
-import Game.Storyline.Shared exposing (Reply)
+import Json.Decode.Pipeline exposing (decode, optional, required)
 
 
 type alias Data =

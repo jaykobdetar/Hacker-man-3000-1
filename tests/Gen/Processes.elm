@@ -1,30 +1,31 @@
 module Gen.Processes exposing (..)
 
 import Fuzz exposing (Fuzzer)
-import Time exposing (Time)
-import Random.Pcg
-    exposing
-        ( Generator
-        , constant
-        , int
-        , float
-        , list
-        , choices
-        , sample
-        , map
-        , map2
-        , map3
-        , andThen
-        )
-import Random.Pcg.Extra exposing (andMap)
-import Game.Servers.Tunnels.Models exposing (ConnectionID)
+import Game.Servers.Logs.Models as Logs
 import Game.Servers.Processes.Models as Processes exposing (..)
 import Game.Servers.Processes.Shared as Processes exposing (..)
 import Game.Servers.Shared as Servers
-import Game.Servers.Logs.Models as Logs
+import Game.Servers.Tunnels.Models exposing (ConnectionID)
+import Gen.Logs as Logs
 import Gen.Network as GenNetwork
 import Gen.Utils exposing (..)
-import Gen.Logs as Logs
+import Random.Pcg
+    exposing
+        ( Generator
+        , andThen
+        , choices
+        , constant
+        , float
+        , int
+        , list
+        , map
+        , map2
+        , map3
+        , sample
+        )
+import Random.Pcg.Extra exposing (andMap)
+import Time exposing (Time)
+
 
 
 --------------------------------------------------------------------------------
@@ -295,7 +296,7 @@ genState =
 
 genProcessFile : Generator ProcessFile
 genProcessFile =
-    (maybe genFileID)
+    maybe genFileID
         |> map ProcessFile
         |> andMap (maybe genVersion)
         |> andMap genFileName

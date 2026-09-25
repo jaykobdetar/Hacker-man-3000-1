@@ -1,26 +1,25 @@
 module Apps.Browser.Config exposing (..)
 
-import ContextMenu
-import Html exposing (Attribute)
-import Core.Flags as Core
-import Utils.Core exposing (..)
-import Apps.Params as AppParams exposing (AppParams)
-import Game.Account.Database.Models exposing (HackedServers)
-import Game.Account.Finances.Requests.Login as LoginRequest
-import Game.Account.Finances.Requests.Transfer as TransferRequest
-import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp)
-import Game.Meta.Types.Context exposing (Context(..))
-import Game.Meta.Types.Network as Network exposing (NIP)
-import Game.Meta.Types.Desktop.Apps exposing (Reference, Requester)
-import Game.Servers.Models as Servers
-import Game.Servers.Shared as Servers exposing (CId)
-import Game.Servers.Filesystem.Shared as Filesystem
-import Game.Servers.Processes.Requests.Download as Download
 import Apps.Browser.Messages exposing (..)
 import Apps.Browser.Pages.Bank.Config as Bank
 import Apps.Browser.Pages.DownloadCenter.Config as DownloadCenter
 import Apps.Browser.Pages.Home.Config as Home
 import Apps.Browser.Pages.Webserver.Config as Webserver
+import Apps.Params as AppParams exposing (AppParams)
+import ContextMenu
+import Core.Flags as Core
+import Game.Account.Database.Models exposing (HackedServers)
+import Game.Account.Finances.Requests.Login as LoginRequest
+import Game.Account.Finances.Requests.Transfer as TransferRequest
+import Game.Meta.Types.Context exposing (Context(..))
+import Game.Meta.Types.Desktop.Apps as DesktopApp exposing (DesktopApp, Reference, Requester)
+import Game.Meta.Types.Network as Network exposing (NIP)
+import Game.Servers.Filesystem.Shared as Filesystem
+import Game.Servers.Models as Servers
+import Game.Servers.Processes.Requests.Download as Download
+import Game.Servers.Shared as Servers exposing (CId)
+import Html exposing (Attribute)
+import Utils.Core exposing (..)
 
 
 {-| Callbacks:
@@ -83,12 +82,12 @@ homeConfig config =
         ( cid, server ) =
             config.activeGateway
     in
-        { onNewTabIn = NewTabIn >> config.toMsg
-        , onGoAddress = GoAddress >> ActiveTabMsg >> config.toMsg
-        , onOpenApp =
-            -- Home only exists in Global Network (::)
-            flip config.onOpenApp cid
-        }
+    { onNewTabIn = NewTabIn >> config.toMsg
+    , onGoAddress = GoAddress >> ActiveTabMsg >> config.toMsg
+    , onOpenApp =
+        -- Home only exists in Global Network (::)
+        flip config.onOpenApp cid
+    }
 
 
 webserverConfig : Config msg -> Webserver.Config msg

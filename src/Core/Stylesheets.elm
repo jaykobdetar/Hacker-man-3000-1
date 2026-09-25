@@ -1,18 +1,18 @@
 port module Stylesheets exposing (..)
 
-import Css.File exposing (CssFileStructure, CssCompilerProgram)
+import Apps.Style as Apps
 import Core.Style as Core
+import Css.File exposing (CssCompilerProgram, CssFileStructure)
 import Landing.Style as Landing
-import UI.Style as UI
-import Setup.Style as Setup
-import OS.Style as OS
-import OS.Header.Style as Header
 import OS.Console.Style as Console
+import OS.Header.Style as Header
+import OS.Style as OS
 import OS.Toasts.Style as Toasts
-import OS.WindowManager.Style as WindowManager
 import OS.WindowManager.Dock.Style as Dock
 import OS.WindowManager.Sidebar.Style as Sidebar
-import Apps.Style as Apps
+import OS.WindowManager.Style as WindowManager
+import Setup.Style as Setup
+import UI.Style as UI
 
 
 port files : CssFileStructure -> Cmd msg
